@@ -68,6 +68,7 @@ export default ()=>{
     clickElement(contenedor_chat_fullscreen.element, ()=> contenedor_chat_fullscreen.element.remove())
      
     addRemoveEventListenerHashchange(document, 'fullscreenchange', ()=> {
+        console.log('hola');
         if(document.fullscreenElement){ 
             elemento_chat.element.append(contenedor_chat) 
         } else {

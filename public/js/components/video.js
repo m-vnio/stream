@@ -67,7 +67,7 @@ export default ()=>{
         </div>
     `)
 
-    const style = new createCSS('video', ElementComponent)
+    const style = new createCSS('video-player', ElementComponent)
 
     const contenedor_video_fullscreen = style.element('contenedor_video_fullscreen').css(`
         & {
