@@ -1,8 +1,11 @@
-import { onGetStream } from "../firebase/config.js";
+import { streamRealtime } from "../firebase/data.js";
 
 export default ()=>{
     const ElementComponent = createHTML(`
         <div>
+            <div data-css="contenedor_navegacion">
+                <a href="#/setting"><i class="fa-solid fa-gear"></i></a>
+            </div>
             <div class="scroll-y" data-css="contenedor_item">
                 <div data-css="lista_item">
                     <a href="" data-css="item">
@@ -15,19 +18,40 @@ export default ()=>{
     `)
 
     const style = new createCSS('inicio', ElementComponent)
+
+    const color_item    = 'var(--color-item)' 
+    const color_letter  = 'var(--color-letter)' 
+
     style.css(`
         & {
             position : fixed;
             inset: 0; 
-            display : flex;
         }
     `)
+
+    const contenedor_navegacion = style.element('contenedor_navegacion').css(`
+        & {
+            margin : 0 auto;
+            width  : 100%; 
+            height : 50px;
+        }
+
+        & a { 
+            width : 50px;
+            height : 50px;
+            text-decoration:none;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: ${ color_letter };
+        }
+    `) 
 
     const contenedor_item = style.element('contenedor_item').css(`
         & {
             margin : 0 auto;
-            width  : min(100%, 650px); 
-            height : 100%; 
+            width  : min(100%, 650px);  
             padding: 15px;
         }
     `)
@@ -47,8 +71,8 @@ export default ()=>{
         & {
             width   : 100%; 
             height  : 60px; 
-            background : #2C2C2E;
-            color: #ffffff;
+            background : ${ color_item };
+            color: ${ color_letter };
 
             overflow: hidden; 
 
@@ -56,7 +80,7 @@ export default ()=>{
             grid-template-columns : 1fr auto;
             align-items: center;
 
-            padding : 0 15px;
+            padding : 0 20px;
             text-decoration:none;
         }
 
@@ -97,7 +121,7 @@ export default ()=>{
         });
     }
     
-    const unsubscribe = onGetStream(renderHTML)
+    const unsubscribe = streamRealtime(renderHTML)
     addRemoveEventListener(window, 'hashchange', unsubscribe) 
 
     document.getElementById('main').append(ElementComponent)

@@ -1,3 +1,8 @@
+/* :root{
+  --background-primary : #1c1c1e;
+  --background-color : #ffffff;
+} */
+
 * {
   margin: 0;
   padding: 0;
@@ -12,10 +17,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background: #1c1c1e;
-
-  user-select: none;
+  background: var(--color-background);
+  user-select: none; 
 }
+ 
+
 
 #root {
   position: fixed;

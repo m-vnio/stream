@@ -1,10 +1,11 @@
-import { onGetStreamID, updateStream } from "../firebase/config.js"
+import { dbFirebase, streamRealtime } from "../firebase/data.js"
 import emoji from "./emoji.js"
 
 export default ()=>{
 
-    const params = location.hash.split('/').splice(1)
-    const user   = JSON.parse(localStorage.getItem('user'))
+    const db     = new dbFirebase('stream')
+    const params = json(sessionStorage.getItem('params'))
+    const user   = json(localStorage.getItem('user'))
  
     let data_update = {
         play : 'false',
@@ -131,9 +132,9 @@ export default ()=>{
 
         const progress = contenido_video.currentTime.toFixed(0)
         
-        updateStream(params[1], {
-            play : !contenido_video.paused,
-            id_user : user.id,
+        db.edit(params.id, {
+            play    : !contenido_video.paused,
+            id_user : user.uid,
             datetime_update : Date.now().toString(),
             time_progress   : progress,
             change : 'play'
@@ -148,8 +149,8 @@ export default ()=>{
         
         const progress = contenido_video.currentTime.toFixed(0)
 
-        updateStream(params[1], {
-            id_user : user.id,
+        db.edit(params.id, {
+            id_user : user.uid,
             datetime_update : Date.now().toString(),
             time_progress   : progress,
             change : 'seeked'
@@ -210,8 +211,8 @@ export default ()=>{
         contenido_video.currentTime = parseInt(ipt_duration.value) 
         const progress = contenido_video.currentTime.toFixed(0)
 
-        updateStream(params[1], {
-            id_user : user.id,
+        db.edit(params.id, {
+            id_user : user.uid,
             datetime_update : Date.now().toString(),
             time_progress   : progress,
             change : 'seeked'
@@ -235,7 +236,7 @@ export default ()=>{
 
     contenido_video.addEventListener("seeked", ()=> {
         if(fisrt_time.seeker) fisrt_time.seeker = false
-        else if(data_update.id_user == user.id) return 
+        else if(data_update.id_user == user.uid) return 
 
         if(data_local.data_db_update){
             const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000)
@@ -256,12 +257,12 @@ export default ()=>{
         contenido_video.setAttribute('autoplay', '')
         contenido_video.currentTime = 0
 
-        // updateStream(params[1], {
+        // updateStream(params.id, {
         //     link : e.detail.link,
         //     datetime_update : Date.now().toString(),
         //     play : 'true',
         //     change : 'link',
-        //     id_user : user.id,
+        //     id_user : user.uid,
         //     time_progress   : '0',
         // })
     })
@@ -283,7 +284,7 @@ export default ()=>{
                 return
             }
             
-            if(data.id_user == user.id) return
+            if(data.id_user == user.uid) return
 
             if(parseInt(data.datetime_update) > data_local.datetime_update){
                 data_local.datetime_update = parseInt(data.datetime_update)
@@ -313,11 +314,11 @@ export default ()=>{
     const validate_click = JSON.parse(localStorage.getItem('click')) 
 
     if(validate_click){
-        const unsubscribe = onGetStreamID(renderVideo, params[1])
+        const unsubscribe = streamRealtime(renderVideo, params.id)
         addRemoveEventListener(window, 'hashchange', unsubscribe)
     } else {
         addRemoveEventListener(window, 'click', ()=> {
-            const unsubscribe = onGetStreamID(renderVideo, params[1])
+            const unsubscribe = streamRealtime(renderVideo, params.id)
             addRemoveEventListener(window, 'hashchange', unsubscribe)
         })
     }

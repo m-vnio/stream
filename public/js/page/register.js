@@ -1,18 +1,18 @@
-import { loginFirebase } from "../firebase/auth.js"
+import { registerFirebase } from "../firebase/auth.js"
 
 export default ()=>{
 
     const ElementComponent = createHTML(`
         <div class="scroll-y">
             <form data-css="form_login" autocomplete="off">
-                <h4>LOGIN</h4>
+                <h4>REGISTER</h4>
                 <div data-css="contenedor_input">
                     <input type="text" placeholder="email" data-css="input_form" autocomplete="off">
                     <input type="password" placeholder="password" data-css="input_form" autocomplete="off">
                 </div>
                 <div data-css="contenedor_boton_link">
                     <button type="submit" data-css="button_form"><i class="fa-solid fa-arrow-right"></i></button>
-                    <a href="#/register" data-css="link_form">registro</a>
+                    <a href="#/login" data-css="link_form">login</a>
                 </div>
             </form>
         </div>
@@ -94,7 +94,7 @@ export default ()=>{
             password : inputPassword.element.value
         }
 
-        loginFirebase(data)
+        registerFirebase(data)
     })
 
     document.getElementById('main').append(ElementComponent)

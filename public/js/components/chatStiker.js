@@ -1,7 +1,8 @@
-import { addStreamChat } from "../firebase/config.js"
+import { dbFirebase } from "../firebase/data.js"
 
 export default ()=>{
 
+    const db     = new dbFirebase('stream_chat')
     const params = json(sessionStorage.getItem('params'))
     const user   = json(localStorage.getItem('user'))
 
@@ -16,15 +17,29 @@ export default ()=>{
     `)
 
     const style = new createCSS('chat-stiker', ElementComponent)
-    style.css(`& { position : fixed; inset : 0; background : rgb(0 0 0 / .3); display: grid; padding: 10px }`)
+
+    const color_item    = 'var(--color-item)'  
+
+    style.css(`
+        & { position : fixed; inset : 0; background : rgb(0 0 0 / .3); display: grid }
+        @media (min-width: 500px){
+            & { padding: 20px }
+        }
+    `)
 
     const contenedor_stiker = style.element('contenedor_stiker').css(`
         & { 
             width : min(100%, 500px); height : min(100%, 400px); 
-            background : #2C2C2E;
+            background : ${ color_item };
             align-self: end;
             justify-self: center;
-            border-radius:8px; 
+            border-radius:8px 8px 0 0; 
+        }
+
+        @media (min-width: 500px){
+            & {  
+                border-radius: 8px; 
+            }
         }
     `)
 
@@ -64,7 +79,7 @@ export default ()=>{
 
     clickElementclosest(contenido_stiker.element, `.${ item_stiker.className }`, target => {
         const data = {
-            id_user : user.id,
+            id_user : user.uid,
             id_stream : params.id,
             message : target.dataset.name,
             datetime_add : Date.now().toString(),
@@ -73,7 +88,7 @@ export default ()=>{
             status : 1
         }
 
-        addStreamChat(data)
+        db.add(data)
         ElementComponent.remove()
     })
 

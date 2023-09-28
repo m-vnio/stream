@@ -33,15 +33,32 @@ export default (data = {})=>{
     `)
 
     const style = new createCSS('chat-option', ElementComponent)
-    style.css(`& { position : fixed; inset : 0; background : rgb(0 0 0 / .3); display: grid; padding: 10px; z-index : 999 }`)
+
+    const color_item    = 'var(--color-item)' 
+    const color_letter  = 'var(--color-letter)'
+
+    style.css(`
+        & { position : fixed; inset : 0; background : rgb(0 0 0 / .3); display: grid; z-index : 999 }
+        @media (min-width: 450px){
+            & {
+                padding : 20px
+            }
+        }
+    `)
 
     const contenedor_option = style.element('contenedor_option').css(`
         & { 
-            width : min(100%, 400px); max-height : min(100%, 400px); 
-            background : #2C2C2E;
+            width : min(100%, 450px); max-height : min(100%, 450px); 
+            background : ${ color_item };
             align-self: end;
             justify-self: center;
-            border-radius:8px; 
+            border-radius: 8px 8px 0 0; 
+        }
+
+        @media (min-width: 450px){
+            & {
+                border-radius: 8px; 
+            }
         }
     `)
 
@@ -49,7 +66,7 @@ export default (data = {})=>{
         & {
             display: flex;
             padding: 20px; 
-            color  : #ffffff;
+            color  : ${ color_letter };
             border-bottom: 1.25px solid rgb(255 255 255 / .1);
         }
     `)
@@ -71,7 +88,7 @@ export default (data = {})=>{
             align-items: center;
             padding: 20px;
             gap: 20px;
-            color : #ffffff;
+            color : ${ color_letter };
             cursor: pointer;
             font-size : 15px;
             text-align : center
@@ -85,8 +102,8 @@ export default (data = {})=>{
             text-align : left
         }
     `)
-
-    getElement( 'p', contenedor_texto.element).textContent = data.type == data.message ?? ''
+    
+    getElement( 'p', contenedor_texto.element).textContent = data.message ?? ''
     clickElement(ElementComponent, ()=> ElementComponent.remove())
 
     if(data.type != 'text') contenedor_texto.element.remove()

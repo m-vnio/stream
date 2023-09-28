@@ -1,10 +1,11 @@
-import { onGetStreamChat, addStreamChat, updateStreamcChat } from "../firebase/config.js"
+import { dbFirebase, chatRealtime } from "../firebase/data.js"
 import chatStiker from "./chatStiker.js"
 import chatOption from "./chatOption.js"
 export default ()=>{
 
-    const params = location.hash.split('/').splice(1)
-    const user   = JSON.parse(localStorage.getItem('user'))
+    const db     = new dbFirebase('stream_chat')
+    const params = json(sessionStorage.getItem('params'))
+    const user   = json(localStorage.getItem('user'))
     
     const ElementComponent = createHTML(`
         <div class="div_3gfqE">
@@ -28,7 +29,7 @@ export default ()=>{
                 </form>
             </div>
             <div data-css="contenedor_chat_fullscreen">
-                <div class="background" data-css="elemento_chat"></div>  
+                <div data-css="elemento_chat"></div>  
             </div>
         </div>
     `)
@@ -60,6 +61,7 @@ export default ()=>{
             margin  : auto;
             width   : min(100%, 400px);
             height  : min(100%, 400px);
+            background : var(--color-item);
             overflow : hidden;
             border-radius:8px; 
         }
@@ -100,8 +102,8 @@ export default ()=>{
         e.preventDefault()
         
         const data = {
-            id_user : user.id,
-            id_stream : params[1],
+            id_user : user.uid,
+            id_stream : params.id,
             message : form_chat.txt_message.value.trim(),
             datetime_add : Date.now().toString(),
             datetime_update : Date.now().toString(),
@@ -112,12 +114,12 @@ export default ()=>{
 
         if(form_chat.classList.contains('edit')){
             data.status = 2
-            updateStreamcChat(e.target.dataset.idMessage, data)
+            db.edit(e.target.dataset.idMessage, data)
             form_chat.classList.remove('edit')
             form_chat.removeAttribute('data-id-message')
         } else { 
             data.status = 1
-            addStreamChat(data) 
+            db.add(data) 
         }
         
         form_chat.txt_message.value = ''
@@ -155,7 +157,7 @@ export default ()=>{
             type            : data.type ?? 'text'
         }
 
-        const user_class = data.id_user == user.id ? 'user' : ''
+        const user_class = data.id_user == user.uid ? 'user' : ''
 
         const element = createHTML(`
             <div class="div_T5m0f ${ user_class }" id="div-${ doc.id }">
@@ -185,7 +187,7 @@ export default ()=>{
 
             if(index++ == 0){
                 if(Date.now() < (parseInt(data.datetime_add) + 7000)){ 
-                    if(data.id_user != user.id){ 
+                    if(data.id_user != user.uid){ 
                         dispatchEvent(new CustomEvent('send_notification_message'))
                     }
                 }
@@ -197,23 +199,25 @@ export default ()=>{
 
                 const data_data = JSON.parse(element.dataset.data)
                 if(data.status == 3) return element.remove()
-                if(data.status == 4) { if(data.id_user != user.id) return element.remove() } 
+                if(data.status == 4) { if(data.id_user != user.uid) return element.remove() } 
                 if(parseInt(data.datetime_update) > parseInt(data_data.datetime_update)){
                     return element.replaceWith(def_createHTML(data, doc));
                 }
             } else {
                 if(data.status == 3) return
-                if(data.status == 4) { if(data.id_user != user.id) return } 
-                if(data.status == 5) { if(data.id_user != user.id) return elementPrevious.insertAdjacentElement('beforebegin', def_createHTML(data, doc)) }
+                if(data.status == 4) { if(data.id_user != user.uid) return } 
                 if(render_fisrt_time) contenido_chat.prepend(def_createHTML(data, doc))
-                else contenido_chat.append(def_createHTML(data, doc))
+                else {
+                    if(data.status == 5) { if(data.id_user != user.uid) return elementPrevious.before(def_createHTML(data, doc)) }
+                    contenido_chat.append(def_createHTML(data, doc))
+                }
             }
         })
 
         render_fisrt_time = false
     }
 
-    const unsubscribe = onGetStreamChat(renderHTML)
+    const unsubscribe = chatRealtime(renderHTML, params.id)
     addRemoveEventListener(window, 'hashchange', unsubscribe)
     
     addRemoveEventListenerHashchange(window, 'open_update_message', e => {
@@ -232,7 +236,7 @@ export default ()=>{
         const item = contenido_chat.querySelector(`#div-${ data.id }`)
         if(item) item.remove()
 
-        updateStreamcChat(data.id, {
+        db.edit(data.id, {
             datetime_update : Date.now().toString(),
             status : 3
         })
@@ -245,7 +249,7 @@ export default ()=>{
         const item = contenido_chat.querySelector(`#div-${ data.id }`)
         if(item) item.style.opacity = '.5'
 
-        updateStreamcChat(data.id, {
+        db.edit(data.id, {
             datetime_update : Date.now().toString(),
             status : data.status == 4 ? 5 : 4
         })

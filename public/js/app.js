@@ -1,13 +1,9 @@
+import style from "./style.js"
 import routes from "./src/routes.js"
 
 export default ()=>{
-
-    localStorage.setItem('click', 'false')
-
-    if(!localStorage.getItem('user')){
-        location.hash = '/login'
-    }
  
+    style()
     routes()
 
     window.addEventListener('contextmenu', e => e.preventDefault())

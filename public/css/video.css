@@ -173,6 +173,7 @@
 .div_Gtfrb {
   aspect-ratio: 1 / 1;
 
+  background: var(--color-item);
   margin: auto;
   position: relative;
   width: min(100%, 300px);
@@ -245,4 +246,4 @@
   }
 }
 
-/* contenedor_full_screen - mensajes button_hdZNr div_Gtfrb div_BXzT1*/
+/* div_Gtfrb*/

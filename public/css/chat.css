@@ -21,8 +21,7 @@
 
 .div_1d4o4 {
   margin: auto;
-  filter: invert(82%) sepia(99%) saturate(0%) hue-rotate(102deg)
-    brightness(111%) contrast(100%);
+  filter: var(--filter-img);
   width: 64px;
   height: 64px;
   display: grid;
@@ -59,14 +58,14 @@
 }
 
 .div_5f0m7 {
-  background: #2C2C2E;
+  background: var(--color-item);
   padding: 10px;
   border-radius: 8px;
   max-width: 85%;
 
   overflow: hidden;
   word-break: break-word;
-  color: #ffffff;
+  color: var(--color-letter);
 }
 
 .div_fR7XE {
@@ -89,7 +88,7 @@
 .button_1I12J {
   width: 40px;
   height: 40px;
-  color: #ffffff;
+  color: var(--color-letter);
 
   cursor: pointer;
 
@@ -118,7 +117,7 @@
 .p_IA4wz{ 
   padding: 0 15px;
   opacity: .6;
-  color: #ffffff;
+  color: var(--color-letter);
 }
 
 .div_b3Gh3{
@@ -143,7 +142,7 @@
 
   align-self: center;
 
-  color: #ffffff;
+  color: var(--color-letter);
   width: 100%;
 }
 
@@ -152,7 +151,7 @@
   width: 50px;
   height: 50px;
 
-  color: #ffffff;
+  color: var(--color-letter);
   cursor: pointer;
 
   &:hover {
@@ -193,4 +192,4 @@
 }
 
 
-/* p_IA4wz */
+/* filter */

@@ -1,15 +1,15 @@
-import { onGetStreamEmoji, addStreamEmoji } from "../firebase/config.js";
+ import { dbFirebase, emojiRealtime } from "../firebase/data.js";
+ import Emoji from "../../data/Emoji.js";
 
 export default ()=>{
-    
-    const params = location.hash.split('/').splice(1)
-    const user   = JSON.parse(localStorage.getItem('user'))
 
-    const Emoji = ["🤣", "❤️","😍","🙄","😭","😘","👀","😱","🥺","😫","😅","🤯","🤤","😶‍🌫","🌚","💔","🐶","😢","🙂","🫣","🔞","😡","🤬","😰","😤","🔥","🐾","🐕‍🦺","🐈", "🐣","🍆","🍑","🍒"];
-    
+    const db     = new dbFirebase('stream_emoji')
+    const params = json(sessionStorage.getItem('params'))
+    const user   = json(localStorage.getItem('user'))
+
     const ElementComponent = createHTML(`
         <div class="div_WiZV0 scroll-y active">
-            <div class="div_Gtfrb background">
+            <div class="div_Gtfrb">
                 <div class="div_pc6Xr scroll-y">
                     <div class="div_88A39">${ ArrayToString(Emoji, emoji => `<span>${ emoji.trim() }</span>`) }</div>
                 </div>
@@ -39,10 +39,10 @@ export default ()=>{
         ElementComponent2.innerHTML = target.outerHTML
 
         ElementComponent.style.opacity = '.5' 
-
-        addStreamEmoji({
-            id_stream   : params[0],
-            id_user     : user.id,
+        
+        db.add({
+            id_stream   : params.id,
+            id_user     : user.uid,
             datetime_add : Date.now().toString(),
             emoji       : target.innerHTML
         })
@@ -59,7 +59,7 @@ export default ()=>{
             const data = doc.data()
 
             if(fisrt_time.render) return
-            if(data.id_user == user.id) return
+            if(data.id_user == user.uid) return
 
             if(Date.now() < (parseInt(data.datetime_add) + 7000)){
                 if(document.fullscreenElement) document.fullscreenElement.append(ElementComponent2)
@@ -73,7 +73,7 @@ export default ()=>{
         fisrt_time.render = false
     }
 
-    const unsubscribe = onGetStreamEmoji(renderHTML, params[0])
+    const unsubscribe = emojiRealtime(renderHTML, params.id)
     addRemoveEventListener(window, 'hashchange', unsubscribe) 
 
     return ElementComponent

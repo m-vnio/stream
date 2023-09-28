@@ -1,7 +1,7 @@
 export default ()=>{
     const ElementComponent = createHTML(`
         <div class="div_PGtVi" id="contenedor_form_link">
-            <form class="form_slr4j background" id="form_link" autocomplete="off">
+            <form class="form_slr4j" id="form_link" autocomplete="off">
                 <input type="text" name="link" class="input_V94sL" placeholder="link">
                 <button class="button_0JQ7M"><i class="fa-solid fa-play"></i></button>
             </form>

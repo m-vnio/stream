@@ -150,36 +150,12 @@ class createCSS {
             this._rootClass = this._root.tagName + '-' + id
             this._root.classList.add(this._rootClass) 
         }
-
-        // if(!this._styleIsDOM){
-        //     this._styleElement.setAttribute('id', this._styleID )
-        //     document.head.append(this._styleElement)
-
-        //     if(root != document) {
-        //         const id = genereteKey({ length : 18})
-        //         this._rootClass = this._root.tagName + '-' + id
-        //         this._root.classList.add(this._rootClass) 
-        //         styles.push({ id, name : 'root' })
-        //         sessionStorage.setItem('styles', JSON.stringify(styles))
-        //     }
-        // } else {
-        //     if(root != document) {
-        //         const styles  = JSON.parse(sessionStorage.getItem('styles'))
-        //         this._isStyle = styles.find(style => style.name == 'root')
-        //         this._rootClass = this._root.tagName + '-' + this._isStyle.id
-        //         this._root.classList.add(this._rootClass) 
-        //     }
-        // }
-
         
     }
 
     element(element){
-        
-        // const styles  = JSON.parse(sessionStorage.getItem('styles'))
-        // this._isStyle = styles.find(style => style.name == element) 
 
-        const code      =  genereteKey({ length : 15}) //this._isStyle ? this._isStyle.id : genereteKey({ length : 15})
+        const code      =  genereteKey({ length : 15}) 
         const listClassName = []
 
         const dataCSS = element.split(',').map(element => {

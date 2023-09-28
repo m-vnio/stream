@@ -26,7 +26,7 @@
   background: none;
   border: none;
 
-  color: #ffffff;
+  color: var(--color-letter);
 
   cursor: pointer;
 
@@ -36,13 +36,13 @@
 }
 
 .h3_X0B6J{
-  color: #ffffff;
+  color: var(--color-letter);
 }
 
 .a_Ma0S6{
   width: 50px;
   height: 50px;
-  color: #ffffff;
+  color: var(--color-letter);
 
   display: flex;
   justify-content: center;
@@ -66,6 +66,7 @@
 
 .form_slr4j {
   margin: auto;
+  background: var(--color-item);
   width: min(100%, 450px);
 
   display: grid;
@@ -86,7 +87,7 @@
 
   border-bottom: 1.25px solid transparent;
 
-  color: #ffffff;
+  color: var(--color-letter);
 
   &:focus {
     border-color: rgb(255 255 255 / 0.1);
@@ -102,7 +103,7 @@
   height: 50px;
   cursor: pointer;
 
-  color: #ffffff;
+  color: var(--color-letter);;
 
   &:hover {
     opacity: 0.7;
