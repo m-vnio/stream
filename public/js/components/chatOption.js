@@ -1,4 +1,17 @@
 export default (data = {})=>{
+
+    const user   = json(localStorage.getItem('user'))
+    const userid = user.uid == data.id_user
+    const isHide = data.status == 4 
+ 
+    const Button = [
+        { id : 1, icon : 'fa-solid fa-copy', action : 'copy', name : 'copiar', type : ['text'], status : true },
+        { id : 2, icon : 'fa-solid fa-pen', action : 'update', name : 'editar', type : ['text'], status : (userid && !isHide) },
+        { id : 3, icon : 'fa-solid fa-eye', action : 'hide_show', name : 'mostrar', type : ['text', 'stiker'], status : (userid && isHide) },
+        { id : 4, icon : 'fa-solid fa-eye-slash', action : 'hide_show', name : 'ocultar', type : ['text', 'stiker'], status : (userid && !isHide) },
+        { id : 5, icon : 'fa-solid fa-ban', action : 'delete', name : 'eliminar', type : ['text', 'stiker'], status : userid }
+    ]
+
     const ElementComponent = createHTML(`
         <div>
             <div class="scroll-y" data-css="contenedor_option">
@@ -6,32 +19,26 @@ export default (data = {})=>{
                     <p class="text-ellipsis"></p>
                 </div>
                 <div data-css="contenido_button">
-                    ${ data.status == 4 ? `
-                        <button data-css="button_option" data-action="hide">
-                            <i class="fa-solid fa-eye"></i>
-                            <span>mostrar</span>
-                        </button>
-                    ` : `
-                        ${ data.type == 'text' ? `
-                            <button data-css="button_option" data-action="update">
-                                <i class="fa-solid fa-pen"></i>
-                                <span>editar</span>
-                            </button> 
-                        ` : '' }
-                        <button data-css="button_option" data-action="hide">
-                            <i class="fa-solid fa-eye-slash"></i>
-                            <span>ocultar</span>
-                        </button>
-                        <button data-css="button_option" data-action="delete">
-                            <i class="fa-solid fa-ban"></i>
-                            <span>eliminar</span>
-                        </button> 
-                    ` }
+                    ${ ArrayToString(Button, button => {
+
+                        if(!button.status) return 
+                        if(!button.type.includes(data.type)) return
+                        
+                        return `
+                            <button data-css="button_option" data-action="${ button.action }">
+                                <i class="${ button.icon }"></i>
+                                <span>${ button.name }</span>
+                            </button>
+                        `
+
+                    }) }
                 </div>
             </div>
         </div>
     `)
 
+
+//
     const style = new createCSS('chat-option', ElementComponent)
 
     const color_item    = 'var(--color-item)' 
@@ -115,8 +122,11 @@ export default (data = {})=>{
             dispatchEvent(new CustomEvent('open_update_message', { detail : data }))
         } else if(action == 'delete'){
             dispatchEvent(new CustomEvent('delete_message', { detail : data }))
-        } else if(action == 'hide'){
+        } else if(action == 'hide_show'){
             dispatchEvent(new CustomEvent('hide_message', { detail : data }))
+        } else if(action == 'copy'){
+            const clipboard = navigator.clipboard
+            if(clipboard) clipboard.writeText(data.message)
         }
 
         ElementComponent.remove()

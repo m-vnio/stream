@@ -51,19 +51,27 @@ export default ()=>{
             position    : fixed;
             inset       : 0;
             background  : rgb(0 0 0 / .1);
-            display     : flex;  
-            padding     : 15px;
+            display     : flex;   
         }
     `)
 
     const elemento_chat = style.element('elemento_chat').css(`
         & {
-            margin  : auto;
-            width   : min(100%, 400px);
-            height  : min(100%, 400px);
-            background : var(--color-item);
+            aspect-ratio: 1/1;
+            width   : 100%; 
+            background : var(--color-background);
             overflow : hidden;
-            border-radius:8px; 
+            border-radius: 8px 8px 0 0; 
+            align-self: flex-end;
+        }
+
+        @media (min-width: 600px) {
+            & {
+              aspect-ratio: initial;
+              height: 100%;
+              width: min(100%, 375px); 
+              border-radius: 0 8px 8px 0;
+            } 
         }
     `)
 
@@ -85,7 +93,7 @@ export default ()=>{
 
     //eventos al dar click al mensaje
     contenido_chat.addEventListener('contextmenu', e => {
-        const item  = e.target.closest('.div_T5m0f.user')
+        const item  = e.target.closest('.div_T5m0f')
 
         if(item){
             const element = chatOption(json(item.dataset.data))
@@ -154,7 +162,8 @@ export default ()=>{
             datetime_update : data.datetime_update ?? 0,
             message         : data.message,
             status          : data.status,
-            type            : data.type ?? 'text'
+            type            : data.type ?? 'text',
+            id_user         : data.id_user
         }
 
         const user_class = data.id_user == user.uid ? 'user' : ''

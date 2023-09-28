@@ -10,7 +10,6 @@ const registerFirebase =(data = {})=>{
     createUserWithEmailAndPassword(auth, data.email, data.password)
         .then((userCredential) => {
             const user = userCredential.user;
-            console.log(user);
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -26,8 +25,7 @@ const loginFirebase =(data = {})=>{
   
     signInWithEmailAndPassword(auth, data.email, data.password)
     .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(user);
+      const user = userCredential.user; 
     })
     .catch((error) => {
       const errorCode = error.code;

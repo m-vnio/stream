@@ -1,7 +1,7 @@
  import { dbFirebase, emojiRealtime } from "../firebase/data.js";
- import Emoji from "../../data/Emoji.js";
-
+import Emoji from "../data/Emoji.js";
 export default ()=>{
+    
 
     const db     = new dbFirebase('stream_emoji')
     const params = json(sessionStorage.getItem('params'))

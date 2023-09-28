@@ -19,7 +19,7 @@ main{
   gap: 15px;
 }
 
-.div_v05FO {
+.div_v05FO { 
   background: none;
 }
 
@@ -37,7 +37,8 @@ main{
 @media (min-width: 750px) {
   .div_U09zC {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: initial;
+    grid-template-rows: initial; 
+    gap: 0;
   }
 
   .div_Gj3xZ {
@@ -56,10 +57,4 @@ main{
     padding: 15px;
   }
 }
-
-/* div_U09zC */
-.test{
-  display: none;
-
-  
-}
+ 

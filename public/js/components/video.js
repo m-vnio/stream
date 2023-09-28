@@ -161,8 +161,14 @@ export default ()=>{
     })
 
     open_emoji.addEventListener("click", ()=> {
-        if(document.fullscreenElement) document.fullscreenElement.append(contenedor_emoji)
-        else root.append(contenedor_emoji)
+        if(document.fullscreenElement) {
+            contenedor_emoji.classList.add('fullscreen')
+            document.fullscreenElement.append(contenedor_emoji)
+        } 
+        else {
+            contenedor_emoji.classList.remove('fullscreen')
+            root.append(contenedor_emoji)
+        } 
     })
 
     open_chat.addEventListener("click", ()=> {
