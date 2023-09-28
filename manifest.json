@@ -4,8 +4,8 @@
     "display": "standalone",
     "scope": "index.html",
     "start_url": "index.html",
-    "name": "stream",
-    "short_name": "stream",
+    "name": "Victor y Nickol",
+    "short_name": "VN",
     "description": "share stream video",
     "icons": [
         {
