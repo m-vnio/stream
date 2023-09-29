@@ -224,38 +224,48 @@ export default ()=>{
         Chat = []
         onSnapshot.forEach(doc => Chat.push({ id : doc.id, ...doc.data() }))
 
-        Chat.forEach(data => {
-            // const data = doc.data()
-            const element = contenido_chat.querySelector(`#div-${ data.id }`)
-
-            if(index++ == 0){
-                if(Date.now() < (parseInt(data.datetime_add) + 7000)){ 
-                    if(data.id_user != user.uid){ 
-                        dispatchEvent(new CustomEvent('send_notification_message'))
-                    }
-                }
-            }
-
-            if(element){
-
-                elementPrevious = element
-
-                const data_data = JSON.parse(element.dataset.data)
-                if(data.status == 3) return element.remove()
-                if(data.status == 4) { if(data.id_user != user.uid) return element.remove() } 
-                if(parseInt(data.datetime_update) > parseInt(data_data.datetime_update)){
-                    return element.replaceWith(def_createHTML(data));
-                }
-            } else {
+        if(render_fisrt_time) {
+            const contenedor = document.createDocumentFragment()
+            Chat.forEach(data => {
                 if(data.status == 3) return
                 if(data.status == 4) { if(data.id_user != user.uid) return } 
-                if(render_fisrt_time) contenido_chat.prepend(def_createHTML(data))
-                else {
-                    if(data.status == 5) { if(data.id_user != user.uid) return elementPrevious.before(def_createHTML(data)) }
-                    contenido_chat.append(def_createHTML(data))
+                contenedor.prepend(def_createHTML(data))
+            })
+            contenido_chat.append(contenedor) 
+        } else {
+            Chat.forEach(data => {
+                // const data = doc.data()
+                const element = contenido_chat.querySelector(`#div-${ data.id }`)
+
+                if(index++ == 0){
+                    if(Date.now() < (parseInt(data.datetime_add) + 7000)){ 
+                        if(data.id_user != user.uid){ 
+                            dispatchEvent(new CustomEvent('send_notification_message'))
+                        }
+                    }
                 }
-            }
-        })
+
+                if(element){
+
+                    elementPrevious = element
+
+                    const data_data = JSON.parse(element.dataset.data)
+                    if(data.status == 3) return element.remove()
+                    if(data.status == 4) { if(data.id_user != user.uid) return element.remove() } 
+                    if(parseInt(data.datetime_update) > parseInt(data_data.datetime_update)){
+                        return element.replaceWith(def_createHTML(data));
+                    }
+                } else {
+                    if(data.status == 3) return
+                    if(data.status == 4) { if(data.id_user != user.uid) return } 
+                    if(render_fisrt_time) contenido_chat.prepend(def_createHTML(data))
+                    else {
+                        if(data.status == 5) { if(data.id_user != user.uid) return elementPrevious.before(def_createHTML(data)) }
+                        contenido_chat.append(def_createHTML(data))
+                    }
+                }
+            })
+        }
 
         render_fisrt_time = false
     }

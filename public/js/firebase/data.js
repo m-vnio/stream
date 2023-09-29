@@ -26,7 +26,7 @@ const emojiRealtime = (callback, id) =>{
  
 const chatRealtime = (callback, id_stream) => {
     const db_name = 'stream_chat'
-    const queries = query(collection(db, db_name), where("id_stream", "==", id_stream), orderBy("datetime_add", "desc"), limit(30));
+    const queries = query(collection(db, db_name), where("id_stream", "==", id_stream), orderBy("datetime_add", "desc"), limit(50));
     return makeOnSnapshot(callback, queries)  
 }
 
