@@ -14,7 +14,7 @@ export default ()=>{
                     <div class="div_1d4o4"><img src="./public/img/icons/text-message.png" alt=""></div>
                     <div class="div_3opy8"></div>
                 </div>
-                <form class="form_68Klg" autocomplete="off">
+                <form class="form_68Klg" data-action="add" autocomplete="off">
                     <div class="div_Zk0B9"> 
                         <p class="p_IA4wz text-ellipsis"></p>
                         <button class="button_E8Vr8" data-action="cancelEdit"><i class="fa-solid fa-xmark"></i></button>
@@ -111,27 +111,39 @@ export default ()=>{
         
         const data = {
             id_user : user.uid,
-            id_stream : params.id,
+            id_stream : params.id, 
             message : form_chat.txt_message.value.trim(),
             datetime_add : Date.now().toString(),
             datetime_update : Date.now().toString(),
-            type : 'text',
+            type : 'text'
         }
 
         if(data.message == '') return
 
-        if(form_chat.classList.contains('edit')){
+        const action = form_chat.dataset.action
+
+        if(action == 'add'){
+            data.status = 1
+            data.id_message_reply = '-1' 
+            db.add(data) 
+        } else if(action == 'reply'){
+            data.status = 1
+            data.id_message_reply = form_chat.dataset.idMessageReply
+            db.add(data) 
+            form_chat.removeAttribute('data-id-message-reply')
+        } else if(action == 'update'){
             data.status = 2
             db.edit(e.target.dataset.idMessage, data)
-            form_chat.classList.remove('edit')
             form_chat.removeAttribute('data-id-message')
-        } else { 
-            data.status = 1
-            db.add(data) 
         }
-        
+
+        form_chat.classList.remove('active')
+        form_chat.setAttribute('data-action', 'add')
+
         form_chat.txt_message.value = ''
         form_chat.txt_message.style.height = '20px'
+        form_chat.txt_message.focus()
+
     })
 
     form_chat.txt_message.addEventListener('input', e => {
@@ -145,8 +157,10 @@ export default ()=>{
     btn_cancelar_edicion.addEventListener('click', ()=> {
         form_chat.txt_message.value = ''
         form_chat.txt_message.style.height = '20px'
-        form_chat.classList.remove('edit')
+        form_chat.classList.remove('active')
         form_chat.removeAttribute('data-id-message')
+        form_chat.removeAttribute('data-id-message-reply')
+        form_chat.setAttribute('data-action', 'add')
     })
 
     btn_open_element_stiker.addEventListener('click', ()=> {
@@ -156,9 +170,10 @@ export default ()=>{
         
     })
 
-    const def_createHTML =(data, doc)=>{
+    let Chat = []
+    const def_createHTML =(data)=>{
         const data_data = {
-            id              : doc.id,
+            id              : data.id,
             datetime_update : data.datetime_update ?? 0,
             message         : data.message,
             status          : data.status,
@@ -167,10 +182,12 @@ export default ()=>{
         }
 
         const user_class = data.id_user == user.uid ? 'user' : ''
+        const chatReply = Chat.find(chat => chat.id == data.id_message_reply)
 
         const element = createHTML(`
-            <div class="div_T5m0f ${ user_class }" id="div-${ doc.id }">
-                ${ data_data.type == 'text' ? '<div class="div_5f0m7"></div>' : ''}
+            <div class="div_T5m0f ${ user_class }" id="div-${ data.id }">
+                
+                ${ data_data.type == 'text' ? '<div class="div_5f0m7"><span class="text-ellipsis"></span><p></p></div>' : ''}
                 ${ data_data.type == 'stiker' ? `<div class="div_fR7XE"><img alt="stiker not found"></div>` : ''}
             </div>
         `)
@@ -179,7 +196,20 @@ export default ()=>{
 
         element.setAttribute('data-data', JSON.stringify(data_data))
 
-        if(data_data.type == 'text' ) element.querySelector('.div_5f0m7').textContent = data.message
+        if(data_data.type == 'text' ) {
+            const span = element.querySelector('.div_5f0m7 span')
+            const p = element.querySelector('.div_5f0m7 p')
+
+            if(chatReply) {
+                if(chatReply.type == 'text') span.textContent = chatReply.message ?? ''
+                else if(chatReply.type == 'stiker'){
+                    span.innerHTML = `<img src="public/img/stiker/${ chatReply.message }">`
+                }
+            } else span.remove()
+
+            p.textContent = data.message
+
+        }  
         if(data_data.type == 'stiker' ) element.querySelector('.div_fR7XE img').src = 'public/img/stiker/' + data.message
 
         return element
@@ -190,9 +220,13 @@ export default ()=>{
     const renderHTML =(onSnapshot)=>{
         let index = 0
         let elementPrevious = null
-        onSnapshot.forEach(doc => {
-            const data = doc.data()
-            const element = contenido_chat.querySelector(`#div-${ doc.id }`)
+
+        Chat = []
+        onSnapshot.forEach(doc => Chat.push({ id : doc.id, ...doc.data() }))
+
+        Chat.forEach(data => {
+            // const data = doc.data()
+            const element = contenido_chat.querySelector(`#div-${ data.id }`)
 
             if(index++ == 0){
                 if(Date.now() < (parseInt(data.datetime_add) + 7000)){ 
@@ -210,15 +244,15 @@ export default ()=>{
                 if(data.status == 3) return element.remove()
                 if(data.status == 4) { if(data.id_user != user.uid) return element.remove() } 
                 if(parseInt(data.datetime_update) > parseInt(data_data.datetime_update)){
-                    return element.replaceWith(def_createHTML(data, doc));
+                    return element.replaceWith(def_createHTML(data));
                 }
             } else {
                 if(data.status == 3) return
                 if(data.status == 4) { if(data.id_user != user.uid) return } 
-                if(render_fisrt_time) contenido_chat.prepend(def_createHTML(data, doc))
+                if(render_fisrt_time) contenido_chat.prepend(def_createHTML(data))
                 else {
-                    if(data.status == 5) { if(data.id_user != user.uid) return elementPrevious.before(def_createHTML(data, doc)) }
-                    contenido_chat.append(def_createHTML(data, doc))
+                    if(data.status == 5) { if(data.id_user != user.uid) return elementPrevious.before(def_createHTML(data)) }
+                    contenido_chat.append(def_createHTML(data))
                 }
             }
         })
@@ -228,14 +262,33 @@ export default ()=>{
 
     const unsubscribe = chatRealtime(renderHTML, params.id)
     addRemoveEventListener(window, 'hashchange', unsubscribe)
-    
+
     addRemoveEventListenerHashchange(window, 'open_update_message', e => {
 
         const data = e.detail
-        form_chat.classList.add('edit')
+        form_chat.classList.add('active')
         form_chat.setAttribute('data-id-message', data.id)
+        form_chat.setAttribute('data-action', 'update')
         form_chat.txt_message.value = data.message
+        form_chat.txt_message.focus()
         getElement('.p_IA4wz', form_chat).textContent = data.message
+
+    })
+
+    addRemoveEventListenerHashchange(window, 'open_reply_message', e => {
+
+        const data = e.detail
+        form_chat.classList.add('active')
+        form_chat.setAttribute('data-id-message-reply', data.id)
+        form_chat.setAttribute('data-action', 'reply')
+        form_chat.txt_message.focus()
+
+
+        const p = getElement('.p_IA4wz', form_chat)
+
+        if(data.type === 'stiker'){
+            p.innerHTML = `<img src="public/img/stiker/${ data.message }">`
+        } else p.textContent = data.message
 
     })
 

@@ -136,7 +136,7 @@ class createCSS {
         this._styleElement.innerHTML = ''
 
         // const styles = []
-        // if(!sessionStorage.getItem('styles')){
+        // if(!sessionStorage.getItem('styles')){ 
         //     sessionStorage.setItem('styles', JSON.stringify(styles))
         // }
 

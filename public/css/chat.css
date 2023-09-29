@@ -52,7 +52,7 @@
   &.user .div_5f0m7 {
     background: #7C4DFF;
     color: #ffffff;
-    justify-content: right;
+    justify-content: right;  
   }
  
 }
@@ -66,6 +66,24 @@
   overflow: hidden;
   word-break: break-word;
   color: var(--color-letter);
+  display: grid;
+  gap: 10px;
+
+  & span{
+    padding: 10px;
+    border-left: 2px solid rgb(181 178 178 / .3);
+    background: rgb(181 178 178 / .1);
+    border-radius: 5px;
+
+    &:has(img){
+      padding: 5px;
+    }
+
+    & img{
+      width: 50px;
+      height: 50px;
+    }
+  }
 }
 
 .div_fR7XE {
@@ -102,7 +120,7 @@
   display: grid;
   border-top: 1.25px solid rgb(255 255 255 / 0.1); 
 
-  &.edit .div_Zk0B9 {
+  &.active .div_Zk0B9 {
     display: grid;
   }
 }
@@ -118,6 +136,12 @@
   padding: 0 15px;
   opacity: .6;
   color: var(--color-letter);
+
+  & img{
+    width: 50px;
+    height: 50px;
+    margin: 5px 0;
+  }
 }
 
 .div_b3Gh3{
@@ -192,4 +216,4 @@
 }
 
 
-/* filter */
+/* p_IA4wz */

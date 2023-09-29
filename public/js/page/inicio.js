@@ -1,10 +1,11 @@
 import { streamRealtime } from "../firebase/data.js";
 
 export default ()=>{
+    //<i class="fa-solid fa-gear"></i>
     const ElementComponent = createHTML(`
         <div>
             <div data-css="contenedor_navegacion">
-                <a href="#/setting"><i class="fa-solid fa-gear"></i></a>
+                <a href="#/setting"><img src="public/img/icons/svg/icon-setting.svg" alt="icon-svg"></a>
             </div>
             <div class="scroll-y" data-css="contenedor_item">
                 <div data-css="lista_item">
@@ -45,6 +46,12 @@ export default ()=>{
             justify-content: center;
             align-items: center;
             color: ${ color_letter };
+        }
+
+        & img { 
+            filter : var(--filter-img);
+            width : 20px;
+            height : 20px;
         }
     `) 
 
