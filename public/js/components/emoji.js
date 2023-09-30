@@ -10,8 +10,14 @@ export default ()=>{
     const ElementComponent = createHTML(`
         <div class="div_WiZV0 scroll-y active">
             <div class="div_Gtfrb">
-                <div class="div_pc6Xr scroll-y">
-                    <div class="div_88A39">${ ArrayToString(Emoji, emoji => `<span>${ emoji.trim() }</span>`) }</div>
+                <div class="div_pc6Xr">
+                    <div class="div_q2o2E scroll-y">
+                        <div class="div_88A39">${ ArrayToString(Emoji, emoji => `<span>${ emoji.trim() }</span>`) }</div>
+                    </div>
+                    <form class="form_lK4nv" autocomplete="off">
+                        <input type="text" placeholder="emoji" name="emoji">
+                        <button type="submit"><i class="fa-regular fa-paper-plane"></i></button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -21,14 +27,26 @@ export default ()=>{
 
     const root = document.getElementById('root')
 
+    const formEmoji = ElementComponent.querySelector('.form_lK4nv')
+
     let doEmoji = true
 
     const fisrt_time = {
         render : true
     }
 
+    formEmoji.addEventListener('submit', e => {
+        e.preventDefault()
+        defDoEmoji(formEmoji.emoji.value)
+        formEmoji.emoji.value = ''
+    })
+
     clickElement(ElementComponent, ()=> ElementComponent.remove())
     clickElementclosest(ElementComponent, 'span', (target) => {
+        defDoEmoji(target.innerHTML)
+    })
+
+    const defDoEmoji =(emoji = '')=>{
         if(!doEmoji) return
         doEmoji = false
 
@@ -36,7 +54,8 @@ export default ()=>{
         else root.append(ElementComponent2)
         
         ElementComponent.remove()
-        ElementComponent2.innerHTML = target.outerHTML
+        ElementComponent2.innerHTML = '<span style="color:#ffffff"></span>'
+        ElementComponent2.children[0].textContent = emoji.slice(0, 30)
 
         ElementComponent.style.opacity = '.5' 
         
@@ -44,7 +63,7 @@ export default ()=>{
             id_stream   : params.id,
             id_user     : user.uid,
             datetime_add : Date.now().toString(),
-            emoji       : target.innerHTML
+            emoji       : emoji
         })
 
         setTimeout(()=> {
@@ -52,7 +71,7 @@ export default ()=>{
             ElementComponent2.remove() 
             doEmoji = true
         }, 2000)
-    })
+    }
 
     const renderHTML =(onSnapshot)=>{
         onSnapshot.forEach(doc => {

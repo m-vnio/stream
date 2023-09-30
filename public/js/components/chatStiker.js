@@ -2,9 +2,9 @@ import { dbFirebase } from "../firebase/data.js"
 
 export default ()=>{
 
-    const db     = new dbFirebase('stream_chat')
-    const params = json(sessionStorage.getItem('params'))
-    const user   = json(localStorage.getItem('user'))
+    // const db     = new dbFirebase('stream_chat')
+    // const params = json(sessionStorage.getItem('params'))
+    // const user   = json(localStorage.getItem('user'))
 
     const ElementComponent = createHTML(`
         <div>
@@ -79,17 +79,14 @@ export default ()=>{
     })
 
     clickElementclosest(contenido_stiker.element, `.${ item_stiker.className }`, target => {
-        const data = {
-            id_user : user.uid,
-            id_stream : params.id,
-            message : target.dataset.name,
-            datetime_add : Date.now().toString(),
-            datetime_update : Date.now().toString(),
-            type : 'stiker',
-            status : 1
-        }
+     
+        dispatchEvent(new CustomEvent('set_message', { detail : {
+            message : {
+                message : target.dataset.name,
+                type    : 'stiker'
+            }
+        } }))
 
-        db.add(data)
         ElementComponent.remove()
     })
 

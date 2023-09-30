@@ -6,12 +6,12 @@ export default ()=>{
     const db     = new dbFirebase('stream_chat')
     const params = json(sessionStorage.getItem('params'))
     const user   = json(localStorage.getItem('user'))
-    
+    //<img src="./public/img/icons/text-message.png" alt="">
     const ElementComponent = createHTML(`
         <div class="div_3gfqE">
             <div class="div_ejM2b">
                 <div class="div_o4ubh scroll-y">
-                    <div class="div_1d4o4"><img src="./public/img/icons/text-message.png" alt=""></div>
+                    <div class="div_1d4o4"><span class="loader"></span></div>
                     <div class="div_3opy8"></div>
                 </div>
                 <form class="form_68Klg" data-action="add" autocomplete="off">
@@ -24,7 +24,7 @@ export default ()=>{
                         <label class="label_Fkf9B">
                             <textarea class="txt_W17W2" name="txt_message" placeholder="text..."></textarea>
                         </label>
-                        <button class="button_E8Vr8"><i class="fa-regular fa-paper-plane"></i></button>
+                        <button type="submit" class="button_E8Vr8"><i class="fa-regular fa-paper-plane"></i></button>
                     </div>
                 </form>
             </div>
@@ -98,8 +98,10 @@ export default ()=>{
         if(item){
             const element = chatOption(json(item.dataset.data))
 
-            if(document.fullscreenElement) document.fullscreenElement.append(element)
-            else root.append(element)
+            // if(document.fullscreenElement) document.fullscreenElement.append(element)
+            // else ElementComponent.append(element)
+
+            contenedor_chat.append(element)
         }
     })
 
@@ -108,42 +110,17 @@ export default ()=>{
     //eventos de formulario
     form_chat.addEventListener('submit', e => {
         e.preventDefault()
-        
-        const data = {
-            id_user : user.uid,
-            id_stream : params.id, 
-            message : form_chat.txt_message.value.trim(),
-            datetime_add : Date.now().toString(),
-            datetime_update : Date.now().toString(),
-            type : 'text'
-        }
 
-        if(data.message == '') return
-
-        const action = form_chat.dataset.action
-
-        if(action == 'add'){
-            data.status = 1
-            data.id_message_reply = '-1' 
-            db.add(data) 
-        } else if(action == 'reply'){
-            data.status = 1
-            data.id_message_reply = form_chat.dataset.idMessageReply
-            db.add(data) 
-            form_chat.removeAttribute('data-id-message-reply')
-        } else if(action == 'update'){
-            data.status = 2
-            db.edit(e.target.dataset.idMessage, data)
-            form_chat.removeAttribute('data-id-message')
-        }
-
-        form_chat.classList.remove('active')
-        form_chat.setAttribute('data-action', 'add')
+        dispatchEvent(new CustomEvent('set_message', { detail : {
+            message : {
+                message : form_chat.txt_message.value.trim(),
+                type    : 'text'
+            }
+        } }))
 
         form_chat.txt_message.value = ''
         form_chat.txt_message.style.height = '20px'
         form_chat.txt_message.focus()
-
     })
 
     form_chat.txt_message.addEventListener('input', e => {
@@ -164,10 +141,10 @@ export default ()=>{
     })
 
     btn_open_element_stiker.addEventListener('click', ()=> {
-        if(document.fullscreenElement)
-            document.fullscreenElement.append(elementChatStiker)
-        else root.append(elementChatStiker)
-        
+        // if(document.fullscreenElement)
+        //     document.fullscreenElement.append(elementChatStiker)
+        // else ElementComponent.append(elementChatStiker)
+        contenedor_chat.append(elementChatStiker)
     })
 
     let Chat = []
@@ -181,38 +158,61 @@ export default ()=>{
             id_user         : data.id_user
         }
 
-        const user_class = data.id_user == user.uid ? 'user' : ''
-        const chatReply = Chat.find(chat => chat.id == data.id_message_reply)
+        const chatReply = Chat.find(chat => chat.id == data.id_message_reply) ?? {}
+
+        const messageReplyType = chatReply.type ?? ''
+
+        const messageUser = data.id_user == user.uid ? 'user' : ''
+        const messageType = data_data.type ?? 'text'
 
         const element = createHTML(`
-            <div class="div_T5m0f ${ user_class }" id="div-${ data.id }">
-                
-                ${ data_data.type == 'text' ? '<div class="div_5f0m7"><span class="text-ellipsis"></span><p></p></div>' : ''}
-                ${ data_data.type == 'stiker' ? `<div class="div_fR7XE"><img alt="stiker not found"></div>` : ''}
+            <div class="div_T5m0f ${ messageUser }">
+                <div class="div_5f0m7 ${ messageType }">
+                    <div class="div_fR7XE">
+                        <p class="text-ellipsis"></p>
+                        <img alt="img">
+                    </div>
+                    <div class="div_7Rn9q">
+                        <div class="div_oeFkT ${ messageType }">
+                            <p></p>
+                            <img alt="img">
+                        </div>
+                        <div class="div_qsJ0y"><span>4:25 pm</span></div>
+                    </div>
+                </div>
             </div>
         `)
 
-        if(data.status == 4) element.style.opacity = '.5'
-
         element.setAttribute('data-data', JSON.stringify(data_data))
 
-        if(data_data.type == 'text' ) {
-            const span = element.querySelector('.div_5f0m7 span')
-            const p = element.querySelector('.div_5f0m7 p')
+        const pMessageReplyText = element.querySelector('.div_fR7XE p')
+        const imgMessageReplyStiker = element.querySelector('.div_fR7XE img')
 
-            if(chatReply) {
-                if(chatReply.type == 'text') span.textContent = chatReply.message ?? ''
-                else if(chatReply.type == 'stiker'){
-                    span.innerHTML = `<img src="public/img/stiker/${ chatReply.message }">`
-                }
-            } else span.remove()
+        const pMessageText  = element.querySelector('.div_oeFkT p')
+        const imgMessageStiker = element.querySelector('.div_oeFkT img')
 
-            p.textContent = data.message
+        if(data.status == 4) element.style.opacity = '.5'
 
-        }  
-        if(data_data.type == 'stiker' ) element.querySelector('.div_fR7XE img').src = 'public/img/stiker/' + data.message
+        if(messageReplyType == 'text'){
+            pMessageReplyText.textContent = chatReply.message ?? ''
+            imgMessageReplyStiker.remove()
+        } else if(messageReplyType == 'stiker'){
+            imgMessageReplyStiker.src = 'public/img/stiker/' + chatReply.message 
+            pMessageReplyText.remove()
+        } else {
+            pMessageReplyText.remove()
+            imgMessageReplyStiker.remove()
+        }
 
-        return element
+        if(messageType == 'text'){
+            pMessageText.textContent = data.message ?? ''
+            imgMessageStiker.remove()
+        } else if(messageType == 'stiker'){
+            imgMessageStiker.src = 'public/img/stiker/' + data.message
+            pMessageText.remove()
+        }
+
+        return element 
     }
     
     let render_fisrt_time = true
@@ -325,6 +325,43 @@ export default ()=>{
             datetime_update : Date.now().toString(),
             status : data.status == 4 ? 5 : 4
         })
+
+    })
+
+    addRemoveEventListenerHashchange(window, 'set_message', e => {
+
+        const Message = e.detail.message
+
+        const data = {
+            id_user : user.uid,
+            id_stream : params.id, 
+            message : Message.message,
+            datetime_add : Date.now().toString(),
+            datetime_update : Date.now().toString(),
+            type : Message.type
+        }
+
+        if(data.message == '') return
+
+        const action = form_chat.dataset.action
+
+        if(action == 'add'){
+            data.status = 1
+            data.id_message_reply = '-1' 
+            db.add(data) 
+        } else if(action == 'reply'){
+            data.status = 1
+            data.id_message_reply = form_chat.dataset.idMessageReply
+            db.add(data) 
+        } else if(action == 'update'){
+            data.status = 2
+            db.edit(e.target.dataset.idMessage, data)
+        }
+
+        form_chat.classList.remove('active')
+        form_chat.setAttribute('data-action', 'add')
+        form_chat.removeAttribute('data-id-message-reply')
+        form_chat.removeAttribute('data-id-message')
 
     })
 
