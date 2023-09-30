@@ -263,14 +263,14 @@ export default ()=>{
         contenido_video.setAttribute('autoplay', '')
         contenido_video.currentTime = 0
 
-        // updateStream(params.id, {
-        //     link : e.detail.link,
-        //     datetime_update : Date.now().toString(),
-        //     play : 'true',
-        //     change : 'link',
-        //     id_user : user.uid,
-        //     time_progress   : '0',
-        // })
+        db.edit(params.id, {
+            link : e.detail.link,
+            datetime_update : Date.now().toString(),
+            play : 'true',
+            change : 'link',
+            id_user : user.uid,
+            time_progress   : '0',
+        })
     })
 
     addRemoveEventListenerHashchange(window, 'send_notification_message', ()=> {
@@ -286,7 +286,7 @@ export default ()=>{
             data_update.data_update  = Date.now()
 
             if(fisrt_time.render){
-                //contenido_video.setAttribute('src', data.link)
+                contenido_video.setAttribute('src', data.link)
                 return
             }
             
@@ -305,12 +305,11 @@ export default ()=>{
                     data_local.data_db_update = true
                     contenido_video.currentTime = parseInt(data.time_progress) 
                 } 
-                //else if(data.change == 'link'){
-                //     console.log('se cambio de link');
-                //     data_local.data_db_update = true
-                //     contenido_video.currentTime = 0
-                //     contenido_video.setAttribute('src', data.link)
-                // }
+                else if(data.change == 'link'){
+                    data_local.data_db_update = true
+                    contenido_video.currentTime = 0
+                    contenido_video.setAttribute('src', data.link)
+                }
             }
         });
 

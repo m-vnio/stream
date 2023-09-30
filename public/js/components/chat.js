@@ -166,8 +166,8 @@ export default ()=>{
         const messageType = data_data.type ?? 'text'
 
         const Time = new Date(parseInt(data.datetime_add))
-        const timeHour  = Time.getHours()
-        const timeMinute    = Time.getMinutes()
+        const timeHour = Time.getHours()
+        const timeMinute = Time.getMinutes()
         const timeAM = Time.getHours() < 12
 
         const setTime = `${timeAM ? timeHour : timeHour - 12}:${ ( '0' + timeMinute).slice(-2) } ${ timeAM ? 'AM' : 'PM' }`
