@@ -6,7 +6,7 @@ export default (data = {})=>{
     //<i class=""></i>
     const Button = [
         { id : 1, icon : 'fa-solid fa-copy', action : 'copy', name : 'copiar', type : ['text'], status : true },
-        { id : 2, icon : 'fa-solid fa-reply', action : 'reply', name : 'responder', type : ['text', 'stiker'], status : true },
+        { id : 2, icon : 'fa-solid fa-reply', action : 'reply', name : 'responder', type : ['text', 'stiker'], status : !isHide },
         { id : 3, icon : 'fa-solid fa-pen', action : 'update', name : 'editar', type : ['text'], status : (userid && !isHide) },
         { id : 4, icon : 'fa-solid fa-eye', action : 'hide_show', name : 'mostrar', type : ['text', 'stiker'], status : (userid && isHide) },
         { id : 5, icon : 'fa-solid fa-eye-slash', action : 'hide_show', name : 'ocultar', type : ['text', 'stiker'], status : (userid && !isHide) },
