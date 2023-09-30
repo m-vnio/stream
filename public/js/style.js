@@ -6,7 +6,6 @@ export default ()=>{
     if(!localStorage.getItem('version')){
         localStorage.clear()
         localStorage.setItem('version', version)
-        console.log('borrar todo');
     }
 
     localStorage.setItem('click', 'false')
