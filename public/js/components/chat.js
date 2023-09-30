@@ -166,7 +166,11 @@ export default ()=>{
         const messageType = data_data.type ?? 'text'
 
         const Time = new Date(parseInt(data.datetime_add))
-        const timeHours = Time.toLocaleTimeString().slice(0, 5) 
+        const timeHour  = Time.getHours()
+        const timeMinute    = Time.getMinutes()
+        const timeAM = Time.getHours() < 12
+
+        const setTime = `${timeAM ? timeHour : timeHour - 12}:${ ( '0' + timeMinute).slice(-2) } ${ timeAM ? 'AM' : 'PM' }`
 
         const element = createHTML(`
             <div class="div_T5m0f ${ messageUser }" id="div-${ data.id }">
@@ -180,7 +184,7 @@ export default ()=>{
                             <p></p>
                             <img alt="img">
                         </div>
-                        <div class="div_qsJ0y"><span>${ timeHours }</span></div>
+                        <div class="div_qsJ0y"><span>${ setTime }</span></div>
                     </div>
                 </div>
             </div>
