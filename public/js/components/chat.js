@@ -165,8 +165,11 @@ export default ()=>{
         const messageUser = data.id_user == user.uid ? 'user' : ''
         const messageType = data_data.type ?? 'text'
 
+        const Time = new Date(parseInt(data.datetime_add))
+        const timeHours = Time.toLocaleTimeString().slice(0, 5) 
+
         const element = createHTML(`
-            <div class="div_T5m0f ${ messageUser }">
+            <div class="div_T5m0f ${ messageUser }" id="div-${ data.id }">
                 <div class="div_5f0m7 ${ messageType }">
                     <div class="div_fR7XE">
                         <p class="text-ellipsis"></p>
@@ -177,7 +180,7 @@ export default ()=>{
                             <p></p>
                             <img alt="img">
                         </div>
-                        <div class="div_qsJ0y"><span>4:25 pm</span></div>
+                        <div class="div_qsJ0y"><span>${ timeHours }</span></div>
                     </div>
                 </div>
             </div>
@@ -192,7 +195,7 @@ export default ()=>{
         const imgMessageStiker = element.querySelector('.div_oeFkT img')
 
         if(data.status == 4) element.style.opacity = '.5'
-
+ 
         if(messageReplyType == 'text'){
             pMessageReplyText.textContent = chatReply.message ?? ''
             imgMessageReplyStiker.remove()
@@ -231,7 +234,7 @@ export default ()=>{
                 if(data.status == 4) { if(data.id_user != user.uid) return } 
                 contenedor.prepend(def_createHTML(data))
             })
-            contenido_chat.append(contenedor) 
+            contenido_chat.append(contenedor)  
         } else {
             Chat.forEach(data => {
                 // const data = doc.data()
