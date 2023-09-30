@@ -230,7 +230,6 @@ export default ()=>{
 
         Chat = []
         onSnapshot.forEach(doc => Chat.push({ id : doc.id, ...doc.data() }))
-
         if(render_fisrt_time) {
             const contenedor = document.createDocumentFragment()
             Chat.forEach(data => {
@@ -239,6 +238,7 @@ export default ()=>{
                 contenedor.prepend(def_createHTML(data))
             })
             contenido_chat.append(contenedor)  
+            
         } else {
             Chat.forEach(data => {
                 // const data = doc.data()

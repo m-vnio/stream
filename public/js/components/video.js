@@ -263,14 +263,16 @@ export default ()=>{
         contenido_video.setAttribute('autoplay', '')
         contenido_video.currentTime = 0
 
-        db.edit(params.id, {
-            link : e.detail.link,
-            datetime_update : Date.now().toString(),
-            play : 'true',
-            change : 'link',
-            id_user : user.uid,
-            time_progress   : '0',
-        })
+        if(e.detail.submit) {
+            db.edit(params.id, {
+                link : e.detail.link,
+                datetime_update : Date.now().toString(),
+                play : 'true',
+                change : 'link',
+                id_user : user.uid,
+                time_progress   : '0',
+            })
+        }
     })
 
     addRemoveEventListenerHashchange(window, 'send_notification_message', ()=> {
