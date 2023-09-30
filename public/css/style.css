@@ -16,7 +16,6 @@ main{
   display: grid;
   overflow: hidden;
   grid-template-rows: auto 1fr;
-  gap: 15px;
 }
 
 .div_v05FO { 

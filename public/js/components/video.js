@@ -51,7 +51,7 @@ export default ()=>{
                             </div>
                             <input type="range" class="input_908X1" value="0" min="0" max="100">
                         </div>
-                        <div class="div_HGz61">
+                        <div class="div_HGz61"> 
                             <button class="button_KXchF" data-action="fullscreen"><i class="fa-solid fa-expand"></i></button>
                         </div>
                     </div>
@@ -107,6 +107,8 @@ export default ()=>{
     const open_chat = ElementComponent.querySelector('button[ data-action = open_chat ]')
     const open_chat_space = ElementComponent.querySelector('button[ data-action = open_chat_space ]')
 
+    // const btn_pip = ElementComponent.querySelector('button[ data-action = pip ]')
+
     const play_pause = ElementComponent.querySelector('button[ data-action = play_pause ]')
     const seeked_back_10 = ElementComponent.querySelector('button[ data-action = seeked_back_10 ]')
 
@@ -114,6 +116,14 @@ export default ()=>{
     const hr_progreso = ElementComponent.querySelector('.hr_A6t1K')
     
     const event_open_message = new CustomEvent('open_message')
+
+    
+    // btn_pip.addEventListener('click', ()=> {
+    //     contenido_video.requestPictureInPicture()
+    //                     .catch(error => {
+    //                         console.error('Error al activar PiP:', error);
+    //                     });
+    // })
 
     ElementComponent.querySelector('.div_Gj3xZ').addEventListener("click", ()=> {
         contenedor_botones.classList.add('active')
@@ -232,6 +242,17 @@ export default ()=>{
         ipt_duration.setAttribute('max', contenido_video.duration.toFixed(0))
         const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000) 
         contenido_video.currentTime = parseInt(data_update.time_progress) + segundos_diferencia
+
+        // setTimeout(()=> {
+        //     contenido_video.addEventListener('seeked', e => {
+        //         alert('se busco una parte')
+        //     })
+    
+        //     contenido_video.addEventListener('pause', e => {
+        //         alert('se pausao')
+        //     }) 
+        // }, 1000)
+        
     })
 
     contenido_video.addEventListener("timeupdate", ()=> {
