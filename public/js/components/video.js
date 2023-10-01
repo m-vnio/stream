@@ -302,7 +302,15 @@ export default ()=>{
             element_mensaje_notificacion.element.children[0].classList.add('notification')
         }
     })
+    let volumen = 1
+    addRemoveEventListenerHashchange(window, 'wheel', e => {
+        if(document.fullscreenElement){
+            if(e.deltaY > 0) { if (volumen > 0) contenido_video.volume = (--volumen / 10) } 
+            else {  if (volumen < 10) contenido_video.volume = (++volumen / 10) }
+        }
+    })
 
+ 
     const renderVideo =(querySnapshot)=>{
         querySnapshot.forEach(doc => {
             const data = data_update = doc.data()
