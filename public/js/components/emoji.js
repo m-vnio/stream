@@ -84,7 +84,7 @@ export default ()=>{
                 if(document.fullscreenElement) document.fullscreenElement.append(ElementComponent2)
                 else root.append(ElementComponent2)
 
-                ElementComponent2.innerHTML = `<span>${ data.emoji }</span>`
+                ElementComponent2.innerHTML = `<span style="color:#ffffff">${ data.emoji }</span>`
                 setTimeout(()=> ElementComponent2.remove() , 2000)
             }
         });

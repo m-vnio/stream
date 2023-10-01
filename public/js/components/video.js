@@ -236,8 +236,8 @@ export default ()=>{
     })
 
     /* eventos del contenido */
-    contenido_video.addEventListener("play", ()=> play_pause.innerHTML = '<img src="public/img/icons/svg/icon-play.svg" alt="icon-svg">');
-    contenido_video.addEventListener("pause", ()=> play_pause.innerHTML = '<img src="public/img/icons/svg/icon-pause.svg" alt="icon-svg">');
+    contenido_video.addEventListener("play", ()=> play_pause.innerHTML = '<img src="public/img/icons/svg/icon-pause.svg" alt="icon-svg">');
+    contenido_video.addEventListener("pause", ()=> play_pause.innerHTML = '<img src="public/img/icons/svg/icon-play.svg" alt="icon-svg">');
     contenido_video.addEventListener("loadedmetadata", ()=> {
         ipt_duration.setAttribute('max', contenido_video.duration.toFixed(0))
         const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000) 
