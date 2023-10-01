@@ -1,6 +1,6 @@
 .div_al065 {
   position: relative;
-  width: 100%; 
+  width: 100%;
 }
 
 .div_Gj3xZ {
@@ -33,7 +33,7 @@
 
   &.active {
     display: grid;
-  }
+  } 
 }
 
 .div_6u0fO {
@@ -76,6 +76,7 @@
     border-radius: 50%;
     background: #ff0000;
   }
+
 }
 
 .div_7JM92 {
@@ -152,7 +153,7 @@
   &.off {
     pointer-events: none;
     opacity: 0.7;
-  }
+  } 
 }
 
 /* --> emojis */
@@ -292,4 +293,4 @@
   }
 }
 
-/* div_pc6Xr*/
+/* button_hdZNr filter qf*/

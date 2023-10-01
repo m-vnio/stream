@@ -20,11 +20,11 @@ export default ()=>{
                         <button class="button_E8Vr8" data-action="cancelEdit"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                     <div class="div_b3Gh3">
-                        <button class="button_E8Vr8" data-action="openStiker" ><i class="fa-regular fa-note-sticky"></i></button>
+                        <button class="button_E8Vr8 icon" data-action="openStiker" ><img src="public/img/icons/svg/icon-stiker.svg" alt="icon-svg"></button>
                         <label class="label_Fkf9B">
                             <textarea class="txt_W17W2" name="txt_message" placeholder="text..."></textarea>
                         </label>
-                        <button type="submit" class="button_E8Vr8"><i class="fa-regular fa-paper-plane"></i></button>
+                        <button type="submit" class="button_E8Vr8 icon"><img src="public/img/icons/svg/icon-paper-plane.svg" alt="icon-svg"></button>
                     </div>
                 </form>
             </div>

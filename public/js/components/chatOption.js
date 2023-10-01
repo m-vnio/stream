@@ -5,12 +5,12 @@ export default (data = {})=>{
     const isHide = data.status == 4 
     //<i class=""></i>
     const Button = [
-        { id : 1, icon : 'fa-solid fa-copy', action : 'copy', name : 'copiar', type : ['text'], status : true },
-        { id : 2, icon : 'fa-solid fa-reply', action : 'reply', name : 'responder', type : ['text', 'stiker'], status : !isHide },
-        { id : 3, icon : 'fa-solid fa-pen', action : 'update', name : 'editar', type : ['text'], status : (userid && !isHide) },
-        { id : 4, icon : 'fa-solid fa-eye', action : 'hide_show', name : 'mostrar', type : ['text', 'stiker'], status : (userid && isHide) },
-        { id : 5, icon : 'fa-solid fa-eye-slash', action : 'hide_show', name : 'ocultar', type : ['text', 'stiker'], status : (userid && !isHide) },
-        { id : 6, icon : 'fa-solid fa-ban', action : 'delete', name : 'eliminar', type : ['text', 'stiker'], status : userid }
+        { id : 1, icon : 'icon-copy', action : 'copy', name : 'copiar', type : ['text'], status : true },
+        { id : 2, icon : 'icon-reply', action : 'reply', name : 'responder', type : ['text', 'stiker'], status : !isHide },
+        { id : 3, icon : 'icon-pen', action : 'update', name : 'editar', type : ['text'], status : (userid && !isHide) },
+        { id : 4, icon : 'icon-show', action : 'hide_show', name : 'mostrar', type : ['text', 'stiker'], status : (userid && isHide) },
+        { id : 5, icon : 'icon-hide', action : 'hide_show', name : 'ocultar', type : ['text', 'stiker'], status : (userid && !isHide) },
+        { id : 6, icon : 'icon-trash', action : 'delete', name : 'eliminar', type : ['text', 'stiker'], status : userid }
     ]
 
     const ElementComponent = createHTML(`
@@ -26,8 +26,8 @@ export default (data = {})=>{
                         if(!button.type.includes(data.type)) return
                         
                         return `
-                            <button data-css="button_option" data-action="${ button.action }">
-                                <i class="${ button.icon }"></i>
+                            <button class="icon" data-css="button_option" data-action="${ button.action }">
+                                <img src="public/img/icons/svg/${ button.icon }.svg" alt="icon-svg">
                                 <span>${ button.name }</span>
                             </button>
                         `

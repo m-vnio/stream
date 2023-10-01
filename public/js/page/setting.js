@@ -6,17 +6,25 @@ export default ()=>{
     const theme = localStorage.getItem('theme')
 
     const ElementComponent = createHTML(`
-        <div class="scroll-y">
-            <div data-css="contenedor_setting">
-                <div data-css="contenedor_item">
-                    <h4>Aspecto</h4>
-                    <label data-css="item">
-                        <input type="checkbox" data-css="item_checkbox" ${ theme == 'dark' ? 'checked' : '' }>
-                        <span></span>
-                    </label>
+        <div>
+            <div class="scroll-y" data-css="contenedor_setting">
+                <div data-css="contenido_setting">
+                    <div data-css="contenedor_item">
+                        <h4>Aspecto</h4>
+                        <label data-css="item">
+                            <input type="checkbox" data-css="item_checkbox" ${ theme == 'dark' ? 'checked' : '' }>
+                            <span></span>
+                        </label>
+                    </div>
+                    <span data-css="line"></span>
+                    <button data-css="boton_logout">cerrar sesion</button>
                 </div>
-                <span data-css="line"></span>
-                <button data-css="boton_logout">cerrar sesion</button>
+            </div>
+            <div data-css="contenedor_navegacion">
+                <div data-css="contenedor_botones">
+                    <a href="#/"><img src="public/img/icons/svg/icon-home.svg" alt="icon-svg"></a>
+                    <a class="focus" href="#/setting"><img src="public/img/icons/svg/icon-setting.svg" alt="icon-svg"></a>
+                </div>
             </div>
         </div>
     `)
@@ -30,17 +38,59 @@ export default ()=>{
         & {
             position : fixed;
             inset: 0; 
-            display : flex; 
-            padding : 10px
+            display : grid;
+            grid-template-rows: 1fr auto;
+        }
+    `)
+
+    const contenedor_navegacion = style.element('contenedor_navegacion').css(`
+        & {
+            margin : 0 auto;
+            width  : min(100%, 700px); 
+            height : 60px; 
+        } 
+    `) 
+
+
+    const contenedor_botones = style.element('contenedor_botones').css(`
+        & {
+            display : flex;
+            height : 60px;
+        }
+
+        & a { 
+            text-decoration:none;
+            flex: 1;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: ${ color_letter };
+        }
+
+        & a.focus img {
+            filter: invert(30%) sepia(100%) saturate(3655%) hue-rotate(234deg) brightness(97%) contrast(91%);
+        }
+
+        & img { 
+            filter : var(--filter-img);
+            width : 20px;
+            height : 20px;
         }
     `)
 
     const contenedor_setting = style.element('contenedor_setting').css(`
         & {
-            margin: 0 auto;
-            align-self:start;
+            margin: 0 auto; 
             width : min(100%, 600px);
-            display : grid; 
+            height:100%;  
+            padding: 10px;
+        }
+    `)
+
+    const contenido_setting = style.element('contenido_setting').css(`
+        & {
+            display : grid;
             gap: 10px;
         }
     `)

@@ -35,15 +35,15 @@ export default ()=>{
                 <div class="div_Mbdqf">
                     <div class="div_6u0fO">
                         <div class="div_BXzT1">
-                            <button class="button_hdZNr" data-action="open_emoji"><i class="fa-solid fa-face-smile"></i></button>
+                            <button class="button_hdZNr" data-action="open_emoji"><img src="public/img/icons/svg/icon-emoji.svg" alt="icon-svg"></button>
                             <button class="button_hdZNr" data-action="open_chat_space" style="display:none"><i class="fa-solid fa-comment"></i></button>
                         </div>  
                     </div>
                     <div class="div_7JM92"></div>
                     <div class="div_XjdZ8">
                         <div class="div_HGz61">
-                            <button class="button_KXchF" data-action="play_pause"><i class="fa-solid fa-play"></i></button>
-                            <button class="button_KXchF" data-action="seeked_back_10"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                            <button class="button_KXchF" data-action="play_pause"><img src="public/img/icons/svg/icon-play.svg" alt="icon-svg"></button>
+                            <button class="button_KXchF" data-action="seeked_back_10"><img src="public/img/icons/svg/icon-clock-rotate-left.svg" alt="icon-svg"></button>
                         </div>
                         <div class="div_Ve01l">
                             <div class="div_38qNj">
@@ -52,12 +52,12 @@ export default ()=>{
                             <input type="range" class="input_908X1" value="0" min="0" max="100">
                         </div>
                         <div class="div_HGz61"> 
-                            <button class="button_KXchF" data-action="fullscreen"><i class="fa-solid fa-expand"></i></button>
+                            <button class="button_KXchF" data-action="fullscreen"><img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg"></button>
                         </div>
                     </div>
                 </div>
                 <div data-css="element_mensaje_notificacion">
-                    <button class="button_hdZNr" data-action="open_chat"><i class="fa-solid fa-comment"></i></button>
+                    <button class="button_hdZNr" data-action="open_chat"><img src="public/img/icons/svg/icon-message.svg" alt="icon-svg"></button>
                 </div>
                 <div class="div_82gU7" id="contenedor_emoji_mostrar"></div>
                 <div class="div_F6FFR" id="contenedor_chat_2">
@@ -192,7 +192,7 @@ export default ()=>{
         if(document.fullscreenElement){
             if(status) return document.exitFullscreen();
             contenedor_video_fullscreen.element.append(contenedor_video)
-            btn_fullscreen.innerHTML = '<i class="fa-solid fa-compress"></i>'
+            btn_fullscreen.innerHTML = '<img src="public/img/icons/svg/icon-screen-min.svg" alt="icon-svg">'
             open_chat_space.style.display = 'initial'
             open_chat_space.style.visibility = 'hidden'
             element_mensaje_notificacion.element.style.display = 'initial' 
@@ -203,7 +203,7 @@ export default ()=>{
             }
             contenedor_video_fullscreen.element.remove()
             ElementComponent.append(contenedor_video)
-            btn_fullscreen.innerHTML = '<i class="fa-solid fa-expand"></i>'
+            btn_fullscreen.innerHTML = '<img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg">'
             open_chat_space.style.display = 'none'
             element_mensaje_notificacion.element.style.display = 'none'
         }
@@ -236,8 +236,8 @@ export default ()=>{
     })
 
     /* eventos del contenido */
-    contenido_video.addEventListener("play", ()=> play_pause.innerHTML = '<i class="fa-solid fa-pause"></i>');
-    contenido_video.addEventListener("pause", ()=> play_pause.innerHTML = '<i class="fa-solid fa-play"></i>');
+    contenido_video.addEventListener("play", ()=> play_pause.innerHTML = '<img src="public/img/icons/svg/icon-play.svg" alt="icon-svg">');
+    contenido_video.addEventListener("pause", ()=> play_pause.innerHTML = '<img src="public/img/icons/svg/icon-pause.svg" alt="icon-svg">');
     contenido_video.addEventListener("loadedmetadata", ()=> {
         ipt_duration.setAttribute('max', contenido_video.duration.toFixed(0))
         const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000) 
@@ -355,3 +355,4 @@ export default ()=>{
     return ElementComponent
 }
  
+//fullscreen

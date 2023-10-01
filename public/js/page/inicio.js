@@ -4,9 +4,6 @@ export default ()=>{
     //<i class="fa-solid fa-gear"></i>
     const ElementComponent = createHTML(`
         <div>
-            <div data-css="contenedor_navegacion">
-                <a href="#/setting"><img src="public/img/icons/svg/icon-setting.svg" alt="icon-svg"></a>
-            </div>
             <div class="scroll-y" data-css="contenedor_item">
                 <div data-css="contenedor_loader"><span class="loader"></span></div>
                 <div data-css="contenido_item" >
@@ -16,6 +13,12 @@ export default ()=>{
                             <i class="fa-solid fa-caret-right"></i>
                         </a> 
                     </div>
+                </div>
+            </div>
+            <div data-css="contenedor_navegacion">
+                <div data-css="contenedor_botones">
+                    <a class="focus" href="#/"><img src="public/img/icons/svg/icon-home.svg" alt="icon-svg"></a>
+                    <a href="#/setting"><img src="public/img/icons/svg/icon-setting.svg" alt="icon-svg"></a>
                 </div>
             </div>
         </div>
@@ -32,7 +35,7 @@ export default ()=>{
             inset: 0; 
 
             display : grid;
-            grid-template-rows: auto 1fr;
+            grid-template-rows: 1fr auto;
         }
     `)
 
@@ -40,13 +43,20 @@ export default ()=>{
         & {
             margin : 0 auto;
             width  : min(100%, 700px); 
-            height : 50px; 
+            height : 60px; 
+        } 
+    `) 
+
+
+    const contenedor_botones = style.element('contenedor_botones').css(`
+        & {
+            display : flex;
+            height : 60px;
         }
 
         & a { 
-            width : 50px;
-            height : 50px;
             text-decoration:none;
+            flex: 1;
 
             display: flex;
             justify-content: center;
@@ -54,12 +64,16 @@ export default ()=>{
             color: ${ color_letter };
         }
 
+        & a.focus img {
+            filter: invert(30%) sepia(100%) saturate(3655%) hue-rotate(234deg) brightness(97%) contrast(91%);
+        }
+
         & img { 
             filter : var(--filter-img);
             width : 20px;
             height : 20px;
         }
-    `) 
+    `)
  
     const contenedor_item = style.element('contenedor_item').css(`
         & {

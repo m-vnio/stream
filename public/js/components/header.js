@@ -19,7 +19,7 @@ export default ()=>{
                 </div>
                 <div class="div_6y9bH">
                     <button class="button_Ma0S6" id="btn_open_form_link"><i class="fa-solid fa-plus"></i></button>
-                    <button class="button_Ma0S6"><i class="fa-solid fa-user-group"></i></button>
+                    <button class="button_Ma0S6 icon"><img src="public/img/icons/svg/icon-user-group.svg" alt="icon-svg"></button>
                 </div>
             </div>
         </header>
