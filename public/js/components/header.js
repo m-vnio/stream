@@ -18,23 +18,11 @@ export default ()=>{
                     <h3 class="h3_X0B6J text-ellipsis">${ stream.name ?? 'hola' }</h3>
                 </div>
                 <div class="div_6y9bH">
-                    <button class="button_Ma0S6" id="btn_open_form_link"><i class="fa-solid fa-plus"></i></button>
                     <button class="button_Ma0S6 icon"><img src="public/img/icons/svg/icon-user-group.svg" alt="icon-svg"></button>
                 </div>
             </div>
         </header>
     `)
-    
-    const root = document.getElementById('root') 
-    const ElementFormLink = form_link()
-
-    const btn_open_form_link = ElementComponent.querySelector('#btn_open_form_link')
-
-    if(btn_open_form_link){
-        btn_open_form_link.addEventListener('click', e => {
-            root.append(ElementFormLink) 
-        })
-    }
 
     return ElementComponent
 }

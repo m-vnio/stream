@@ -1,7 +1,6 @@
-main{ 
+main {
   flex: 1;
 }
-
 
 .div_M08rV {
   position: fixed;
@@ -18,7 +17,7 @@ main{
   grid-template-rows: auto 1fr;
 }
 
-.div_v05FO { 
+.div_v05FO {
   background: none;
 }
 
@@ -36,7 +35,8 @@ main{
 button img {
   width: 20px;
   height: 20px;
-  filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(110deg) brightness(98%) contrast(108%);
+  filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(110deg)
+    brightness(98%) contrast(108%);
 }
 
 button.icon img {
@@ -48,7 +48,7 @@ button.icon img {
 @media (min-width: 800px) {
   .div_U09zC {
     grid-template-columns: 1fr auto;
-    grid-template-rows: initial; 
+    grid-template-rows: initial;
     gap: 0;
     overflow: hidden;
   }
@@ -58,17 +58,16 @@ button.icon img {
     overflow: hidden;
   }
 
-  .div_v05FO { 
+  .div_v05FO {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;   
+    padding: 10px;
   }
 
   .div_3gfqE {
-    padding: 15px; 
+    padding: 15px;
     width: 450px;
     justify-self: end;
   }
 }
- 

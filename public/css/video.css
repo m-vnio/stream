@@ -12,8 +12,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
- 
-  overflow: hidden; 
+
+  overflow: hidden;
 }
 
 .video_01Mr1 {
@@ -27,22 +27,30 @@
   inset: 0;
 
   display: none;
-  grid-template-rows: 50px 1fr 50px;
+  grid-template-rows: 50px 1fr auto;
   overflow: hidden;
-  padding: 5px;
 
   &.active {
     display: grid;
-  } 
+  }
 }
 
 .div_6u0fO {
-  display: grid;
+  display: flex;
+  justify-content: space-between;
 }
 
 .div_BXzT1 {
-  justify-self: end;
-  display: flex;
+  display: flex; 
+}
+
+.div_1qCY1 {
+  position: absolute; top: 0; right: 0;
+  display : none;
+
+  &:has(.notification) {  
+      display : flex;
+  }
 }
 
 .button_hdZNr {
@@ -76,21 +84,53 @@
     border-radius: 50%;
     background: #ff0000;
   }
-
 }
 
 .div_7JM92 {
   visibility: hidden;
+  /* display: flex;
+  justify-content: right;
+  align-items: center; */
+}
+
+.div_AdvXt {
+  display: none;
+  /*  
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 50px;
+  height: 100%;
+
+  & input{
+    overflow: hidden;
+    transform: rotate(270deg); 
+  } */
 }
 
 .div_XjdZ8 {
   display: grid;
-  align-items: center;
-  grid-template-columns: auto 1fr auto;
-  padding: 0 15px;
-  gap: 15px;
-
   text-align: center;
+}
+
+.div_uN72K {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 15px;
+  padding: 0 15px;
+}
+
+.span_4E0dR{
+  color: #ffffff;
+}
+
+.div_3hBg2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .div_Ve01l {
@@ -100,7 +140,7 @@
   justify-content: center;
   align-items: center;
 
-  height: 40px;
+  height: 5px;
 }
 
 .div_38qNj {
@@ -144,6 +184,10 @@
   color: #ffffff;
   font-size: 15px;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   cursor: pointer;
 
   &:hover {
@@ -153,7 +197,7 @@
   &.off {
     pointer-events: none;
     opacity: 0.7;
-  } 
+  }
 }
 
 /* --> emojis */
@@ -201,17 +245,15 @@
   overflow: hidden;
 }
 
-
-
 .div_88A39 {
-  width: 100%;    
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
 
   text-align: center;
   padding: 20px;
   gap: 20px;
-  text-align: center; 
+  text-align: center;
 
   & span {
     display: flex;
@@ -230,7 +272,7 @@
   }
 }
 
-.form_lK4nv{
+.form_lK4nv {
   height: 55px;
   display: grid;
   grid-template-columns: 1fr 55px;
@@ -293,4 +335,4 @@
   }
 }
 
-/* button_hdZNr filter qf*/
+/*  div_1qCY1*/

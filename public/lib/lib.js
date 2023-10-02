@@ -1,4 +1,3 @@
-
 function clickElement (element, callback){
     if(typeof callback == 'function') {
         element.addEventListener('click', e => e.target === e.currentTarget && callback(e))
@@ -93,6 +92,7 @@ function genereteKey (include = {}){
         return secondOption
     })
 }
+ 
 
 function getElement(select, root = document) {
     return root.querySelector(select)
@@ -285,5 +285,13 @@ class Hash {
             if (typeof findRoute.callback === 'function') findRoute.callback(params)
         }
 
+    }
+}
+
+function getTimeBySecond(seconds) {
+    return {
+        hours   : Math.floor(seconds / 3600),
+        minutes : Math.floor((seconds % 3600) / 60),
+        seconds : seconds % 60
     }
 }

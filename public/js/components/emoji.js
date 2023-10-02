@@ -55,7 +55,7 @@ export default ()=>{
         
         ElementComponent.remove()
         ElementComponent2.innerHTML = '<span style="color:#ffffff"></span>'
-        ElementComponent2.children[0].textContent = emoji.slice(0, 30)
+        ElementComponent2.children[0].textContent = emoji.slice(0, 50)
 
         ElementComponent.style.opacity = '.5' 
         
