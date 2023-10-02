@@ -5,13 +5,14 @@ import login from "../page/login.js";
 import register from "../page/register.js";
 
 import setting from "../page/setting.js";
+import config from "../page/config.js";
 
 export default ()=>{
 
     const main  = createHTML(`<main id="main"></main>`) 
     document.getElementById('root').append(main)
 
-    const pageWithLogin     = ['', 'stream', 'setting']
+    const pageWithLogin     = ['', 'stream', 'setting', 'config']
     const pageWithoutLogin  = ['login', 'register']
  
     const withLogin = (session, namePage) =>{
@@ -54,6 +55,7 @@ export default ()=>{
     Routes.param('/register', register) 
     Routes.param('/stream/:id', stream)
     Routes.param('/setting', setting)
+    Routes.param('/config', config)
 
     Routes.dispatch(()=> {
         main.innerHTML = ''
