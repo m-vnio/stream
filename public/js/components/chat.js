@@ -222,15 +222,14 @@ export default ()=>{
         return element 
     }
     
-    let render_fisrt_time = true
-
-    const renderHTML =(onSnapshot)=>{
+     const renderHTML =(onSnapshot)=>{
         let index = 0
         let elementPrevious = null
 
         Chat = []
         onSnapshot.forEach(doc => Chat.push({ id : doc.id, ...doc.data() }))
-        if(render_fisrt_time) {
+
+        if(contenido_chat.children.length == 0) {
             const contenedor = document.createDocumentFragment()
             Chat.forEach(data => {
                 if(data.status == 3) return
@@ -238,10 +237,8 @@ export default ()=>{
                 contenedor.prepend(def_createHTML(data))
             })
             contenido_chat.append(contenedor)  
-            
         } else {
             Chat.forEach(data => {
-                // const data = doc.data()
                 const element = contenido_chat.querySelector(`#div-${ data.id }`)
 
                 if(index++ == 0){
@@ -253,9 +250,7 @@ export default ()=>{
                 }
 
                 if(element){
-
                     elementPrevious = element
-
                     const data_data = JSON.parse(element.dataset.data)
                     if(data.status == 3) return element.remove()
                     if(data.status == 4) { if(data.id_user != user.uid) return element.remove() } 
@@ -265,16 +260,12 @@ export default ()=>{
                 } else {
                     if(data.status == 3) return
                     if(data.status == 4) { if(data.id_user != user.uid) return } 
-                    if(render_fisrt_time) contenido_chat.prepend(def_createHTML(data))
-                    else {
-                        if(data.status == 5) { if(data.id_user != user.uid) return elementPrevious.before(def_createHTML(data)) }
-                        contenido_chat.append(def_createHTML(data))
-                    }
+
+                    if(data.status == 5) { if(data.id_user != user.uid) return elementPrevious.before(def_createHTML(data)) }
+                    contenido_chat.append(def_createHTML(data))
                 }
             })
         }
-
-        render_fisrt_time = false
     }
 
     const unsubscribe = chatRealtime(renderHTML, params.id)
@@ -362,7 +353,8 @@ export default ()=>{
             db.add(data) 
         } else if(action == 'update'){
             data.status = 2
-            db.edit(e.target.dataset.idMessage, data)
+            delete data.datetime_add
+            db.edit(form_chat.dataset.idMessage, data)
         }
 
         form_chat.classList.remove('active')

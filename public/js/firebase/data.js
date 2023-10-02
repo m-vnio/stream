@@ -26,10 +26,11 @@ const emojiRealtime = (callback, id) =>{
  
 const chatRealtime = (callback, id_stream) => {
     const db_name = 'stream_chat'
-    const queries = query(collection(db, db_name), where("id_stream", "==", id_stream), where("status", "!=", 3), orderBy("status", "asc"), orderBy("datetime_add", "desc"), limit(50));
+    const queries = query(collection(db, db_name), where("id_stream", "==", id_stream), orderBy("datetime_add", "desc"), limit(50));
     return makeOnSnapshot(callback, queries)  
+    // where("status", "!=", 3), orderBy("status", "desc"), 
 }
-//, where("status", "!=", "3")
+
 class dbFirebase {
     constructor(db_name){
         this.db_name = db_name
