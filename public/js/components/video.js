@@ -338,15 +338,15 @@ export default ()=>{
 
     const validate_click = JSON.parse(localStorage.getItem('click')) 
 
-    // if(validate_click){
-    //     const unsubscribe = streamRealtime(renderVideo, params.id)
-    //     addRemoveEventListener(window, 'hashchange', unsubscribe)
-    // } else {
-    //     addRemoveEventListener(window, 'click', ()=> {
-    //         const unsubscribe = streamRealtime(renderVideo, params.id)
-    //         addRemoveEventListener(window, 'hashchange', unsubscribe)
-    //     })
-    // }
+    if(validate_click){
+        const unsubscribe = streamRealtime(renderVideo, params.id)
+        addRemoveEventListener(window, 'hashchange', unsubscribe)
+    } else {
+        addRemoveEventListener(window, 'click', ()=> {
+            const unsubscribe = streamRealtime(renderVideo, params.id)
+            addRemoveEventListener(window, 'hashchange', unsubscribe)
+        })
+    }
     
     contenedor_video_fullscreen.element.remove()
     return ElementComponent
