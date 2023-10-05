@@ -29,17 +29,9 @@ body {
   position: fixed;
   inset: 0;
 
-  overflow-x: hidden;
-  overflow-y: auto;
-
-  display: flex;
-  flex-direction: column;
-
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    display: none;
-  }
+  display: grid;
+  overflow: hidden;
+  grid-template-rows: 1fr auto;
 }
 
 .scroll-y {

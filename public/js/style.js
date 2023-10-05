@@ -2,7 +2,7 @@
 export default ()=>{
 
     const version = '18958597504015'
-
+    
     if(!localStorage.getItem('version')){
         localStorage.clear()
         localStorage.setItem('version', version)
@@ -13,9 +13,12 @@ export default ()=>{
     const styleID = 'style-style'
     const style = getElement(`#${ styleID }`)
 
-
     if(!localStorage.getItem('theme')){
         localStorage.setItem('theme', 'light')
+    }
+
+    if(!localStorage.getItem('theme_chat')){
+        localStorage.setItem('theme_chat', '#7C4DFF')
     }
 
     const theme = localStorage.getItem('theme')
@@ -41,6 +44,7 @@ export default ()=>{
         ['color-item', themeSetting['color-item']],
         ['color-letter', themeSetting['color-letter']], 
         ['filter-img', themeSetting['filter-img']], 
+        ['color-chat', localStorage.getItem('theme_chat')]
     ]
 
     style.innerHTML = ':root {' + ArrayToString(Style, style => { return `--${ style[0] } : ${ style[1] };\n` }) + '}'           

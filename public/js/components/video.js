@@ -43,14 +43,6 @@ export default ()=>{
                         <div class="div_AdvXt"><input type="range" value="10" min="0" max="10"></div>                    
                     </div>
                     <div class="div_XjdZ8">
-                        <div class="div_uN72K">
-                            <div class="div_Ve01l">
-                                <div class="div_38qNj">
-                                    <hr class="hr_A6t1K">
-                                </div>
-                                <input type="range" class="input_908X1" data-value="0" value="0" min="0" max="100">
-                            </div>
-                        </div>
                         <div class="div_3hBg2">
                             <div class="div_HGz61">
                                 <button class="button_KXchF" data-action="play_pause"><img src="public/img/icons/svg/icon-play.svg" alt="icon-svg"></button>
@@ -60,6 +52,14 @@ export default ()=>{
                             <div class="div_HGz61">
                                 <button class="button_KXchF" data-action="open_emoji"><img src="public/img/icons/svg/icon-emoji.svg" alt="icon-svg"></button>
                                 <button class="button_KXchF" data-action="fullscreen"><img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg"></button>
+                            </div>
+                        </div>
+                        <div class="div_uN72K">
+                            <div class="div_Ve01l">
+                                <div class="div_38qNj">
+                                    <hr class="hr_A6t1K">
+                                </div>
+                                <input type="range" class="input_908X1" data-value="0" value="0" min="0" max="100">
                             </div>
                         </div>
                     </div>

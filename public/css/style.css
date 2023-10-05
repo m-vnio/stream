@@ -1,14 +1,17 @@
 main {
   flex: 1;
+  overflow: hidden;
 }
 
 .div_M08rV {
+  background: var(--color-background);
   position: fixed;
   inset: 0;
 
   display: grid;
   grid-template-rows: auto 1fr;
   overflow: hidden;
+  z-index: 100;
 }
 
 .div_U09zC {
@@ -18,7 +21,7 @@ main {
 }
 
 .div_v05FO {
-  background: none;
+  background: none; 
 }
 
 .div_3gfqE {
@@ -29,7 +32,7 @@ main {
   align-items: center;
 
   color: #ffffff;
-  overflow: hidden;
+  overflow: hidden; 
 }
 
 button img {
@@ -52,22 +55,19 @@ button.icon img {
     gap: 0;
     overflow: hidden;
   }
-
-  .div_Gj3xZ {
-    border-radius: 5px;
-    overflow: hidden;
-  }
-
+ 
   .div_v05FO {
+    background: #000000; 
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
   }
 
-  .div_3gfqE {
-    padding: 15px;
+  .div_3gfqE { 
     width: 450px;
     justify-self: end;
   }
 }
+
+
+/* div_M08rV */

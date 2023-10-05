@@ -55,7 +55,7 @@
   }
 
   &.user .div_5f0m7 {
-    background: #7C4DFF;
+    background: var(--color-chat);
     color: #ffffff;
   }
 
