@@ -12,14 +12,16 @@ export default (params)=>{
     const ElementComponent = createHTML(`
         <div class="div_M08rV">
             <div class="contenedor_loader"><span class="loader"></span></div>
-            <div class="div_jpEIOZm" ><div class="div_U09zC"></div></div>
+            <div class="div_jpEIOZm"><div class="div_U09zC"></div></div>
         </div>
     `)
 
     const elementLoad = ElementComponent.querySelector('.contenedor_loader')
     const elementItem = ElementComponent.querySelector('.div_jpEIOZm')
-
+    const elementItemVideoChat = ElementComponent.querySelector('.div_U09zC')
+ 
     const loadVerify = async ()=>{
+        elementItem.remove()
         const DataVerify = await db.getAll({ where : [['id_user', '==', user.uid], ['id_stream', '==', params.id]],limit : 1 })
 
         const Data = []
@@ -28,8 +30,9 @@ export default (params)=>{
         if(Data.length != 0){
             elementLoad.remove()
             elementItem.prepend(header())
-            elementItem.children[1].append(video())
-            elementItem.children[1].append(chat())
+            elementItemVideoChat.append(video())
+            elementItemVideoChat.append(chat())
+            
             ElementComponent.append(elementItem)
         } else {
             ElementComponent.innerHTML = `
@@ -42,6 +45,5 @@ export default (params)=>{
 
     loadVerify() 
     
-    elementItem.remove()
     document.getElementById('main').append(ElementComponent)
 }

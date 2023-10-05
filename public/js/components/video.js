@@ -3,7 +3,7 @@ import emoji from "./emoji.js"
 import form_link from "./form_link.js"
 
 export default ()=>{
-
+    
     const db     = new dbFirebase('stream')
     const params = json(sessionStorage.getItem('params'))
     const user   = json(localStorage.getItem('user'))
@@ -29,9 +29,7 @@ export default ()=>{
         <div class="div_v05FO">
             <div class="div_al065">
                 <div class="div_Gj3xZ">
-                    <video class="video_01Mr1" name="media">
-                        <source type="video/mp4">
-                    </video>
+                    <video class="video_01Mr1" name="media"></video>
                 </div>
                 <div class="div_Mbdqf">
                     <div class="div_6u0fO">

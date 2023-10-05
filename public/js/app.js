@@ -12,7 +12,6 @@ export default ()=>{
     document.getElementById('root').append(navigate())
 
     window.addEventListener('contextmenu', e => {
-        // console.log(e.target.tagName);
         if(!contextmenuIncludeTarget.includes(e.target.tagName)){
             e.preventDefault()
         }
