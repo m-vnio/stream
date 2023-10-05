@@ -48,9 +48,20 @@ class dbFirebase {
         if (id) deleteDoc(doc(db, this.db_name, id))
     }
 
-    get (id = false){
+    get (id = false ){
         if(id) return getDoc(doc(db, this.db_name, id))
         else return getDocs(collection(db, this.db_name))
+    }
+
+    getAll (filter = {}){
+        const Query = [collection(db, this.db_name)]
+
+        if(filter.where)    Query.push(...filter.where.map(filterWhere => where(...filterWhere)))
+        if(filter.orderBy)  Query.push(orderBy(...filter.orderBy))
+        if(filter.limit)    Query.push(limit(filter.limit)) 
+
+        //const queries = query(...Query)
+        return getDocs(query(...Query))
     }
 }
 

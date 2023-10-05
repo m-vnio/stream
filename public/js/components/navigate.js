@@ -1,7 +1,5 @@
 export default ()=>{
 
-    
-
     const Route = [
         { name : 'home', path : ['', 'inicio'] },
         { name : 'setting', path : ['setting', 'config', 'user'] }
@@ -17,7 +15,7 @@ export default ()=>{
     `)
 
     const def_setFocus =()=>{
-        const path = location.hash.split('/')[1]
+        const path = location.hash.split('/')[1] ?? ''
         const route = Route.find(route => route.path.includes(path)) ?? {}
         const elementFocus = ElementComponent.querySelector(`a[ data-name = ${ route.name ?? 'element-not-found' } ]`)
         const elementPreviousFocus = ElementComponent.querySelector(`a.focus`)

@@ -1,6 +1,11 @@
-import { streamRealtime } from "../firebase/data.js";
+import { dbFirebase } from "../firebase/data.js";
 
 export default ()=>{
+
+    const user = json(localStorage.getItem('user')) 
+
+    const db_1 = new dbFirebase('stream')
+    const db_2 = new dbFirebase('stream_user')
 
     const ElementComponent = createHTML(`
         <div class="div_ue0FY7z">
@@ -25,13 +30,15 @@ export default ()=>{
         `)
     }
 
-    const renderHTML =(onSnapshot)=>{ 
+    const renderHTML =(Data)=>{ 
 
-        const Data = []
-        onSnapshot.forEach(doc => Data.push({ id : doc.id, ...doc.data() }));
+        // const Data = []
+        // onSnapshot.forEach(doc => Data.push({ id : doc.id, ...doc.data() }));
 
+        Data = Data.stream_user.map((stream_user)=> Data.stream.find(stream => stream.id  == stream_user.id_stream))
+ 
         if(Data.length == 0) {
-            ElementComponent.innerHTML = '<div>lista vacia</div>'
+            ElementComponent.innerHTML = '<div class="div_Hu171ix"><h3>~ lista vacia ~</h3></div>'
             return 
         }
  
@@ -60,10 +67,29 @@ export default ()=>{
         })
 
     }
-    
-    const unsubscribe = streamRealtime(renderHTML)
-    addRemoveEventListener(window, 'hashchange', unsubscribe)
+
+    const loadData = async ()=>{
+        const Data_1 = await db_1.getAll({ limit : 20 })
+        const Data_2 = await db_2.getAll({ where  : [[ "id_user", "==", user.uid ]], limit : 20})
+
+        const DataJSON = {
+            stream      : [],
+            stream_user : []
+        }
+
+        Data_1.forEach(doc => DataJSON.stream.push(doc.data()))
+        Data_2.forEach(doc => DataJSON.stream_user.push(doc.data()))
+        renderHTML(DataJSON)
+    }
+
+    loadData()
+    //streamRealtimeByUser
+    // const unsubscribe = streamRealtime(renderHTML)
+    // addRemoveEventListener(window, 'hashchange', unsubscribe)
+
+    // const unsubscribe = streamRealtimeByUser(renderHTML, user.uid)
+    // addRemoveEventListener(window, 'hashchange', unsubscribe)
     
     contenedorListItem.parentElement.remove()
-    document.getElementById('main').append(ElementComponent)
+    document.getElementById('main').append(ElementComponent) 
 }
