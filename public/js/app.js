@@ -3,13 +3,21 @@ import routes from "./src/routes.js"
 import navigate from "./components/navigate.js"
 
 export default ()=>{
- 
+
+    const contextmenuIncludeTarget = ['INPUT', 'TEXTAREA']
+
     style()
     routes()
 
     document.getElementById('root').append(navigate())
 
-    window.addEventListener('contextmenu', e => e.preventDefault())
+    window.addEventListener('contextmenu', e => {
+        // console.log(e.target.tagName);
+        if(!contextmenuIncludeTarget.includes(e.target.tagName)){
+            e.preventDefault()
+        }
+    })
+
     addRemoveEventListener(window, 'click', ()=> localStorage.setItem('click', 'true'))
 
     // window.addEventListener("beforeunload", function (e) {

@@ -25,7 +25,7 @@ export default ()=>{
                             <textarea class="txt_W17W2" name="txt_message" placeholder="text..."></textarea>
                         </label>
                         <button type="submit" class="button_E8Vr8 icon"><img src="public/img/icons/svg/icon-paper-plane.svg" alt="icon-svg"></button>
-                    </div>
+                    </div> 
                 </form>
             </div>
             <div data-css="contenedor_chat_fullscreen">
