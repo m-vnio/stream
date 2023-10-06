@@ -1,5 +1,3 @@
-import form_link from "./form_link.js"
-
 export default ()=>{
 
     const stream = {

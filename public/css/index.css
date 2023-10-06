@@ -1,23 +1,24 @@
-/* :root{
-  --background-primary : #1c1c1e;
-  --background-color : #ffffff;
-} */
+/* fuentes */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
-}
-
-button::selection {
-  background: transparent;
+  font-family: var(--fontFamily-letter);
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -45,6 +46,17 @@ body {
   display: none;
 }
 
+.scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.scroll-x::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 button {
   background: none;
   border: none;
@@ -53,15 +65,19 @@ button {
 
 textarea,
 input {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+    sans-serif; */
 
   background: none;
   border: none;
   outline: none;
 
   resize: none;
+}
+
+img::selection {
+  background: transparent;
 }
 
 .background {
@@ -78,16 +94,16 @@ input {
   pointer-events: none;
 }
 
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .modal {
   display: none;
 }
 
 .modal.active {
   display: flex;
-}
-
-.text-ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }

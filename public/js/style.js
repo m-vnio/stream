@@ -21,6 +21,10 @@ export default ()=>{
         localStorage.setItem('theme_chat', '#7C4DFF')
     }
 
+    if(!localStorage.getItem('fontFamily')){
+        localStorage.setItem('fontFamily', "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'")
+    }
+
     const theme = localStorage.getItem('theme')
 
     const themeLight = {
@@ -44,7 +48,8 @@ export default ()=>{
         ['color-item', themeSetting['color-item']],
         ['color-letter', themeSetting['color-letter']], 
         ['filter-img', themeSetting['filter-img']], 
-        ['color-chat', localStorage.getItem('theme_chat')]
+        ['color-chat', localStorage.getItem('theme_chat')],
+        ['fontFamily-letter', json(localStorage.getItem('fontFamily')).font]
     ]
 
     style.innerHTML = ':root {' + ArrayToString(Style, style => { return `--${ style[0] } : ${ style[1] };\n` }) + '}'           

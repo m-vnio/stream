@@ -106,6 +106,7 @@
   display: grid;
   z-index: 999;
   backdrop-filter: blur(2.5px);
+  background: rgb(255 255 255 / 0.1);
 }
 
 .div_31mQ4VP {
@@ -117,14 +118,38 @@
   position: relative;
   justify-self: center;
   align-self: end;
-  background: var(--color-item);
+  background: var(--color-background);
   width: min(100%, 450px);
   height: 400px;
-  display: flex;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+}
+
+.div_kc3bagF {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+@media (min-width: 600px) {
+  .div_IK85t20 {
+    padding: 10px;
+  }
+  .div_2V8ZNzZ {
+    border-radius: 8px;
+  }
 }
 
 .div_UsFKG6Y {
-  margin: auto;
+  width: 100%;
+  height: 60px;
+
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  padding: 0 15px;
 }
 
 .label_5kB8k1C {
@@ -164,17 +189,81 @@
   }
 }
 
+.div_AYs8msi {
+  padding: 5px;
+  gap: 3px;
+}
+
+.div_w1AIy8F {
+  display: grid;
+}
+
 .label_NWRrl70 {
-  /* background: green; */
+  display: flex;
+  justify-self: left;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+
+  pointer-events: none;
+
+  &.right {
+    pointer-events: initial;
+    justify-self: right;
+  }
+
+  &.right span {
+    background: var(--color-chat);
+    color: #ffffff;
+  }
+
   & input {
-    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
   }
 
   & span {
-    background: var(--color-chat);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: block;
+    background: var(--color-item);
+    color: var(--color-letter);
+    display: flex;
+    padding: 15px;
   }
 }
+
+.div_xAJ4fl5 {
+  width: 100%;
+  padding: 15px;
+  display: flex;
+}
+
+.div_j5G8e0D {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: auto;
+  width: auto;
+
+  & span {
+    display: block;
+    padding: 10px 20px;
+    border-radius: 20px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 250px;
+
+    border: 1.25px solid var(--color-letter);
+    color: var(--color-letter);
+
+    &.focus {
+      background: var(--color-letter);
+      color: var(--color-item);
+    }
+  }
+   
+}
+
+/* div_xAJ4fl5 div_AYs8msi div_AYs8msi */

@@ -9,10 +9,6 @@ export default ()=>{
                         <span class="text-ellipsis">apariencia</span>
                         <i class="fa-solid fa-caret-right"></i>
                     </button>
-                    <button class="button_8GBQ4NU" data-action="chat">
-                        <span class="text-ellipsis">chat</span>
-                        <i class="fa-solid fa-caret-right"></i>
-                    </button>
                 </div>
             </div>
         </div>
@@ -25,10 +21,12 @@ export default ()=>{
 
         if(button){
             const action = button.dataset.action
-            document.getElementById('root').append(modalSetting(action))
+            document.getElementById('root').append(modalSetting())
         }
     })
-    
+
+
+
     document.getElementById('main').append(ElementComponent)
     
 }

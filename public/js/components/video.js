@@ -1,6 +1,6 @@
 import { dbFirebase, dbFirebaseRealtime } from "../firebase/data.js"
 import emoji from "./emoji.js"
-import form_link from "./form_link.js"
+import formLink from "./formLink.js"
 
 export default (ElementComponentFullScreen)=>{
     
@@ -38,6 +38,9 @@ export default (ElementComponentFullScreen)=>{
                     <div class="div_6u0fO">
                         <div class="div_BXzT1">
                             <button class="button_hdZNr active" data-action="open_form_link"><img src="public/img/icons/svg/icon-plus.svg" alt="icon-svg"></button>
+                        </div>
+                        <div class="div_BXzT1">
+                            <button class="button_KXchF" data-action="open_emoji"><img src="public/img/icons/svg/icon-emoji.svg" alt="icon-svg"></button>
                         </div> 
                     </div> 
                     <div class="div_XjdZ8">
@@ -48,7 +51,7 @@ export default (ElementComponentFullScreen)=>{
                             </div>
                             <span class="span_4E0dR">00:00:00</span>
                             <div class="div_HGz61">
-                                <button class="button_KXchF" data-action="open_emoji"><img src="public/img/icons/svg/icon-emoji.svg" alt="icon-svg"></button>
+                                <button class="button_KXchF" style="visible:hidden"></button>
                                 <button class="button_KXchF" data-action="active_fullscreen"><img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg"></button>
                             </div>
                         </div>
@@ -78,7 +81,7 @@ export default (ElementComponentFullScreen)=>{
 
     const root = document.getElementById('root')
     const elementEmoji = emoji()
-    const elementFormLink = form_link()
+    const elementFormLink = formLink()
 
     const btnPlay = findChild('button[data-action=btnPlay]')
     const btnSeekedBack10 = findChild('button[data-action=seeked_back_10]')
@@ -91,7 +94,9 @@ export default (ElementComponentFullScreen)=>{
     const elementVideoContainer =   findChild('.div_al065')
     const elementVideoContent   =   findChild('.div_Gj3xZ')
     const elementVideoControl   =   findChild('.div_Mbdqf')
-    const elementVideo          = findChild('.video_01Mr1')
+    const elementVideo          =   findChild('.video_01Mr1')
+
+    const elementButtonTop      =   findChild('.div_6u0fO')
 
     const ipt_duration      = findChild('.input_908X1')
     const hr_progreso       = findChild('.hr_A6t1K')
@@ -166,6 +171,7 @@ export default (ElementComponentFullScreen)=>{
             btnActiveFullscreen.innerHTML = '<img src="public/img/icons/svg/icon-screen-min.svg" alt="icon-svg">'
             btnOpenChat.classList.add('active')
             ElementComponent.classList.remove('active')
+            elementButtonTop.classList.add('active')
 
             if(/Mobi|Android/i.test(navigator.userAgent)){
                 if(window.screen.orientation && window.screen.orientation.lock){
@@ -178,6 +184,7 @@ export default (ElementComponentFullScreen)=>{
             btnActiveFullscreen.innerHTML = '<img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg">'
             btnOpenChat.classList.remove('active')
             ElementComponent.classList.add('active')
+            elementButtonTop.classList.remove('active')
 
             if(/Mobi|Android/i.test(navigator.userAgent)){
                 if(window.screen.orientation && window.screen.orientation.unlock){
@@ -191,43 +198,57 @@ export default (ElementComponentFullScreen)=>{
     elementVideo.addEventListener("play", ()=> btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-pause.svg" alt="icon-svg">');
     elementVideo.addEventListener("pause", ()=> btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-play.svg" alt="icon-svg">');
 
-    // elementVideo.addEventListener("loadedmetadata", ()=> {
-    //     ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
-    //     const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000) 
-    //     elementVideo.currentTime = parseInt(data_update.time_progress) + segundos_diferencia
-    // })
+    elementVideo.addEventListener("loadedmetadata", ()=> {
+        ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
+        const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000) 
+        elementVideo.currentTime = parseInt(data_update.time_progress) + segundos_diferencia
 
-    // elementVideo.addEventListener("timeupdate", ()=> {
-    //     if(change_input) return 
-    //     ipt_duration.value = elementVideo.currentTime.toFixed(0)
+        setTimeout(()=> {
+            ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
+            const Time = getTimeBySecond(parseInt(ipt_duration.max))
+            span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
+        }, 1250)
+    })
 
-    //     if(ipt_duration.value != ipt_duration.dataset.value){
-    //         ipt_duration.dataset.value = ipt_duration.value
-    //         hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
-    //         const Time = getTimeBySecond(parseInt(ipt_duration.max) - parseInt(ipt_duration.value))
-    //         span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
-    //     }
-    // })
+
+    elementVideo.addEventListener("timeupdate", ()=> {
+
+        if(parseInt(ipt_duration.max) == 0){
+            ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
+            const Time = getTimeBySecond(parseInt(ipt_duration.max))
+            span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
+        }
+
+        if(change_input) return 
+        ipt_duration.value = elementVideo.currentTime.toFixed(0)
+
+        if(ipt_duration.value != ipt_duration.dataset.value){
+            ipt_duration.dataset.value = ipt_duration.value
+            hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
+            const Time = getTimeBySecond(parseInt(ipt_duration.max) - parseInt(ipt_duration.value))
+            span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
+        }
+    })
 
     //elementInput
     let change_input = false
-    // ipt_duration.addEventListener('input', () => {
-    //     change_input = true
-    //     hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
-    // })
+    ipt_duration.addEventListener('input', () => {
+        change_input = true
+        hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
+    })
 
-    // ipt_duration.addEventListener('change', () => {
-    //     change_input = false
-    //     elementVideo.currentTime = parseInt(ipt_duration.value) 
-    //     const progress = elementVideo.currentTime.toFixed(0)
+    ipt_duration.addEventListener('change', () => {
+        change_input = false
+        elementVideo.currentTime = parseInt(ipt_duration.value) 
+        const progress = elementVideo.currentTime.toFixed(0)
 
-    //     db.edit(params.id, {
-    //         id_user : user.uid,
-    //         datetime_update : Date.now().toString(),
-    //         time_progress   : progress,
-    //         change : 'seeked'
-    //     }) 
-    // })
+        db.edit(params.id, {
+            id_user : user.uid,
+            datetime_update : Date.now().toString(),
+            time_progress   : progress,
+            change : 'seeked'
+        }) 
+    })
 
     //eventos de windows
     addRemoveEventListenerHashchange(window, 'open_link', e => {
@@ -245,51 +266,7 @@ export default (ElementComponentFullScreen)=>{
             //     time_progress   : '0',
             // })
         } else {
-            //elementVideoContent
-            elementVideoContent.innerHTML = ''
-            //elementVideo.remove()
-
-            const testVideo = createHTML('<video class="video_01Mr1" name="media"></video>')
-            console.log(testVideo);
-
-            const videoURL = e.detail.link
-            const source = document.createElement("source");
-            source.src = videoURL;
-
-            if (videoURL.endsWith(".mp4")) source.type = "video/mp4"
-            else if (videoURL.endsWith(".webm")) source.type = "video/webm";
-            else if (videoURL.endsWith(".ogv")) source.type = "video/ogg"
-            else if (videoURL.endsWith(".avi")) source.type = "video/x-msvideo"
-            else if (videoURL.endsWith(".m3u8")) source.type = "application/x-mpegURL"
-            else source.type = "video/mp4";
-
-            testVideo.append(source)
-
-            elementVideoContent.append(testVideo)
-            testVideo.setAttribute('autoplay', '') 
-
-            testVideo.addEventListener("timeupdate", ()=> {
-                ipt_duration.setAttribute('max', testVideo.duration.toFixed(0))
-                if(change_input) return 
-                ipt_duration.value = testVideo.currentTime.toFixed(0)
-        
-                if(ipt_duration.value != ipt_duration.dataset.value){
-                    ipt_duration.dataset.value = ipt_duration.value
-                    hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
-                    const Time = getTimeBySecond(parseInt(ipt_duration.max) - parseInt(ipt_duration.value))
-                    span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
-                }
-            })
-
-            ipt_duration.addEventListener('input', () => {
-                change_input = true
-                hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
-            })
-        
-            ipt_duration.addEventListener('change', () => {
-                change_input = false
-                testVideo.currentTime = parseInt(ipt_duration.value)  
-            }) 
+            renderVideoURL(e.detail.link)
         }
     })
 
@@ -308,6 +285,33 @@ export default (ElementComponentFullScreen)=>{
         }
     })
 
+    //rendervideoURL
+    const renderVideoURL = url =>{
+
+        const typeVideo = url =>{
+            const urlObject = new URL(url)
+            const newURK = urlObject.origin + urlObject.pathname
+
+            if (newURK.endsWith(".mp4")) return "video/mp4"
+            else if (newURK.endsWith(".webm")) return "video/webm";
+            else if (newURK.endsWith(".ogv")) return "video/ogg"
+            else if (newURK.endsWith(".avi")) return "video/x-msvideo"
+            else if (newURK.endsWith(".m3u8")) return "application/x-mpegURL"
+            else return "video/mp4";
+        }
+
+        const videoURL  = url 
+        const source    = document.createElement("source"); 
+
+        source.setAttribute('src', videoURL)
+        source.setAttribute('type', typeVideo(videoURL))
+
+        elementVideo.innerHTML = ''
+        elementVideo.append(source)
+        elementVideo.load()
+
+    }
+
     //rendervideo
     const renderVideo =(querySnapshot)=>{
         querySnapshot.forEach(doc => {
@@ -315,7 +319,7 @@ export default (ElementComponentFullScreen)=>{
             data_update.data_update  = Date.now()
 
             if(fisrt_time.render){
-                elementVideo.setAttribute('src', data.link)
+                renderVideoURL(data.link)
                 return
             }
             
@@ -337,7 +341,7 @@ export default (ElementComponentFullScreen)=>{
                 else if(data.change == 'link'){
                     data_local.data_db_update = true
                     elementVideo.currentTime = 0
-                    elementVideo.setAttribute('src', data.link)
+                    renderVideoURL(data.link) 
                 }
             }
         });
