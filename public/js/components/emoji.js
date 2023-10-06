@@ -1,14 +1,17 @@
- import { dbFirebase, emojiRealtime } from "../firebase/data.js";
+ import { dbFirebase, dbFirebaseRealtime } from "../firebase/data.js";
 import Emoji from "../data/Emoji.js";
 export default ()=>{
     
-
-    const db     = new dbFirebase('stream_emoji')
+    
     const params = json(sessionStorage.getItem('params'))
     const user   = json(localStorage.getItem('user'))
+    const db     = new dbFirebase('stream_emoji')
+    const dbRealtime     = new dbFirebaseRealtime('stream_emoji')
+    dbRealtime.query({ where : [["id_stream", "==", params.id]], orderBy : ["datetime_add", "desc"], limit : 1 })
 
     const ElementComponent = createHTML(`
         <div class="div_WiZV0 scroll-y active">
+            <div class="div_4Wz57gr"></div>
             <div class="div_Gtfrb">
                 <div class="div_pc6Xr">
                     <div class="div_q2o2E scroll-y">
@@ -22,6 +25,12 @@ export default ()=>{
             </div>
         </div>
     `)
+
+    const findChild = query => ElementComponent.querySelector(query)
+
+    const elementTap = findChild('.div_4Wz57gr')
+
+    elementTap.addEventListener('click', ()=> ElementComponent.remove())
 
     const ElementComponent2 = createHTML(`<div class="div_82gU7"></div>`)
 
@@ -92,7 +101,7 @@ export default ()=>{
         fisrt_time.render = false
     }
 
-    const unsubscribe = emojiRealtime(renderHTML, params.id)
+    const unsubscribe = dbRealtime.subscribe(renderHTML)
     addRemoveEventListener(window, 'hashchange', unsubscribe) 
 
     return ElementComponent

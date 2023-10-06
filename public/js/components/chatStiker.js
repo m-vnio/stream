@@ -21,26 +21,18 @@ export default ()=>{
     const color_item    = 'var(--color-item)'  
 
     style.css(`
-        & { position : fixed; inset : 0; background : rgb(0 0 0 / .3); display: grid }
+        & { position : absolute; inset : 0; background : rgb(0 0 0 / .3); display: grid }
     `)
 
     const contenedor_stiker = style.element('contenedor_stiker').css(`
         & { 
-            aspect-ratio: 1/1;
+             
             width : 100%; 
+            height : 75%; 
             background : ${ color_item };
             align-self: end; 
             align-self: flex-end;
             border-radius:8px 8px 0 0; 
-        }
-
-        @media (min-width: 600px){
-            & {  
-                aspect-ratio: initial;
-                height: 100%;
-                width: min(100%, 375px); 
-                border-radius: 0 8px 8px 0; 
-            }
         }
     `)
 

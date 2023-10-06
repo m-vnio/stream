@@ -1,6 +1,6 @@
 export default ()=>{
     const ElementComponent = createHTML(`
-        <div class="div_PGtVi" id="contenedor_form_link">
+        <div class="div_PGtVi">
             <form class="form_slr4j" id="form_link" autocomplete="off">
                 <input type="text" name="link" class="input_V94sL" placeholder="link">
                 <div class="div_oH3Hj">
@@ -28,6 +28,8 @@ export default ()=>{
         dispatchEvent(new CustomEvent('open_link', { detail: { link : form_link.link.value, submit : true } }))
         form_link.link.value = ''
     })
+
+    
 
     return ElementComponent
 }

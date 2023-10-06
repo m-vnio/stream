@@ -3,34 +3,6 @@ import { getFirestore, collection, doc, addDoc, getDoc, getDocs,  deleteDoc, upd
 
 const db    = getFirestore(); 
 
-const makeOnSnapshot =(callback, queries)=>{
-    if (typeof callback === "function") {
-        const unsubscribe   = onSnapshot(queries, callback)
-        return unsubscribe
-    }
-    return false
-}
-
-const streamRealtime =(callback, id = false)=>{
-    const db_name = 'stream'
-    const queries = id ? query(collection(db, db_name), where("id", "==", id), limit(1)) : query(collection(db, db_name), limit(5))
-    return makeOnSnapshot(callback, queries)
-}
-
-const emojiRealtime = (callback, id) =>{
-    const db_name = 'stream_emoji'
-    const queries = query(collection(db, db_name), where("id_stream", "==", id), orderBy("datetime_add", "desc"), limit(1));
-
-    return makeOnSnapshot(callback, queries)
-}
- 
-const chatRealtime = (callback, id_stream) => {
-    const db_name = 'stream_chat'
-    const queries = query(collection(db, db_name), where("id_stream", "==", id_stream), orderBy("datetime_add", "desc"), limit(50));
-    return makeOnSnapshot(callback, queries)  
-    // where("status", "!=", 3), orderBy("status", "desc"), 
-}
-
 class dbFirebase {
     constructor(db_name){
         this.db_name = db_name
@@ -52,7 +24,7 @@ class dbFirebase {
         if(id) return getDoc(doc(db, this.db_name, id))
         else return getDocs(collection(db, this.db_name))
     }
-
+ 
     getAll (filter = {}){
         const Query = [collection(db, this.db_name)]
 
@@ -60,10 +32,33 @@ class dbFirebase {
         if(filter.orderBy)  Query.push(orderBy(...filter.orderBy))
         if(filter.limit)    Query.push(limit(filter.limit)) 
 
-        //const queries = query(...Query)
         return getDocs(query(...Query))
     }
 }
 
-export { dbFirebase, streamRealtime, chatRealtime, emojiRealtime }
-   
+class dbFirebaseRealtime {
+    constructor(db_name){
+        this._query = [collection(db, db_name)]
+        this._unsubscribe = null
+    }
+
+    query(filter = {}){
+        if(filter.where)    this._query.push(...filter.where.map(filterWhere => where(...filterWhere)))
+        if(filter.orderBy)  this._query.push(orderBy(...filter.orderBy))
+        if(filter.limit)    this._query.push(limit(filter.limit))
+    }
+
+    subscribe(callback){
+        if (typeof callback === "function") {
+            this._unsubscribe   = onSnapshot(query(...this._query), callback)
+            return this._unsubscribe
+        }
+    }
+
+    unsubscribe(){
+        //console.log(this._unsubscribe);
+        if(this._unsubscribe) this._unsubscribe()
+    }
+}
+
+export { dbFirebase, dbFirebaseRealtime }

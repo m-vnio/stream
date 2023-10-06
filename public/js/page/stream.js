@@ -16,9 +16,11 @@ export default (params)=>{
         </div>
     `)
 
-    const elementLoad = ElementComponent.querySelector('.contenedor_loader')
-    const elementItem = ElementComponent.querySelector('.div_jpEIOZm')
-    const elementItemVideoChat = ElementComponent.querySelector('.div_U09zC')
+    const findChild = query => ElementComponent.querySelector(query)
+
+    const elementLoad = findChild('.contenedor_loader')
+    const elementItem = findChild('.div_jpEIOZm')
+    const elementItemVideoChat = findChild('.div_U09zC')
  
     const loadVerify = async ()=>{
         elementItem.remove()
@@ -30,8 +32,7 @@ export default (params)=>{
         if(Data.length != 0){
             elementLoad.remove()
             elementItem.prepend(header())
-            elementItemVideoChat.append(video())
-            elementItemVideoChat.append(chat())
+            elementItemVideoChat.append(video(elementItemVideoChat), chat()) 
             
             ElementComponent.append(elementItem)
         } else {
@@ -43,7 +44,7 @@ export default (params)=>{
         }
     }
 
-    loadVerify() 
+    loadVerify()  
     
     document.getElementById('main').append(ElementComponent)
 }

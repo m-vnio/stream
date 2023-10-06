@@ -46,7 +46,7 @@ export default (data = {})=>{
     const color_letter  = 'var(--color-letter)'
 
     style.css(`
-        & { position : fixed; inset : 0; background : rgb(0 0 0 / .3); display: grid; z-index : 999 }
+        & { position : absolute; inset : 0; background : rgb(0 0 0 / .3); display: grid; z-index : 999 }
         @media (min-width: 450px){
             & {
                 padding : 20px

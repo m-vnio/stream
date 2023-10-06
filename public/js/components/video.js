@@ -1,12 +1,15 @@
-import { dbFirebase, streamRealtime } from "../firebase/data.js"
+import { dbFirebase, dbFirebaseRealtime } from "../firebase/data.js"
 import emoji from "./emoji.js"
 import form_link from "./form_link.js"
 
-export default ()=>{
+export default (ElementComponentFullScreen)=>{
     
-    const db     = new dbFirebase('stream')
     const params = json(sessionStorage.getItem('params'))
     const user   = json(localStorage.getItem('user'))
+
+    const db     = new dbFirebase('stream')
+    const dbRealtime = new dbFirebaseRealtime('stream')
+    dbRealtime.query({ where : [["id", "==", params.id]], limit : 1 })
  
     let data_update = {
         play : 'false',
@@ -26,30 +29,27 @@ export default ()=>{
     }
 
     const ElementComponent = createHTML(`
-        <div class="div_v05FO">
+        <div class="div_v05FO active">
             <div class="div_al065">
                 <div class="div_Gj3xZ">
-                    <video class="video_01Mr1" name="media"></video>
+                    <video class="video_01Mr1" name="media" src=""></video>
                 </div>
                 <div class="div_Mbdqf">
                     <div class="div_6u0fO">
                         <div class="div_BXzT1">
-                            <button class="button_hdZNr" data-action="open_form_link"><img src="public/img/icons/svg/icon-plus.svg" alt="icon-svg"></button>
+                            <button class="button_hdZNr active" data-action="open_form_link"><img src="public/img/icons/svg/icon-plus.svg" alt="icon-svg"></button>
                         </div> 
-                    </div>
-                    <div class="div_7JM92">
-                        <div class="div_AdvXt"><input type="range" value="10" min="0" max="10"></div>                    
-                    </div>
+                    </div> 
                     <div class="div_XjdZ8">
                         <div class="div_3hBg2">
                             <div class="div_HGz61">
-                                <button class="button_KXchF" data-action="play_pause"><img src="public/img/icons/svg/icon-play.svg" alt="icon-svg"></button>
+                                <button class="button_KXchF" data-action="btnPlay"><img src="public/img/icons/svg/icon-play.svg" alt="icon-svg"></button>
                                 <button class="button_KXchF" data-action="seeked_back_10"><img src="public/img/icons/svg/icon-clock-rotate-left.svg" alt="icon-svg"></button>
                             </div>
                             <span class="span_4E0dR">00:00:00</span>
                             <div class="div_HGz61">
                                 <button class="button_KXchF" data-action="open_emoji"><img src="public/img/icons/svg/icon-emoji.svg" alt="icon-svg"></button>
-                                <button class="button_KXchF" data-action="fullscreen"><img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg"></button>
+                                <button class="button_KXchF" data-action="active_fullscreen"><img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg"></button>
                             </div>
                         </div>
                         <div class="div_uN72K">
@@ -74,71 +74,55 @@ export default ()=>{
         </div>
     `)
 
-    const style = new createCSS('video-player', ElementComponent)
-
-    const contenedor_video_fullscreen = style.element('contenedor_video_fullscreen').css(`
-        & { position : fixed; inset : 0; display : flex; }
-        & .div_al065{ padding : 0 }
-    `)
+    const findChild = query => ElementComponent.querySelector(query) 
 
     const root = document.getElementById('root')
-    const contenedor_emoji  = emoji()
-    const contenedor_form_link  = form_link()
+    const elementEmoji = emoji()
+    const elementFormLink = form_link()
 
-    const contenedor_botones = ElementComponent.querySelector('.div_Mbdqf')
-    const contenido_video = ElementComponent.querySelector('.video_01Mr1')
+    const btnPlay = findChild('button[data-action=btnPlay]')
+    const btnSeekedBack10 = findChild('button[data-action=seeked_back_10]')
+    const btnOpenChat = findChild('button[data-action=open_chat]')
+    const btnOpenEmoji = findChild('button[data-action=open_emoji]')
+    const btnOpenFormLink = findChild('button[data-action=open_form_link]')
+    const btnActiveFullscreen = findChild('button[data-action=active_fullscreen]')
 
-    const btn_fullscreen = ElementComponent.querySelector('button[ data-action = fullscreen]')
-    const open_emoji = ElementComponent.querySelector('button[ data-action = open_emoji ]')
-    const open_chat = ElementComponent.querySelector('button[ data-action = open_chat ]')
-    const open_form_link = ElementComponent.querySelector('button[ data-action = open_form_link ]')
+    //div_al065
+    const elementVideoContainer =   findChild('.div_al065')
+    const elementVideoContent   =   findChild('.div_Gj3xZ')
+    const elementVideoControl   =   findChild('.div_Mbdqf')
+    const elementVideo          = findChild('.video_01Mr1')
 
-    const element_mensaje_notificacion =  ElementComponent.querySelector('.div_1qCY1')
+    const ipt_duration      = findChild('.input_908X1')
+    const hr_progreso       = findChild('.hr_A6t1K')
+    const span_duraction    = findChild('.span_4E0dR')
 
-    // const btn_pip = ElementComponent.querySelector('button[ data-action = pip ]')
-
-    const play_pause = ElementComponent.querySelector('button[ data-action = play_pause ]')
-    const seeked_back_10 = ElementComponent.querySelector('button[ data-action = seeked_back_10 ]')
-
-    const ipt_duration = ElementComponent.querySelector('.input_908X1')
-    const hr_progreso = ElementComponent.querySelector('.hr_A6t1K')
-    const span_duraction = ElementComponent.querySelector('.span_4E0dR')
-    
-    const event_open_message = new CustomEvent('open_message')
- 
-    ElementComponent.querySelector('.div_Gj3xZ').addEventListener("click", ()=> {
-        contenedor_botones.classList.add('active')
-        if(document.fullscreenElement)
-            element_mensaje_notificacion.style.display = 'flex'
+    elementVideoContent.addEventListener('click', () => {
+        elementVideoContent.classList.toggle('active')
     })
 
-    clickElement(contenedor_botones, ()=> {
-        contenedor_botones.classList.remove('active')
-        element_mensaje_notificacion.style.display = 'none'
-    })
+    btnPlay.addEventListener("click", ()=> {
+        if(elementVideo.paused) elementVideo.play()
+        else elementVideo.pause()
 
-    play_pause.addEventListener("click", ()=> {
-        if(contenido_video.paused) contenido_video.play()
-        else contenido_video.pause()
-
-        const progress = contenido_video.currentTime.toFixed(0)
+        const progress = elementVideo.currentTime.toFixed(0)
         
         db.edit(params.id, {
-            play    : !contenido_video.paused,
+            play    : !elementVideo.paused,
             id_user : user.uid,
             datetime_update : Date.now().toString(),
             time_progress   : progress,
             change : 'play'
         })
 
-        play_pause.style.pointerEvents = 'none'
-        setTimeout(()=> play_pause.style.pointerEvents = 'initial', 1500)
+        btnPlay.style.pointerEvents = 'none'
+        setTimeout(()=> btnPlay.style.pointerEvents = 'initial', 1500)
     })
 
-    seeked_back_10.addEventListener("click", ()=> {
-        contenido_video.currentTime = contenido_video.currentTime.toFixed(0) - 10  
+    btnSeekedBack10.addEventListener("click", ()=> {
+        elementVideo.currentTime = elementVideo.currentTime.toFixed(0) - 10  
         
-        const progress = contenido_video.currentTime.toFixed(0)
+        const progress = elementVideo.currentTime.toFixed(0)
 
         db.edit(params.id, {
             id_user : user.uid,
@@ -150,64 +134,82 @@ export default ()=>{
         seeked_back_10.style.pointerEvents = 'none'
         setTimeout(()=> seeked_back_10.style.pointerEvents = 'initial', 1500)
     })
-
-    open_emoji.addEventListener("click", ()=> {
-        contenedor_botones.classList.remove('active')
-        if(document.fullscreenElement) document.fullscreenElement.append(contenedor_emoji)
-        else root.append(contenedor_emoji)
+    
+    btnOpenChat.addEventListener('click', ()=> {
+        elementVideoContent.classList.remove('active')
+        ElementComponent.classList.toggle('active')
     })
 
-    open_chat.addEventListener("click", ()=> {
-        contenedor_botones.classList.remove('active')
-        open_chat.classList.remove('notification')
-        dispatchEvent(event_open_message)
+    btnOpenEmoji.addEventListener('click', ()=> {
+        elementVideoContent.classList.remove('active')
+        if(document.fullscreenElement) document.fullscreenElement.append(elementEmoji) 
+        else root.append(elementEmoji)
     })
 
-    open_form_link.addEventListener("click", ()=> {
-        contenedor_botones.classList.remove('active')
-        if(document.fullscreenElement) document.fullscreenElement.append(contenedor_form_link)
-        else root.append(contenedor_form_link)
+    btnOpenFormLink.addEventListener('click', ()=> {
+        elementVideoContent.classList.remove('active')
+        if(document.fullscreenElement) document.fullscreenElement.append(elementFormLink) 
+        else root.append(elementFormLink)
     })
 
-    const contenedor_video = ElementComponent.querySelector('.div_al065') 
- 
+    btnActiveFullscreen.addEventListener('click', ()=> {
+        elementVideoContent.classList.remove('active')
+        def_fullscreen(true)
+    })
+
+    addRemoveEventListenerHashchange(document, 'fullscreenchange', ()=> def_fullscreen(false))
+
     const def_fullscreen =(status)=>{
         if(document.fullscreenElement){     
-            if(status) return document.exitFullscreen();
+            if(status) return document.exitFullscreen() 
+            ElementComponentFullScreen.classList.add('active')
+            btnActiveFullscreen.innerHTML = '<img src="public/img/icons/svg/icon-screen-min.svg" alt="icon-svg">'
+            btnOpenChat.classList.add('active')
+            ElementComponent.classList.remove('active')
+
             if(/Mobi|Android/i.test(navigator.userAgent)){
                 if(window.screen.orientation && window.screen.orientation.lock){
                     window.screen.orientation.lock("landscape");
                 }
             }
-            contenedor_video_fullscreen.element.append(contenedor_video)
-            btn_fullscreen.innerHTML = '<img src="public/img/icons/svg/icon-screen-min.svg" alt="icon-svg">'
-            element_mensaje_notificacion.style.display = 'flex' 
         } else {
-            if(status) {
-                root.append(contenedor_video_fullscreen.element) 
-                return contenedor_video_fullscreen.element.requestFullscreen();
-            }
+            if(status) return ElementComponentFullScreen.requestFullscreen()
+            ElementComponentFullScreen.classList.remove('active')
+            btnActiveFullscreen.innerHTML = '<img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg">'
+            btnOpenChat.classList.remove('active')
+            ElementComponent.classList.add('active')
 
             if(/Mobi|Android/i.test(navigator.userAgent)){
                 if(window.screen.orientation && window.screen.orientation.unlock){
                     window.screen.orientation.unlock();
-                }
+                } 
             }
-
-            contenedor_video_fullscreen.element.remove()
-            ElementComponent.append(contenedor_video)
-            btn_fullscreen.innerHTML = '<img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg">'
-            element_mensaje_notificacion.style.display = 'none'
         }
-    }
+    } 
 
-    btn_fullscreen.addEventListener('click', ()=> {
-        def_fullscreen(true)
+    //elementVideo
+    elementVideo.addEventListener("play", ()=> btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-pause.svg" alt="icon-svg">');
+    elementVideo.addEventListener("pause", ()=> btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-play.svg" alt="icon-svg">');
+
+    elementVideo.addEventListener("loadedmetadata", ()=> {
+        ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
+        const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000) 
+        elementVideo.currentTime = parseInt(data_update.time_progress) + segundos_diferencia
     })
 
-    addRemoveEventListenerHashchange(document, 'fullscreenchange', ()=> def_fullscreen(false))
-    /* eventos del input */
+    elementVideo.addEventListener("timeupdate", ()=> {
+        if(change_input) return 
+        ipt_duration.value = elementVideo.currentTime.toFixed(0)
 
+        if(ipt_duration.value != ipt_duration.dataset.value){
+            ipt_duration.dataset.value = ipt_duration.value
+            hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
+            const Time = getTimeBySecond(parseInt(ipt_duration.max) - parseInt(ipt_duration.value))
+            span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
+        }
+    })
+
+    //elementInput
     let change_input = false
     ipt_duration.addEventListener('input', () => {
         change_input = true
@@ -216,8 +218,8 @@ export default ()=>{
 
     ipt_duration.addEventListener('change', () => {
         change_input = false
-        contenido_video.currentTime = parseInt(ipt_duration.value) 
-        const progress = contenido_video.currentTime.toFixed(0)
+        elementVideo.currentTime = parseInt(ipt_duration.value) 
+        const progress = elementVideo.currentTime.toFixed(0)
 
         db.edit(params.id, {
             id_user : user.uid,
@@ -227,49 +229,11 @@ export default ()=>{
         }) 
     })
 
-    /* eventos del contenido */
-    contenido_video.addEventListener("play", ()=> play_pause.innerHTML = '<img src="public/img/icons/svg/icon-pause.svg" alt="icon-svg">');
-    contenido_video.addEventListener("pause", ()=> play_pause.innerHTML = '<img src="public/img/icons/svg/icon-play.svg" alt="icon-svg">');
-    contenido_video.addEventListener("loadedmetadata", ()=> {
-        ipt_duration.setAttribute('max', contenido_video.duration.toFixed(0))
-        const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000) 
-        contenido_video.currentTime = parseInt(data_update.time_progress) + segundos_diferencia
-    })
-
-    contenido_video.addEventListener("timeupdate", ()=> {
-        if(change_input) return 
-        ipt_duration.value = contenido_video.currentTime.toFixed(0)
-
-        if(ipt_duration.value != ipt_duration.dataset.value){
-            ipt_duration.dataset.value = ipt_duration.value
-            hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
-            const Time = getTimeBySecond(parseInt(ipt_duration.max) - parseInt(ipt_duration.value))
-            span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
-        }
-    });
-
-    contenido_video.addEventListener("seeked", ()=> {
-        if(fisrt_time.seeker) fisrt_time.seeker = false
-        else if(data_update.id_user == user.uid) return 
-
-        if(data_local.data_db_update){
-            const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000)
-            contenido_video.currentTime = parseInt(data_update.time_progress) + segundos_diferencia
-            data_local.data_db_update = false
-        } else {
-            if(JSON.parse(localStorage.getItem('click'))){
-                if(JSON.parse(data_update.play)) contenido_video.play()
-                else contenido_video.pause()
-            }
-        }
-    })
-
     //eventos de windows
-
     addRemoveEventListenerHashchange(window, 'open_link', e => {
-        contenido_video.setAttribute('src', e.detail.link)
-        contenido_video.setAttribute('autoplay', '')
-        contenido_video.currentTime = 0
+        elementVideo.setAttribute('src', e.detail.link)
+        elementVideo.setAttribute('autoplay', '')
+        elementVideo.currentTime = 0
 
         if(e.detail.submit) {
             db.edit(params.id, {
@@ -293,18 +257,19 @@ export default ()=>{
     let volumen = 1
     addRemoveEventListenerHashchange(window, 'wheel', e => {
         if(document.fullscreenElement){
-            if(e.deltaY > 0) { if (volumen > 0) contenido_video.volume = (--volumen / 10) } 
-            else {  if (volumen < 10) contenido_video.volume = (++volumen / 10) }
+            if(e.deltaY > 0) { if (volumen > 0) elementVideo.volume = (--volumen / 10) } 
+            else {  if (volumen < 10) elementVideo.volume = (++volumen / 10) }
         }
     })
 
+    //rendervideo
     const renderVideo =(querySnapshot)=>{
         querySnapshot.forEach(doc => {
             const data = data_update = doc.data()
             data_update.data_update  = Date.now()
 
             if(fisrt_time.render){
-                contenido_video.setAttribute('src', data.link)
+                elementVideo.setAttribute('src', data.link)
                 return
             }
             
@@ -315,18 +280,18 @@ export default ()=>{
 
                 if(data.change == 'play'){
                     if(JSON.parse(localStorage.getItem('click'))){
-                        if(JSON.parse(data_update.play)) contenido_video.play()
-                        else contenido_video.pause()
+                        if(JSON.parse(data_update.play)) elementVideo.play()
+                        else elementVideo.pause()
                     }
                 } 
                 else if(data.change == 'seeked'){
                     data_local.data_db_update = true
-                    contenido_video.currentTime = parseInt(data.time_progress) 
+                    elementVideo.currentTime = parseInt(data.time_progress) 
                 } 
                 else if(data.change == 'link'){
                     data_local.data_db_update = true
-                    contenido_video.currentTime = 0
-                    contenido_video.setAttribute('src', data.link)
+                    elementVideo.currentTime = 0
+                    elementVideo.setAttribute('src', data.link)
                 }
             }
         });
@@ -337,17 +302,15 @@ export default ()=>{
     const validate_click = JSON.parse(localStorage.getItem('click')) 
 
     if(validate_click){
-        const unsubscribe = streamRealtime(renderVideo, params.id)
+        const unsubscribe = dbRealtime.subscribe(renderVideo)
         addRemoveEventListener(window, 'hashchange', unsubscribe)
     } else {
         addRemoveEventListener(window, 'click', ()=> {
-            const unsubscribe = streamRealtime(renderVideo, params.id)
+            const unsubscribe = dbRealtime.subscribe(renderVideo)
             addRemoveEventListener(window, 'hashchange', unsubscribe)
         })
     }
-    
-    contenedor_video_fullscreen.element.remove()
+
     return ElementComponent
 }
- 
-//fullscreen
+  

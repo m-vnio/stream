@@ -23,13 +23,18 @@ main {
 }
 
 .div_U09zC {
+  position: relative;
   display: grid;
   overflow: hidden;
   grid-template-rows: auto 1fr;
 }
 
 .div_v05FO {
-  background: none;
+  display: flex;
+  overflow: hidden; 
+
+  transition: width .2s ease-in-out;
+  width: 100%;
 }
 
 .div_3gfqE {
@@ -68,23 +73,31 @@ button.icon img {
 
 @media (min-width: 800px) {
   .div_U09zC {
-    grid-template-columns: 1fr auto;
-    grid-template-rows: initial;
-    gap: 0;
+    grid-template-rows: 1fr;
     overflow: hidden;
   }
 
   .div_v05FO {
-    background: #000000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    &.active {
+      width: calc(100% - 400px);
+    }
+
+    &.active + .div_3gfqE {
+      right: 0;
+    }
+
+    & .div_al065 {
+      height: 100%;
+    }
   }
 
   .div_3gfqE {
-    width: 450px;
+    position: absolute;
+    top: 0;
+    right: -400px;
+    bottom: 0;
+    width: 400px;
     justify-self: end;
+    transition: right .2s ease-in-out;
   }
 }
-
-/* div_M08rV */

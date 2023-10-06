@@ -1,14 +1,10 @@
-/* .div_3gfqE{
-  position: relative;
-} */
-
 .div_ejM2b {
-  /* position: relative; */
   width: 100%;
   height: 100%;
 
   display: grid;
-  grid-template-rows: 1fr auto; 
+  grid-template-rows: 1fr auto;
+  background: var(--color-background);
 }
 
 .div_o4ubh {
@@ -20,7 +16,7 @@
   }
 
   &:has(.div_T5m0f) .div_3opy8 {
-    display: grid; 
+    display: grid;
   }
 }
 
@@ -48,7 +44,7 @@
   justify-self: start;
   display: flex;
   gap: 10px;
-  align-items: center; 
+  align-items: center;
 
   &.user {
     justify-content: right;
@@ -60,11 +56,10 @@
   }
 
   &.user .div_5f0m7.stiker {
-    background: none;  
-    flex-direction : initial;
+    background: none;
+    flex-direction: initial;
     color: var(--color-letter);
   }
- 
 }
 
 .div_5f0m7 {
@@ -74,7 +69,7 @@
   border-radius: 8px;
   display: grid;
   padding: 5px;
-  gap: 5px; 
+  gap: 5px;
 
   max-width: 85%;
 
@@ -91,17 +86,20 @@
 }
 
 .div_fR7XE {
-  background: rgb(181 178 178 / .3);
+  background: rgb(181 178 178 / 0.3);
   display: grid;
   border-radius: 4px;
   position: relative;
   overflow: hidden;
   padding-left: 4px;
 
-  &::before{
-    content: '';
-    position: absolute; left: 0; top: 0;
-    width: 4px; height: 100%;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
     background: rgb(181 178 178);
   }
 
@@ -115,29 +113,28 @@
     height: 40px;
     border-radius: 5px;
   }
- 
 }
 
-.div_7Rn9q{
+.div_7Rn9q {
   display: grid;
-  gap: inherit; 
+  gap: inherit;
 }
 
-.div_oeFkT{
+.div_oeFkT {
   display: flex;
   & p {
     word-break: break-word;
   }
 
-  & img { 
+  & img {
     width: 80px;
     height: 80px;
     border-radius: 5px;
   }
 }
 
-.div_qsJ0y{
-  display: grid;  
+.div_qsJ0y {
+  display: grid;
 
   & span {
     justify-self: end;
@@ -160,33 +157,33 @@
 .form_68Klg {
   background: none;
   display: grid;
-  border-top: 1.25px solid rgb(255 255 255 / 0.1); 
+  border-top: 1.25px solid rgb(255 255 255 / 0.1);
 
   &.active .div_Zk0B9 {
     display: grid;
   }
 }
 
-.div_Zk0B9{
-  display: none; 
+.div_Zk0B9 {
+  display: none;
   grid-template-columns: 1fr auto;
   align-items: center;
   border-bottom: 1.25px solid rgb(255 255 255 / 0.1);
 }
 
-.p_IA4wz{ 
+.p_IA4wz {
   padding: 0 15px;
-  opacity: .6;
+  opacity: 0.6;
   color: var(--color-letter);
 
-  & img{
+  & img {
     width: 50px;
     height: 50px;
     margin: 5px 0;
   }
 }
 
-.div_b3Gh3{
+.div_b3Gh3 {
   display: flex;
 }
 
@@ -237,7 +234,6 @@
   &.active {
     display: flex;
   }
-  
 }
 
 .div_3b7ZM {
@@ -251,11 +247,9 @@
 }
 
 @media (min-width: 750px) {
-  .div_ejM2b {
-    border-radius: 8px;
+  .div_ejM2b { 
     overflow: hidden;
   }
 }
-
 
 /* div_ejM2b */
