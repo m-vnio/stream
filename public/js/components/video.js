@@ -246,8 +246,8 @@ export default (ElementComponentFullScreen)=>{
             // })
         } else {
             //elementVideoContent
-            elementVideo.innerHTML = ''
-            elementVideo.remove()
+            elementVideoContent.innerHTML = ''
+            //elementVideo.remove()
 
             const testVideo = createHTML('<video class="video_01Mr1" name="media"></video>')
             console.log(testVideo);
