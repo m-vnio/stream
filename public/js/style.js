@@ -22,7 +22,7 @@ export default ()=>{
     }
 
     if(!localStorage.getItem('fontFamily')){
-        localStorage.setItem('fontFamily', "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'")
+        localStorage.setItem('fontFamily', JSON.stringify({ name : "predeterminado", font : "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'" }))
     }
 
     const theme = localStorage.getItem('theme')

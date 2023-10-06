@@ -1,3 +1,4 @@
+import { logoutFirebase } from "../firebase/auth.js"
 import modalSetting from "../components/modalSetting.js"
 
 export default ()=>{
@@ -7,6 +8,10 @@ export default ()=>{
                 <div class="div_h35b0gG"> 
                     <button class="button_8GBQ4NU" data-action="apariencia">
                         <span class="text-ellipsis">apariencia</span>
+                        <i class="fa-solid fa-caret-right"></i>
+                    </button>
+                    <button class="button_8GBQ4NU" data-action="logout">
+                        <span class="text-ellipsis">cerrar sesion</span>
                         <i class="fa-solid fa-caret-right"></i>
                     </button>
                 </div>
@@ -21,7 +26,8 @@ export default ()=>{
 
         if(button){
             const action = button.dataset.action
-            document.getElementById('root').append(modalSetting())
+            if(action == 'apariencia') document.getElementById('root').append(modalSetting())
+            else if(action == 'logout') logoutFirebase()
         }
     })
 
