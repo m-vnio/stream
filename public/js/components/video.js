@@ -32,7 +32,7 @@ export default (ElementComponentFullScreen)=>{
         <div class="div_v05FO active">
             <div class="div_al065">
                 <div class="div_Gj3xZ">
-                    <video class="video_01Mr1" name="media" src=""></video>
+                    <video class="video_01Mr1" name="media"></video>
                 </div>
                 <div class="div_Mbdqf">
                     <div class="div_6u0fO">
@@ -191,59 +191,105 @@ export default (ElementComponentFullScreen)=>{
     elementVideo.addEventListener("play", ()=> btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-pause.svg" alt="icon-svg">');
     elementVideo.addEventListener("pause", ()=> btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-play.svg" alt="icon-svg">');
 
-    elementVideo.addEventListener("loadedmetadata", ()=> {
-        ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
-        const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000) 
-        elementVideo.currentTime = parseInt(data_update.time_progress) + segundos_diferencia
-    })
+    // elementVideo.addEventListener("loadedmetadata", ()=> {
+    //     ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
+    //     const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000) 
+    //     elementVideo.currentTime = parseInt(data_update.time_progress) + segundos_diferencia
+    // })
 
-    elementVideo.addEventListener("timeupdate", ()=> {
-        if(change_input) return 
-        ipt_duration.value = elementVideo.currentTime.toFixed(0)
+    // elementVideo.addEventListener("timeupdate", ()=> {
+    //     if(change_input) return 
+    //     ipt_duration.value = elementVideo.currentTime.toFixed(0)
 
-        if(ipt_duration.value != ipt_duration.dataset.value){
-            ipt_duration.dataset.value = ipt_duration.value
-            hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
-            const Time = getTimeBySecond(parseInt(ipt_duration.max) - parseInt(ipt_duration.value))
-            span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
-        }
-    })
+    //     if(ipt_duration.value != ipt_duration.dataset.value){
+    //         ipt_duration.dataset.value = ipt_duration.value
+    //         hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
+    //         const Time = getTimeBySecond(parseInt(ipt_duration.max) - parseInt(ipt_duration.value))
+    //         span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
+    //     }
+    // })
 
     //elementInput
     let change_input = false
-    ipt_duration.addEventListener('input', () => {
-        change_input = true
-        hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
-    })
+    // ipt_duration.addEventListener('input', () => {
+    //     change_input = true
+    //     hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
+    // })
 
-    ipt_duration.addEventListener('change', () => {
-        change_input = false
-        elementVideo.currentTime = parseInt(ipt_duration.value) 
-        const progress = elementVideo.currentTime.toFixed(0)
+    // ipt_duration.addEventListener('change', () => {
+    //     change_input = false
+    //     elementVideo.currentTime = parseInt(ipt_duration.value) 
+    //     const progress = elementVideo.currentTime.toFixed(0)
 
-        db.edit(params.id, {
-            id_user : user.uid,
-            datetime_update : Date.now().toString(),
-            time_progress   : progress,
-            change : 'seeked'
-        }) 
-    })
+    //     db.edit(params.id, {
+    //         id_user : user.uid,
+    //         datetime_update : Date.now().toString(),
+    //         time_progress   : progress,
+    //         change : 'seeked'
+    //     }) 
+    // })
 
     //eventos de windows
     addRemoveEventListenerHashchange(window, 'open_link', e => {
-        elementVideo.setAttribute('src', e.detail.link)
-        elementVideo.setAttribute('autoplay', '')
-        elementVideo.currentTime = 0
+        // elementVideo.setAttribute('src', e.detail.link)
+        // elementVideo.setAttribute('autoplay', '')
+        // elementVideo.currentTime = 0
 
         if(e.detail.submit) {
-            db.edit(params.id, {
-                link : e.detail.link,
-                datetime_update : Date.now().toString(),
-                play : 'true',
-                change : 'link',
-                id_user : user.uid,
-                time_progress   : '0',
+            // db.edit(params.id, {
+            //     link : e.detail.link,
+            //     datetime_update : Date.now().toString(),
+            //     play : 'true',
+            //     change : 'link',
+            //     id_user : user.uid,
+            //     time_progress   : '0',
+            // })
+        } else {
+            //elementVideoContent
+            elementVideo.innerHTML = ''
+            elementVideo.remove()
+
+            const testVideo = createHTML('<video class="video_01Mr1" name="media"></video>')
+            console.log(testVideo);
+
+            const videoURL = e.detail.link
+            const source = document.createElement("source");
+            source.src = videoURL;
+
+            if (videoURL.endsWith(".mp4")) source.type = "video/mp4"
+            else if (videoURL.endsWith(".webm")) source.type = "video/webm";
+            else if (videoURL.endsWith(".ogv")) source.type = "video/ogg"
+            else if (videoURL.endsWith(".avi")) source.type = "video/x-msvideo"
+            else if (videoURL.endsWith(".m3u8")) source.type = "application/x-mpegURL"
+            else source.type = "video/mp4";
+
+            testVideo.append(source)
+
+            elementVideoContent.append(testVideo)
+            testVideo.setAttribute('autoplay', '') 
+
+            testVideo.addEventListener("timeupdate", ()=> {
+                ipt_duration.setAttribute('max', testVideo.duration.toFixed(0))
+                if(change_input) return 
+                ipt_duration.value = testVideo.currentTime.toFixed(0)
+        
+                if(ipt_duration.value != ipt_duration.dataset.value){
+                    ipt_duration.dataset.value = ipt_duration.value
+                    hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
+                    const Time = getTimeBySecond(parseInt(ipt_duration.max) - parseInt(ipt_duration.value))
+                    span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
+                }
             })
+
+            ipt_duration.addEventListener('input', () => {
+                change_input = true
+                hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
+            })
+        
+            ipt_duration.addEventListener('change', () => {
+                change_input = false
+                testVideo.currentTime = parseInt(ipt_duration.value)  
+            }) 
         }
     })
 
