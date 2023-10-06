@@ -299,6 +299,8 @@
   justify-content: center;
   align-items: end;
 
+  z-index: 999;
+
   & span {
     font-size: 35px;
     position: absolute;
@@ -324,4 +326,4 @@
   }
 }
 
-/*  div_6u0fO  emoji*/
+/*  div_6u0fO  div_82gU7*/

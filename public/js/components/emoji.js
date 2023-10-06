@@ -32,7 +32,7 @@ export default ()=>{
 
     elementTap.addEventListener('click', ()=> ElementComponent.remove())
 
-    const ElementComponent2 = createHTML(`<div class="div_82gU7"></div>`)
+    const elementEmojiContent = createHTML(`<div class="div_82gU7"></div>`)
 
     const root = document.getElementById('root')
 
@@ -59,12 +59,12 @@ export default ()=>{
         if(!doEmoji) return
         doEmoji = false
 
-        if(document.fullscreenElement) document.fullscreenElement.append(ElementComponent2)
-        else root.append(ElementComponent2)
+        if(document.fullscreenElement) document.fullscreenElement.append(elementEmojiContent)
+        else root.append(elementEmojiContent)
         
         ElementComponent.remove()
-        ElementComponent2.innerHTML = '<span style="color:#ffffff"></span>'
-        ElementComponent2.children[0].textContent = emoji.slice(0, 50)
+        elementEmojiContent.innerHTML = '<span style="color:#ffffff"></span>'
+        elementEmojiContent.children[0].textContent = emoji.slice(0, 50)
 
         ElementComponent.style.opacity = '.5' 
         
@@ -77,7 +77,7 @@ export default ()=>{
 
         setTimeout(()=> {
             ElementComponent.style.opacity = '1'
-            ElementComponent2.remove() 
+            elementEmojiContent.remove() 
             doEmoji = true
         }, 2000)
     }
@@ -90,11 +90,11 @@ export default ()=>{
             if(data.id_user == user.uid) return
 
             if(Date.now() < (parseInt(data.datetime_add) + 7000)){
-                if(document.fullscreenElement) document.fullscreenElement.append(ElementComponent2)
-                else root.append(ElementComponent2)
+                if(document.fullscreenElement) document.fullscreenElement.append(elementEmojiContent)
+                else root.append(elementEmojiContent)
 
-                ElementComponent2.innerHTML = `<span style="color:#ffffff">${ data.emoji }</span>`
-                setTimeout(()=> ElementComponent2.remove() , 2000)
+                elementEmojiContent.innerHTML = `<span style="color:#ffffff">${ data.emoji }</span>`
+                setTimeout(()=> elementEmojiContent.remove() , 2000)
             }
         });
 
