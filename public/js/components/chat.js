@@ -22,10 +22,10 @@ export default ()=>{
                 <form class="form_68Klg" data-action="add" autocomplete="off">
                     <div class="div_Zk0B9"> 
                         <p class="p_IA4wz text-ellipsis"></p>
-                        <button class="button_E8Vr8" data-action="cancelEdit"><i class="fa-solid fa-xmark"></i></button>
+                        <button type="button" class="button_E8Vr8" data-action="cancelEdit"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                     <div class="div_b3Gh3">
-                        <button class="button_E8Vr8 icon" data-action="openStiker" ><img src="public/img/icons/svg/icon-stiker.svg" alt="icon-svg"></button>
+                        <button type="button" class="button_E8Vr8 icon" data-action="openStiker" ><img src="public/img/icons/svg/icon-stiker.svg" alt="icon-svg"></button>
                         <label class="label_Fkf9B">
                             <textarea class="txt_W17W2" name="txt_message" placeholder="text..."></textarea>
                         </label>
@@ -41,7 +41,7 @@ export default ()=>{
 
     const findChild = query => ElementComponent.querySelector(query)
 
-    const root = document.getElementById('root')
+    //const root = document.getElementById('root')
     const elementChatStiker = chatStiker()
 
     const formChat      = findChild('.form_68Klg') 
