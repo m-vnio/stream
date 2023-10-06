@@ -1,11 +1,17 @@
 
 export default ()=>{
 
-    const version = '18958597504015'
-    
-    if(!localStorage.getItem('version')){
+    const versionChange = '1696632403938'
+
+    if(!localStorage.getItem('versionChange')){
         localStorage.clear()
-        localStorage.setItem('version', version)
+        localStorage.setItem('versionChange', versionChange)
+    }
+
+    if(parseInt(versionChange) > parseInt(localStorage.getItem('versionChange'))){
+        localStorage.clear()
+        localStorage.setItem('versionChange', versionChange)
+        console.log('hola');
     }
 
     localStorage.setItem('click', 'false')
