@@ -250,21 +250,20 @@ export default (ElementComponentFullScreen)=>{
         }) 
     })
 
-    //eventos de windows
     addRemoveEventListenerHashchange(window, 'open_link', e => {
         // elementVideo.setAttribute('src', e.detail.link)
         // elementVideo.setAttribute('autoplay', '')
         // elementVideo.currentTime = 0
 
         if(e.detail.submit) {
-            // db.edit(params.id, {
-            //     link : e.detail.link,
-            //     datetime_update : Date.now().toString(),
-            //     play : 'true',
-            //     change : 'link',
-            //     id_user : user.uid,
-            //     time_progress   : '0',
-            // })
+            db.edit(params.id, {
+                link : e.detail.link,
+                datetime_update : Date.now().toString(),
+                play : 'true',
+                change : 'link',
+                id_user : user.uid,
+                time_progress   : '0',
+            })
         } else {
             renderVideoURL(e.detail.link)
         }
