@@ -19,9 +19,9 @@ export default ()=>{
 
     addRemoveEventListener(window, 'click', ()=> localStorage.setItem('click', 'true'))
 
-    window.addEventListener("beforeunload", function (e) {
-        const confirmationMessage = "¿Deseas volver a cargar el sitio?";
-        e.returnValue = confirmationMessage;
-        return confirmationMessage;
-    })
+    // window.addEventListener("beforeunload", function (e) {
+    //     const confirmationMessage = "¿Deseas volver a cargar el sitio?";
+    //     e.returnValue = confirmationMessage;
+    //     return confirmationMessage;
+    // })
 } 

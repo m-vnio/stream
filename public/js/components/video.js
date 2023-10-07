@@ -141,6 +141,7 @@ export default (ElementComponentFullScreen)=>{
     })
     
     btnOpenChat.addEventListener('click', ()=> {
+        btnOpenChat.classList.remove('notification')
         elementVideoContent.classList.remove('active')
         ElementComponent.classList.toggle('active')
     })
@@ -271,8 +272,8 @@ export default (ElementComponentFullScreen)=>{
 
     addRemoveEventListenerHashchange(window, 'send_notification_message', ()=> {
         if(document.fullscreenElement){
-            element_mensaje_notificacion.style.display = 'flex'
-            element_mensaje_notificacion.children[0].classList.add('notification')
+            //element_mensaje_notificacion.style.display = 'flex'
+            btnOpenChat.classList.add('notification')
         }
     })
 
