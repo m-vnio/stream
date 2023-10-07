@@ -3,7 +3,7 @@ import emoji from "./emoji.js"
 import formLink from "./formLink.js"
 
 export default (ElementComponentFullScreen)=>{
-    
+    //div_v05FO
     const params = json(sessionStorage.getItem('params'))
     const user   = json(localStorage.getItem('user'))
 
@@ -51,7 +51,7 @@ export default (ElementComponentFullScreen)=>{
                             </div>
                             <span class="span_4E0dR">00:00:00</span>
                             <div class="div_HGz61">
-                                <button class="button_KXchF" style="visible:hidden"></button>
+                                <button class="button_KXchF lock-unlock" style="visibility: hidden" data-action="lock_unlock"><img src="public/img/icons/svg/icon-lock.svg" alt="icon-svg"></button>
                                 <button class="button_KXchF" data-action="active_fullscreen"><img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg"></button>
                             </div>
                         </div>
@@ -89,11 +89,13 @@ export default (ElementComponentFullScreen)=>{
     const btnOpenEmoji = findChild('button[data-action=open_emoji]')
     const btnOpenFormLink = findChild('button[data-action=open_form_link]')
     const btnActiveFullscreen = findChild('button[data-action=active_fullscreen]')
+    const btnLockUnlock = findChild('button[data-action=lock_unlock]')
 
     //div_al065
     const elementVideoContainer =   findChild('.div_al065')
     const elementVideoContent   =   findChild('.div_Gj3xZ')
     const elementVideoControl   =   findChild('.div_Mbdqf')
+    const elementVideoControlBotttom = findChild('.div_XjdZ8')
     const elementVideo          =   findChild('.video_01Mr1')
 
     const elementButtonTop      =   findChild('.div_6u0fO')
@@ -104,6 +106,11 @@ export default (ElementComponentFullScreen)=>{
 
     elementVideoContent.addEventListener('click', () => {
         elementVideoContent.classList.toggle('active')
+
+        if(document.fullscreenElement) {
+            if(elementVideoContent.classList.contains('active')) btnOpenChat.classList.add('active')
+            else btnOpenChat.classList.remove('active')
+        }
     })
 
     btnPlay.addEventListener("click", ()=> {
@@ -163,6 +170,13 @@ export default (ElementComponentFullScreen)=>{
         def_fullscreen(true)
     })
 
+    btnLockUnlock.addEventListener('click', ()=> {
+        elementVideoControlBotttom.classList.toggle('unlock')
+
+        const isElementUnlock = elementVideoControlBotttom.classList.contains('unlock')
+        btnLockUnlock.innerHTML = `<img src="public/img/icons/svg/icon-${ isElementUnlock ? 'unlock' : 'lock' }.svg" alt="icon-svg">` 
+    })
+
     addRemoveEventListenerHashchange(document, 'fullscreenchange', ()=> def_fullscreen(false))
 
     const def_fullscreen =(status)=>{
@@ -173,12 +187,14 @@ export default (ElementComponentFullScreen)=>{
             btnOpenChat.classList.add('active')
             ElementComponent.classList.remove('active')
             elementButtonTop.classList.add('active')
+            btnLockUnlock.style.visibility = 'initial' 
 
             if(/Mobi|Android/i.test(navigator.userAgent)){
                 if(window.screen.orientation && window.screen.orientation.lock){
                     window.screen.orientation.lock("landscape");
                 }
             }
+
         } else {
             if(status) return ElementComponentFullScreen.requestFullscreen()
             ElementComponentFullScreen.classList.remove('active')
@@ -186,6 +202,10 @@ export default (ElementComponentFullScreen)=>{
             btnOpenChat.classList.remove('active')
             ElementComponent.classList.add('active')
             elementButtonTop.classList.remove('active')
+            btnLockUnlock.style.visibility = 'hidden'
+            btnLockUnlock.innerHTML = `<img src="public/img/icons/svg/icon-lock.svg" alt="icon-svg">`
+
+            elementVideoControlBotttom.classList.remove('unlock')
 
             if(/Mobi|Android/i.test(navigator.userAgent)){
                 if(window.screen.orientation && window.screen.orientation.unlock){
@@ -273,7 +293,8 @@ export default (ElementComponentFullScreen)=>{
     addRemoveEventListenerHashchange(window, 'send_notification_message', ()=> {
         if(document.fullscreenElement){
             //element_mensaje_notificacion.style.display = 'flex'
-            btnOpenChat.classList.add('notification')
+            if(!ElementComponent.classList.contains('active'))
+                btnOpenChat.classList.add('notification')
         }
     })
 

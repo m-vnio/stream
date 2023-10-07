@@ -82,7 +82,7 @@
   justify-content: center;
   align-items: center;
 
-  &.active {
+  &.active, &.notification {
     display: flex;
   }
 
@@ -111,6 +111,18 @@
   pointer-events: initial;
   display: grid;
   text-align: center;
+
+  &.unlock {
+    pointer-events: none;
+  }
+
+  &.unlock button {
+    visibility: hidden;
+  }
+
+  &.unlock button.lock-unlock {
+    pointer-events: initial;
+  }
 }
 
 .div_uN72K {
@@ -326,4 +338,4 @@
   }
 }
 
-/*  div_6u0fO  div_82gU7*/
+/*  div_6u0fO  div_82gU7 button_hdZNr*/
