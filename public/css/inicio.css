@@ -15,6 +15,10 @@
   width: min(100%, 650px);
 }
 
+.div_Hu171ix {
+  color: var(--color-letter);
+}
+
 .div_h35b0gG {
   display: grid;
   gap: 3px;
@@ -73,8 +77,8 @@
     filter: var(--filter-img);
   }
 
-  &:hover{
-    opacity: .5;
+  &:hover {
+    opacity: 0.5;
   }
 }
 
@@ -93,8 +97,8 @@
     filter: var(--filter-img);
   }
 
-  &:hover{
-    opacity: .5;
+  &:hover {
+    opacity: 0.5;
   }
 }
 
@@ -287,4 +291,4 @@
   }
 }
 
-/* div_xAJ4fl5 div_AYs8msi div_AYs8msi  div_cPN16D0 a_e674k6w*/
+/* div_xAJ4fl5 div_AYs8msi div_AYs8msi  div_cPN16D0 a_e674k6w div_ue0FY7z*/

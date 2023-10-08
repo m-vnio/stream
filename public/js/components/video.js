@@ -143,8 +143,8 @@ export default (ElementComponentFullScreen)=>{
             change : 'seeked'
         })
 
-        seeked_back_10.style.pointerEvents = 'none'
-        setTimeout(()=> seeked_back_10.style.pointerEvents = 'initial', 1500)
+        btnSeekedBack10.style.pointerEvents = 'none'
+        setTimeout(()=> btnSeekedBack10.style.pointerEvents = 'initial', 1500)
     })
     
     btnOpenChat.addEventListener('click', ()=> {
@@ -308,6 +308,7 @@ export default (ElementComponentFullScreen)=>{
 
     //rendervideoURL
     const renderVideoURL = url =>{
+        if(url == '') return
 
         const typeVideo = url =>{
             const urlObject = new URL(url)
@@ -340,6 +341,7 @@ export default (ElementComponentFullScreen)=>{
             data_update.data_update  = Date.now()
 
             if(fisrt_time.render){
+                fisrt_time.render = false
                 renderVideoURL(data.link)
                 return
             }
@@ -365,9 +367,7 @@ export default (ElementComponentFullScreen)=>{
                     renderVideoURL(data.link) 
                 }
             }
-        });
-
-        fisrt_time.render = false
+        }); 
     }
 
     const validate_click = JSON.parse(localStorage.getItem('click')) 
