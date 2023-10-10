@@ -6,6 +6,8 @@ import register from "../page/register.js";
 
 import setting from "../page/setting.js";
 import user from "../page/user.js";
+import stiker from "../page/stiker.js";
+import stikerIndex from "../page/stikerIndex.js";
 
 export default ()=>{
 
@@ -56,7 +58,9 @@ export default ()=>{
     Routes.param('/stream/:id', stream)
     Routes.param('/setting', setting)
     Routes.param('/user', user)
-
+    Routes.param('/stiker', stiker)
+    Routes.param('/stiker/:index', stikerIndex)
+    
     Routes.dispatch(()=> {
         main.innerHTML = ''
 

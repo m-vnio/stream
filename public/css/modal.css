@@ -1,0 +1,39 @@
+/* contenedor base */
+.div_KEVYWu2 {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  z-index: 100;
+}
+
+.div_hS7SImh {
+  position: fixed;
+  inset: 0;
+
+  background: var(--color-letter);
+  opacity: 0.1;
+}
+
+/* stiker */
+.div_d788b1q {
+  position: relative;
+  background: var(--color-item);
+  width: min(100%, 500px);
+  align-self: end;
+  justify-self: center;
+  border-radius: 8px;
+  display: grid;
+  overflow: hidden;
+
+  & button {
+    height: 60px;
+    text-align: left;
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 600px) {
+  .div_KEVYWu2 {
+    padding: 15px;
+  }
+}

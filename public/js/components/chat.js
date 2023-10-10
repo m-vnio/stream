@@ -31,6 +31,7 @@ export default ()=>{
                         </label>
                         <button type="submit" class="button_E8Vr8 icon"><img src="public/img/icons/svg/icon-paper-plane.svg" alt="icon-svg"></button>
                     </div> 
+                    <div class="div_Wk1L3WK"></div>
                 </form>
             </div>
             <div data-css="contenedor_chat_fullscreen">
@@ -42,13 +43,15 @@ export default ()=>{
     const findChild = query => ElementComponent.querySelector(query)
 
     //const root = document.getElementById('root')
-    const elementChatStiker = chatStiker()
+    //const elementChatStiker = chatStiker()
 
     const formChat      = findChild('.form_68Klg') 
     const btnCancel     = findChild('[data-action=cancelEdit]')
     const btnOpenStiker = findChild('[data-action=openStiker]')
 
     const elementItemChat = findChild('.div_3opy8')
+    const elementContentStiker = findChild('.div_Wk1L3WK')
+    elementContentStiker.append(chatStiker({ dispatch : 'set_message' })) 
 
     elementItemChat.addEventListener('contextmenu', e => {
         const item  = e.target.closest('.div_T5m0f')
@@ -74,6 +77,10 @@ export default ()=>{
         formChat.txt_message.focus()
     })
 
+    formChat.txt_message.addEventListener('focus', e => {
+        if(elementContentStiker.classList.contains('active')) history.back()
+    })
+
     formChat.txt_message.addEventListener('input', e => {
         const target = e.target
         target.style.height = '20px'
@@ -92,7 +99,15 @@ export default ()=>{
     })
 
     btnOpenStiker.addEventListener('click', ()=> { 
-        ElementComponent.append(elementChatStiker)
+        //ElementComponent.append(elementChatStiker)
+        if(elementContentStiker.classList.contains('active')){
+            history.back()
+        } else {
+            elementContentStiker.classList.add('active')
+            history.pushState(null, null, location.href)
+        }
+
+        
     })
 
     //eventos de windows
@@ -187,6 +202,11 @@ export default ()=>{
         formChat.removeAttribute('data-id-message-reply')
         formChat.removeAttribute('data-id-message')
 
+    })
+
+    addEventListener('popstate', e => {
+        if(elementContentStiker.classList.contains('active'))
+            elementContentStiker.classList.remove('active')
     })
 
     const renderHTML =(onSnapshot)=>{

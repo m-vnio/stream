@@ -8,7 +8,11 @@ export default ()=>{
                     <button class="button_8GBQ4NU" data-action="apariencia">
                         <span class="text-ellipsis">apariencia</span>
                         <i class="fa-solid fa-caret-right"></i>
-                    </button> 
+                    </button>
+                    <a href="#/stiker" class="button_8GBQ4NU" data-action="apariencia">
+                        <span class="text-ellipsis">stiker</span>
+                        <i class="fa-solid fa-caret-right"></i>
+                    </a> 
                 </div>
             </div>
         </div>

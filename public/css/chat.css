@@ -190,7 +190,7 @@
 .label_Fkf9B {
   flex: 1;
   padding: 15px 0;
-  min-height: 50px;
+  min-height: 60px;
   display: flex;
 
   cursor: text;
@@ -211,8 +211,8 @@
 
 .button_E8Vr8 {
   align-self: end;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
 
   color: var(--color-letter);
   cursor: pointer;
@@ -247,9 +247,68 @@
 }
 
 @media (min-width: 750px) {
-  .div_ejM2b { 
+  .div_ejM2b {
     overflow: hidden;
   }
 }
 
-/* div_ejM2b */
+/* CHAT STIKER */
+.div_Wk1L3WK {
+  width: 100%;
+  height: 0;
+  display: flex;
+
+  transition: height .3s ease-in-out;
+  &.active{
+    height: 300px;
+  }
+}
+
+.div_H8m7YkD {
+  flex: 1;
+  overflow: hidden;
+
+  display: grid;
+  grid-template-rows: 60px 1fr;
+}
+
+.div_9w65NCd {
+  display: flex;
+  border-top: 1.25px solid rgb(181 178 178 / 0.3);
+  border-bottom: 1.25px solid rgb(181 178 178 / 0.3);
+}
+
+.div_G533kHG {
+  display: flex;
+  & button {
+    width: 60px;
+    height: 60px;
+
+    color: var(--color-letter);
+  }
+}
+
+.div_zq2nbRg{
+  display: flex;
+}
+
+.div_K23c15w {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 80px), 1fr));
+  padding: 5px;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.div_6dnYWBn {
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-radius: 5px;
+
+  & img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* button_E8Vr8 */

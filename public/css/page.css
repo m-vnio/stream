@@ -1,0 +1,78 @@
+/* STIKER */
+.div_vXa5q94 {
+  position: fixed;
+  inset: 0;
+  background: var(--color-background);
+
+  display: grid;
+}
+
+.div_GHk93TF {
+  flex: 1;
+  padding: 10px;
+}
+
+.div_jr45I15 {
+  width: min(100%, 650px);
+  margin: 0 auto;
+  display: grid;
+  gap: 3px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.div_80VEr3d {
+  background: var(--color-item);
+  height: 60px;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+
+  & button {
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & img {
+      width: 13px;
+      height: 13px;
+      filter: var(--filter-img);
+    }
+  }
+}
+
+.div_79Hcs8q {
+  padding: 0 15px;
+
+  display: flex;
+  align-items: center;
+  color: var(--color-letter);
+  text-decoration: none;
+}
+
+.div_C0rVsHh {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 80px), 1fr));
+  overflow: hidden;
+  gap: 10px;
+}
+
+.div_SlY3iuU {
+  aspect-ratio: 1/1;
+  overflow: hidden;
+
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.5;
+  }
+
+  & img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+  }
+}

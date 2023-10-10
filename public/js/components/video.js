@@ -275,7 +275,7 @@ export default (ElementComponentFullScreen)=>{
         // elementVideo.setAttribute('src', e.detail.link)
         // elementVideo.setAttribute('autoplay', '')
         // elementVideo.currentTime = 0
-
+        renderVideoURL(e.detail.link)
         if(e.detail.submit) {
             db.edit(params.id, {
                 link : e.detail.link,
@@ -285,8 +285,6 @@ export default (ElementComponentFullScreen)=>{
                 id_user : user.uid,
                 time_progress   : '0',
             })
-        } else {
-            renderVideoURL(e.detail.link)
         }
     })
 
