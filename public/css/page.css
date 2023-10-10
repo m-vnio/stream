@@ -4,7 +4,8 @@
   inset: 0;
   background: var(--color-background);
 
-  display: grid;
+  display: grid; 
+  z-index: 999;
 }
 
 .div_GHk93TF {
@@ -35,10 +36,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+
+    &:hover{
+      opacity: .7;
+    }
 
     & img {
-      width: 13px;
-      height: 13px;
+      width: 20px;
+      height: 20px;
       filter: var(--filter-img);
     }
   }
@@ -76,3 +82,4 @@
     border-radius: 8px;
   }
 }
+/* div_80VEr3d */

@@ -61,6 +61,18 @@ export default ()=>{
         }
     })
 
+    elementItemChat.addEventListener('click', e => {
+        const item  = e.target.closest('.div_fR7XE')
+        if(item){
+            const elementMessageReply = elementItemChat.querySelector(`#${ item.dataset.idReply }`)
+            if(elementMessageReply) {
+                elementMessageReply.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    })
+
+    //
+
     //eventos de formulario
     formChat.addEventListener('submit', e => {
         e.preventDefault()

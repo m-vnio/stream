@@ -258,8 +258,8 @@
   height: 0;
   display: flex;
 
-  transition: height .3s ease-in-out;
-  &.active{
+  transition: height 0.3s ease-in-out;
+  &.active {
     height: 300px;
   }
 }
@@ -288,7 +288,7 @@
   }
 }
 
-.div_zq2nbRg{
+.div_zq2nbRg {
   display: flex;
 }
 
@@ -311,4 +311,16 @@
   }
 }
 
-/* button_E8Vr8 */
+.div_4m9E0dI{
+  position: relative;
+}
+
+.div_S9WOJ54 {
+  position: absolute; inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* button_E8Vr8 div_S9WOJ54 */

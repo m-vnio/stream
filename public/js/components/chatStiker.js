@@ -82,9 +82,14 @@ export default (DataModule = {})=>{
 
     const renderData =(Data)=>{
         const elementTemp = document.createDocumentFragment()
-        Data.stiker.forEach((data) => elementTemp.append(renderHTML(data)));
-        elementItem.innerHTML = ''
-        elementItem.append(elementTemp)
+
+        if(Data.stiker.length) {
+            Data.stiker.forEach((data) => elementTemp.append(renderHTML(data)));
+            elementItem.innerHTML = ''
+            elementItem.append(elementTemp)
+        } else {
+            elementItem.innerHTML = '<div class="div_S9WOJ54">~ lista vacia ~</div>'
+        } 
     }
 
     const loadDataHead =()=>{
@@ -97,7 +102,7 @@ export default (DataModule = {})=>{
     loadDataHead()
 
     const loadDataBody =()=>{ 
-        renderData({ stiker : JSON.parse(localStorage.getItem('stiker-favorite')) })
+        renderData({ stiker : JSON.parse(localStorage.getItem('stiker-favorite') ?? '[]') })
     } 
 
     

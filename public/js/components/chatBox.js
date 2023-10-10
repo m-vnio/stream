@@ -25,14 +25,14 @@ export default (data, Chat, user)=>{
     const ElementComponent = createHTML(`
         <div class="div_T5m0f ${ messageUser }" id="div-${ data.id }">
             <div class="div_5f0m7 ${ messageType }">
-                <div class="div_fR7XE">
+                <div class="div_fR7XE" data-id-reply="div-${ chatReply.id }">
                     <p class="text-ellipsis"></p>
-                    <img alt="img">
+                    <img alt="stiker-not-found">
                 </div>
                 <div class="div_7Rn9q">
                     <div class="div_oeFkT ${ messageType }">
                         <p></p>
-                        <img alt="img">
+                        <img alt="stiker-not-found">
                     </div>
                     <div class="div_qsJ0y"><span>${ setTime }</span></div>
                 </div>
