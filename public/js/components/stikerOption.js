@@ -1,9 +1,7 @@
 export default (data)=>{
 
-    if(!localStorage.getItem('stiker-favorite'))
-        localStorage.setItem('stiker-favorite', JSON.stringify([]))
+    const stikerFavorite = ls('stiker-favorite').data([]).push(true, true)
 
-    const stikerFavorite = JSON.parse(localStorage.getItem('stiker-favorite'))
     const isStikerFavorite = stikerFavorite.find(stiker => stiker.id == data.id)
 
     const imgIcon = icon => `<img src="public/img/icons/svg/${ icon }.svg" alt="icon-svg">`

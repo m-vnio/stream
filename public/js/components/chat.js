@@ -40,17 +40,17 @@ export default ()=>{
         </div>
     `)
 
-    const findChild = query => ElementComponent.querySelector(query)
+    const query = new findElement(ElementComponent)
 
     //const root = document.getElementById('root')
     //const elementChatStiker = chatStiker()
 
-    const formChat      = findChild('.form_68Klg') 
-    const btnCancel     = findChild('[data-action=cancelEdit]')
-    const btnOpenStiker = findChild('[data-action=openStiker]')
+    const formChat      = query.get('.form_68Klg') 
+    const btnCancel     = query.get('[data-action=cancelEdit]')
+    const btnOpenStiker = query.get('[data-action=openStiker]')
 
-    const elementItemChat = findChild('.div_3opy8')
-    const elementContentStiker = findChild('.div_Wk1L3WK')
+    const elementItemChat = query.get('.div_3opy8')
+    const elementContentStiker = query.get('.div_Wk1L3WK')
     elementContentStiker.append(chatStiker({ dispatch : 'set_message' })) 
 
     elementItemChat.addEventListener('contextmenu', e => {

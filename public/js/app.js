@@ -8,8 +8,7 @@ export default ()=>{
 
     style()
     routes()
-
-    document.getElementById('root').append(navigate())
+    navigate() 
 
     window.addEventListener('contextmenu', e => {
         if(!contextmenuIncludeTarget.includes(e.target.tagName)){
@@ -18,10 +17,10 @@ export default ()=>{
     })
 
     addRemoveEventListener(window, 'click', ()=> localStorage.setItem('click', 'true'))
-
-    window.addEventListener("beforeunload", function (e) {
-        const confirmationMessage = "¿Deseas volver a cargar el sitio?";
-        e.returnValue = confirmationMessage;
-        return confirmationMessage;
-    })
+    // window.addEventListener("beforeunload", function (e) {
+    //     const confirmationMessage = "¿Deseas volver a cargar el sitio?";
+    //     e.returnValue = confirmationMessage;
+    //     return confirmationMessage;
+    // })
 } 
+

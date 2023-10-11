@@ -3,8 +3,8 @@ import Emoji from "../data/Emoji.js";
 export default ()=>{
     
     
-    const params = json(sessionStorage.getItem('params'))
-    const user   = json(localStorage.getItem('user'))
+    const params = JSON.parse(sessionStorage.getItem('params'))
+    const user   = ls('user').get(true)
     const db     = new dbFirebase('stream_emoji')
     const dbRealtime     = new dbFirebaseRealtime('stream_emoji')
     dbRealtime.query({ where : [["id_stream", "==", params.id]], orderBy : ["datetime_add", "desc"], limit : 1 })
@@ -26,9 +26,9 @@ export default ()=>{
         </div>
     `)
 
-    const findChild = query => ElementComponent.querySelector(query)
+    const query = new findElement(ElementComponent)
 
-    const elementTap = findChild('.div_4Wz57gr')
+    const elementTap = query.get('.div_4Wz57gr')
 
     elementTap.addEventListener('click', ()=> ElementComponent.remove())
 

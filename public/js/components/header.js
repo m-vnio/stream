@@ -3,10 +3,8 @@ export default ()=>{
     const stream = {
         id : '1',
         id_user : '1695101156748',
-        name : 'VN ♥'
+        name : 'NIVI ~ V♥N'
     }
-
-    //const user = JSON.parse(localStorage.getItem('user'))
 
     const ElementComponent = createHTML(`
         <header class="header_zyfS8">

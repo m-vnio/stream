@@ -1,10 +1,7 @@
 export default ()=>{
-
-    if(!localStorage.getItem('stiker-collection'))
-        localStorage.setItem('stiker-collection', json([], false))
-
-    const stikerCollection = json(localStorage.getItem('stiker-collection'))
-
+    
+    const stikerCollection = ls('stiker-collection').data([]).push(true, true)
+    
     const imgIcon = icon => `<img src="public/img/icons/svg/${ icon }.svg" alt="icon-svg">`
 
     let Stiker = []
@@ -24,10 +21,10 @@ export default ()=>{
         </div>
     `)
 
-    const findChild = query => ElementComponent.querySelector(query)
+    const query = new findElement(ElementComponent)
 
-    const elementLoad = findChild('.contenedor_loader')
-    const elementItem = findChild('.div_GHk93TF')
+    const elementLoad = query.get('.contenedor_loader')
+    const elementItem = query.get('.div_GHk93TF')
 
     elementItem.addEventListener('click', e => {
         const button = e.target.closest('button')
@@ -44,8 +41,10 @@ export default ()=>{
                     status : true
                 })
             }
-            localStorage.setItem('stiker-collection', json(stikerCollection, false))
+
+            ls('stiker-collection').data(stikerCollection).put(true)
             renderData(Stiker)
+            
         }
     })
 

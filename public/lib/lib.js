@@ -92,7 +92,6 @@ function genereteKey (include = {}){
         return secondOption
     })
 }
- 
 
 function getElement(select, root = document) {
     return root.querySelector(select)
@@ -117,6 +116,14 @@ function createHTML(html) {
     elementHTML.innerHTML = html
     elementHTML = elementHTML.children[0]
     return elementHTML
+}
+
+function getTimeBySecond(seconds) {
+    return {
+        hours   : Math.floor(seconds / 3600),
+        minutes : Math.floor((seconds % 3600) / 60),
+        seconds : seconds % 60
+    }
 }
 
 class createCSS {
@@ -288,10 +295,58 @@ class Hash {
     }
 }
 
-function getTimeBySecond(seconds) {
-    return {
-        hours   : Math.floor(seconds / 3600),
-        minutes : Math.floor((seconds % 3600) / 60),
-        seconds : seconds % 60
+class findElement {
+    constructor(root = document){
+        this._root          = root
+        this._element       = null
+        this._elementTemp   = document.createElement('div')
+        
     }
+
+    get(query, create = false){
+        this._element = this._root.querySelector(query)
+        if(create) return this._element ?? this._elementTemp
+        return this._element
+    }
+
+    getAll(query){
+        this._root.querySelectorAll(query)
+    }
+}
+
+function ls(item) {
+    this._item = item
+    this._data = ''
+
+    const _this = {
+        data: (data) => { 
+            this._data = data 
+            return _this;
+        },
+        push: (json = false, string = false) => {
+            const data = localStorage.getItem(this._item)
+
+            if(data){
+                this._data = data
+                return json ? JSON.parse(this._data) : this._data
+            }
+
+            localStorage.setItem(this._item, string ? JSON.stringify(this._data) : this._data)
+            return this._data;
+        },
+        put: (string = false) => { 
+            localStorage.setItem(this._item, string ? JSON.stringify(this._data) : this._data)
+            return this._data;
+        },
+        get: (json = false) => { 
+            this._data  = localStorage.getItem(this._item, this._data) 
+            return json ? JSON.parse(this._data) : this._data;
+        },
+        drop: () => { 
+            localStorage.removeItem(this._item)
+            return !localStorage.getItem(this._item);
+        }
+    }
+
+    return _this
 }

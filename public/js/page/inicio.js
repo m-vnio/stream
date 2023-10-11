@@ -14,8 +14,10 @@ export default ()=>{
         </div>
     `)
 
-    const contenedorLoader = ElementComponent.querySelector('.contenedor_loader')
-    const contenedorListItem = ElementComponent.querySelector('.div_h35b0gG')
+    const query = new findElement(ElementComponent)
+
+    const contenedorLoader = query.get('.contenedor_loader')
+    const contenedorListItem = query.get('.div_h35b0gG')
 
     const def_createHTML =(data)=>{
         const data_data = {
@@ -82,7 +84,9 @@ export default ()=>{
         renderHTML(DataJSON)
     }
 
+    contenedorListItem.parentElement.remove()
     loadData()
+    
     //streamRealtimeByUser
     // const unsubscribe = streamRealtime(renderHTML)
     // addRemoveEventListener(window, 'hashchange', unsubscribe)
@@ -90,6 +94,5 @@ export default ()=>{
     // const unsubscribe = streamRealtimeByUser(renderHTML, user.uid)
     // addRemoveEventListener(window, 'hashchange', unsubscribe)
     
-    contenedorListItem.parentElement.remove()
     document.getElementById('main').append(ElementComponent) 
 }

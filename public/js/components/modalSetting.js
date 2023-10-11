@@ -37,9 +37,9 @@ export default ()=>{
         </div>
     `)
 
-    const findChild = query => ElementComponent.querySelector(query)
+    const query = new findElement(ElementComponent)
 
-    const ElementTap = findChild('.div_31mQ4VP')
+    const ElementTap = query.get('.div_31mQ4VP')
 
     const Font = [ 
         { name : "predeterminado", font : "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'"},
@@ -52,7 +52,7 @@ export default ()=>{
         { name : "Raleway", font : "'Raleway', sans-serif"}
     ]
 
-    const elementFont = findChild('.div_j5G8e0D')
+    const elementFont = query.get('.div_j5G8e0D')
     const elementTemp = document.createDocumentFragment()
 
     Font.forEach(font => {
@@ -85,13 +85,13 @@ export default ()=>{
 
     elementFont.append(elementTemp)
 
-    findChild('input[data-type = apariencia]').addEventListener('change', e => {
+    query.get('input[data-type = apariencia]').addEventListener('change', e => {
         const theme = localStorage.getItem('theme')
         localStorage.setItem('theme', theme == 'dark' ? 'light' : 'dark')
         style()
     })
 
-    findChild('input[data-type = chat]').addEventListener('change', e => {
+    query.get('input[data-type = chat]').addEventListener('change', e => {
         localStorage.setItem('theme_chat', e.target.value)
         style()
     })

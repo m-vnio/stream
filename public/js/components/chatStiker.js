@@ -21,11 +21,11 @@ export default (DataModule = {})=>{
         </div>
     `)
 
-    const findChild = query => ElementComponent.querySelector(query)
+    const query = new findElement(ElementComponent)
 
-    const elementItemHead = findChild('.div_zq2nbRg')
-    const elementItem = findChild('.div_K23c15w')
-    const btnFavorite = findChild('button[data-action=favorite]')
+    const elementItemHead = query.get('.div_zq2nbRg')
+    const elementItem = query.get('.div_K23c15w')
+    const btnFavorite = query.get('button[data-action=favorite]')
 
 
     btnFavorite.addEventListener('click', ()=> loadDataBody())
@@ -93,21 +93,16 @@ export default (DataModule = {})=>{
     }
 
     const loadDataHead =()=>{
-        const DataJSON = {
-            stiker : JSON.parse(localStorage.getItem('stiker-collection')).filter(data => data.status)
-        }
-        renderDataHead(DataJSON)
+        renderDataHead({ stiker : ls('stiker-collection').data([]).push(true, true).filter(data => data.status) })
     }
 
     loadDataHead()
 
     const loadDataBody =()=>{ 
-        renderData({ stiker : JSON.parse(localStorage.getItem('stiker-favorite') ?? '[]') })
+        renderData({ stiker : ls('stiker-favorite').data([]).push(true, true) })
     } 
 
-    
     loadDataBody()
-
 
     return ElementComponent
 }

@@ -77,32 +77,32 @@ export default (ElementComponentFullScreen)=>{
         </div>
     `)
 
-    const findChild = query => ElementComponent.querySelector(query) 
-
+    const query = new findElement(ElementComponent)
+    
     const root = document.getElementById('root')
     const elementEmoji = emoji()
     const elementFormLink = formLink()
 
-    const btnPlay = findChild('button[data-action=btnPlay]')
-    const btnSeekedBack10 = findChild('button[data-action=seeked_back_10]')
-    const btnOpenChat = findChild('button[data-action=open_chat]')
-    const btnOpenEmoji = findChild('button[data-action=open_emoji]')
-    const btnOpenFormLink = findChild('button[data-action=open_form_link]')
-    const btnActiveFullscreen = findChild('button[data-action=active_fullscreen]')
-    const btnLockUnlock = findChild('button[data-action=lock_unlock]')
+    const btnPlay = query.get('button[data-action=btnPlay]')
+    const btnSeekedBack10 = query.get('button[data-action=seeked_back_10]')
+    const btnOpenChat = query.get('button[data-action=open_chat]')
+    const btnOpenEmoji = query.get('button[data-action=open_emoji]')
+    const btnOpenFormLink = query.get('button[data-action=open_form_link]')
+    const btnActiveFullscreen = query.get('button[data-action=active_fullscreen]')
+    const btnLockUnlock = query.get('button[data-action=lock_unlock]')
 
     //div_al065
-    const elementVideoContainer =   findChild('.div_al065')
-    const elementVideoContent   =   findChild('.div_Gj3xZ')
-    const elementVideoControl   =   findChild('.div_Mbdqf')
-    const elementVideoControlBotttom = findChild('.div_XjdZ8')
-    const elementVideo          =   findChild('.video_01Mr1')
+    const elementVideoContainer =   query.get('.div_al065')
+    const elementVideoContent   =   query.get('.div_Gj3xZ')
+    const elementVideoControl   =   query.get('.div_Mbdqf')
+    const elementVideoControlBotttom = query.get('.div_XjdZ8')
+    const elementVideo          =   query.get('.video_01Mr1')
 
-    const elementButtonTop      =   findChild('.div_6u0fO')
+    const elementButtonTop      =   query.get('.div_6u0fO')
 
-    const ipt_duration      = findChild('.input_908X1')
-    const hr_progreso       = findChild('.hr_A6t1K')
-    const span_duraction    = findChild('.span_4E0dR')
+    const ipt_duration      = query.get('.input_908X1')
+    const hr_progreso       = query.get('.hr_A6t1K')
+    const span_duraction    = query.get('.span_4E0dR')
 
     elementVideoContent.addEventListener('click', () => {
         elementVideoContent.classList.toggle('active')

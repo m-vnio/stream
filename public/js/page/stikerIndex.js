@@ -1,5 +1,6 @@
 import stikerOption from "../components/stikerOption.js"
 export default (params)=>{
+
     const ElementComponent = createHTML(`
         <div class="div_vXa5q94">
             <div class="contenedor_loader" ><span class="loader"></span></div>
@@ -9,10 +10,10 @@ export default (params)=>{
         </div>
     `)
 
-    const findChild = query => ElementComponent.querySelector(query)
+    const query = new findElement(ElementComponent)
 
-    const elementLoad = findChild('.contenedor_loader')
-    const elementItem = findChild('.div_GHk93TF')
+    const elementLoad = query.get('.contenedor_loader')
+    const elementItem = query.get('.div_GHk93TF')
     
     elementItem.addEventListener('click', e => {
         const item = e.target.closest('.div_SlY3iuU')
@@ -52,12 +53,8 @@ export default (params)=>{
     const loadData = async ()=>{
         elementItem.remove()
 
-
-        if(params.index == 0) {
-            const DataJSON = {
-                stiker : json(localStorage.getItem('stiker-favorite'))
-            }
-            renderData(DataJSON);
+        if(params.index == 0) { 
+            renderData({ stiker : ls('stiker-favorite').get(true) });
         } else {
             const Data = await fetch('./public/json/stiker.json')
             const DataJSON = {

@@ -20,7 +20,8 @@ export default ()=>{
         </div>
     `)
 
-    const formRegister = ElementComponent.querySelector('.form_botZH81')
+    const query = new findElement(ElementComponent)
+    const formRegister = query.get('.form_botZH81')
   
     formRegister.addEventListener('submit', e => {
         e.preventDefault()

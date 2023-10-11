@@ -10,9 +10,11 @@ export default ()=>{
             </form>
         </div>
     `)
- 
-    const form_link  = ElementComponent.querySelector('.form_slr4j')
-    const buttonPlay = form_link.querySelector('.button-play')
+
+    const query = new findElement(ElementComponent)
+
+    const form_link  = query.get('.form_slr4j')
+    const buttonPlay = query.get('.button-play')
      
     clickElement(ElementComponent, ()=> ElementComponent.remove())
 

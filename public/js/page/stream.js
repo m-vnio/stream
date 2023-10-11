@@ -16,11 +16,11 @@ export default (params)=>{
         </div>
     `)
 
-    const findChild = query => ElementComponent.querySelector(query)
+    const query = new findElement(ElementComponent)
 
-    const elementLoad = findChild('.contenedor_loader')
-    const elementItem = findChild('.div_jpEIOZm')
-    const elementItemVideoChat = findChild('.div_U09zC')
+    const elementLoad = query.get('.contenedor_loader')
+    const elementItem = query.get('.div_jpEIOZm')
+    const elementItemVideoChat = query.get('.div_U09zC')
  
     const loadVerify = async ()=>{
         elementItem.remove()
