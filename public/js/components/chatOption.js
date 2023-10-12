@@ -3,7 +3,7 @@ export default (data = {})=>{
     const user   = json(localStorage.getItem('user'))
     const userid = user.uid == data.id_user
     const isHide = data.status == 4 
-    //<i class=""></i>
+    
     const Button = [
         { id : 1, icon : 'icon-copy', action : 'copy', name : 'copiar', type : ['text'], status : true },
         { id : 2, icon : 'icon-reply', action : 'reply', name : 'responder', type : ['text', 'stiker'], status : !isHide },
@@ -13,126 +13,124 @@ export default (data = {})=>{
         { id : 6, icon : 'icon-trash', action : 'delete', name : 'eliminar', type : ['text', 'stiker'], status : userid }
     ]
 
+    const imgIcon = icon => `<img src="public/img/icons/svg/${ icon }.svg" alt="icon-svg">`
+
     const ElementComponent = createHTML(`
-        <div>
-            <div class="scroll-y" data-css="contenedor_option">
-                <div data-css="contenedor_texto">
-                    <p class="text-ellipsis"></p>
+        <div class="div_KEVYWu2 absolute">
+            <div class="div_hS7SImh"></div>
+            <div class="div_1Z6ZCkT">
+                <div class="div_gZ94AC8">
+                    <div class="div_SsaBtj6">
+                        <span>❤️</span>
+                        <span>💔</span>
+                        <span>🫣</span>
+                        <span>🥺</span>
+                        <span>🫢</span>
+                        <span>😩</span>
+                    </div>
                 </div>
-                <div data-css="contenido_button">
-                    ${ ArrayToString(Button, button => {
+                <div class="div_M1q0hm2">
+                    <div class="div_A3yLovl">
+                        <div class="div_w22fa26"></div>
+                        <div class="div_iFL8U75"></div>
+                    </div>
+                    <div class="div_ygkc8bB scroll-y">
+                        <div class="div_S4til5e">
 
-                        if(!button.status) return 
-                        if(!button.type.includes(data.type)) return
-                        
-                        return `
-                            <button class="icon" data-css="button_option" data-action="${ button.action }">
-                                <img src="public/img/icons/svg/${ button.icon }.svg" alt="icon-svg">
-                                <span>${ button.name }</span>
-                            </button>
-                        `
+                            ${ ArrayToString(Button, button => {
 
-                    }) }
+                                if(!button.status) return 
+                                if(!button.type.includes(data.type)) return
+                                
+                                return `<button class="icon" data-action="${ button.action }">
+                                    ${ imgIcon(button.icon) }
+                                    <span>${ button.name }</span>
+                                </button>`
+
+                            }) }
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     `)
 
-
-//
-    const style = new createCSS('chat-option', ElementComponent)
-
-    const color_item    = 'var(--color-item)' 
-    const color_letter  = 'var(--color-letter)'
-
-    style.css(`
-        & { position : absolute; inset : 0; background : rgb(0 0 0 / .3); display: grid; z-index : 999 }
-        @media (min-width: 450px){
-            & {
-                padding : 20px
-            }
-        }
-    `)
-
-    const contenedor_option = style.element('contenedor_option').css(`
-        & { 
-            width : min(100%, 450px); max-height : min(100%, 450px); 
-            background : ${ color_item };
-            align-self: end;
-            justify-self: center;
-            border-radius: 8px 8px 0 0; 
-        }
-
-        @media (min-width: 450px){
-            & {
-                border-radius: 8px; 
-            }
-        }
-    `)
-
-    const contenedor_texto = style.element('contenedor_texto').css(`
-        & {
-            display: flex;
-            padding: 20px; 
-            color  : ${ color_letter };
-            border-bottom: 1.25px solid rgb(255 255 255 / .1);
-        }
-    `)
-
-    const contenido_button = style.element('contenido_button').css(`
-        & { 
-            width : 100%; 
-            display: grid; 
-            overflow : hidden;
-        } 
-    `)
-
-    const button_option = style.element('button_option').css(`
-        & {  
-            overflow : hidden; 
-            display: grid; 
-            grid-template-columns: 20px 1fr;
-            background : none;
-            align-items: center;
-            padding: 20px;
-            gap: 20px;
-            color : ${ color_letter };
-            cursor: pointer;
-            font-size : 15px;
-            text-align : center
-        } 
-
-        &:hover{
-            opacity : .8
-        }
-        
-        & span{
-            text-align : left
-        }
-    `)
     
-    getElement( 'p', contenedor_texto.element).textContent = data.message ?? ''
-    clickElement(ElementComponent, ()=> ElementComponent.remove())
+    const query = new findElement(ElementComponent)
 
-    if(data.type != 'text') contenedor_texto.element.remove()
+    const elementTap = query.get('.div_hS7SImh')
+    const elementButtons = query.get('.div_S4til5e')
 
-    clickElementclosest(contenido_button.element, 'button', target => {
-        const action = target.dataset.action
+    const elementMessageContent = query.get('.div_w22fa26')
+    const elementMessageButton  = query.get('.div_iFL8U75')
 
-        if(action == 'update'){
-            dispatchEvent(new CustomEvent('open_update_message', { detail : data }))
-        } else if(action == 'reply'){
-            dispatchEvent(new CustomEvent('open_reply_message', { detail : data }))
-        } else if(action == 'delete'){
-            dispatchEvent(new CustomEvent('delete_message', { detail : data }))
-        } else if(action == 'hide_show'){
-            dispatchEvent(new CustomEvent('hide_message', { detail : data }))
-        } else if(action == 'copy'){
-            const clipboard = navigator.clipboard
-            if(clipboard) clipboard.writeText(data.message)
+    const stikerFavorite = ls('stiker-favorite').data([]).push(true, true)
+
+    if(data.type == 'text') {
+        elementMessageContent.innerHTML = '<p class="text-ellipsis"></p>'
+        elementMessageContent.children[0].textContent = data.message
+    }
+
+    if(data.type == 'stiker') {
+        const id    = data.message.replace(/\D/g, "");
+        const name  = data.message
+        const isStikerFavorite = stikerFavorite.find(stiker => stiker.id == id)
+        elementMessageContent.innerHTML = `<img src="public/img/stiker/${ data.message }" alt="icon-stiker">` 
+        elementMessageButton.innerHTML = `
+            <button data-data='${ JSON.stringify({ id, name }) }' data-action="stiker-favorite">${ imgIcon(`icon-favorite-${ isStikerFavorite ? 'dark' : 'light' }`) }</button>
+        `
+    }
+
+                            
+
+
+    elementTap.addEventListener('click', ()=> ElementComponent.remove())
+
+    elementMessageButton.addEventListener('click', e => {
+        const button = e.target.closest('button')
+
+        if(button) {
+            const action = button.dataset.action
+
+            if(action == 'stiker-favorite'){
+                const data = JSON.parse(button.dataset.data)
+                const isStikerFavorite = stikerFavorite.findIndex(stiker => stiker.id == data.id)
+
+                if(isStikerFavorite == -1) {
+                    stikerFavorite.push(data)
+                    button.innerHTML = imgIcon('icon-favorite-dark')
+                } else {
+                    stikerFavorite.splice(isStikerFavorite, 1)
+                    button.innerHTML = imgIcon('icon-favorite-light')
+                }    
+                
+                ls('stiker-favorite').data(stikerFavorite).put(true)
+            } 
         }
+    })
 
-        ElementComponent.remove()
+    elementButtons.addEventListener('click', e => {
+        const button = e.target.closest('button')
+
+        if(button) {
+            const action = button.dataset.action
+
+            if(action == 'update'){
+                dispatchEvent(new CustomEvent('open_update_message', { detail : data }))
+            } else if(action == 'reply'){
+                dispatchEvent(new CustomEvent('open_reply_message', { detail : data }))
+            } else if(action == 'delete'){
+                dispatchEvent(new CustomEvent('delete_message', { detail : data }))
+            } else if(action == 'hide_show'){
+                dispatchEvent(new CustomEvent('hide_message', { detail : data }))
+            } else if(action == 'copy'){
+                const clipboard = navigator.clipboard
+                if(clipboard) clipboard.writeText(data.message)
+            }
+
+            ElementComponent.remove()
+        }
     })
  
     return ElementComponent

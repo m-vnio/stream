@@ -1,12 +1,15 @@
 import style from "./style.js"
+//import style from "./setting/style.js"
 import routes from "./src/routes.js"
 import navigate from "./components/navigate.js"
 
 export default ()=>{
 
+    
     const contextmenuIncludeTarget = ['INPUT', 'TEXTAREA']
 
     style()
+
     routes()
     navigate() 
 

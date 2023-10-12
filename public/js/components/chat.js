@@ -71,8 +71,6 @@ export default ()=>{
         }
     })
 
-    //
-
     //eventos de formulario
     formChat.addEventListener('submit', e => {
         e.preventDefault()

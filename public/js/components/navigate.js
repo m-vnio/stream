@@ -5,7 +5,7 @@ export default ()=>{
         { name : 'setting', path : ['setting', 'config', 'user'] }
     ]
 
-    const RouteHide = ['stream', 'login', 'register']
+    const RouteHide = ['stream', 'login', 'register', 'user']
 
     const ElementComponent = createHTML(`
         <div class="div_r59RR7t">

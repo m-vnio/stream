@@ -2,17 +2,32 @@ import { dbFirebase } from "../firebase/data.js";
 
 export default ()=>{
 
-    const user = json(localStorage.getItem('user')) 
+    
+    const user = ls('user').data({}).push(true, true)
 
     const db_1 = new dbFirebase('stream')
     const db_2 = new dbFirebase('stream_user')
 
+
+    const imgIcon = icon => `<img src="public/img/icons/png/${ icon }.png" alt="icon-svg">`
+
     const ElementComponent = createHTML(`
-        <div class="div_ue0FY7z">
-            <div class="contenedor_loader"><span class="loader"></span></div>
-            <div class="div_kzd5iN4 scroll-y"><div class="div_h35b0gG"></div></div>
+        <div class="div_08H2LYs">
+            <div class="contenedor_loader" style="display:none"><span class="loader"></span></div>
+            <div class="div_Q2pvs6P">
+                <a href="#/stream" class="a_N5MMLG4">${ imgIcon('icon-video') }</a>
+                <a href="#/photo" class="a_N5MMLG4">${ imgIcon('icon-photo') }</a>
+                <a href="#/draw" class="a_N5MMLG4">${ imgIcon('icon-dibujo') }</a>
+                <a href="#/music" class="a_N5MMLG4">${ imgIcon('icon-music') }</a>
+                <a href="#/frase" class="a_N5MMLG4">${ imgIcon('icon-frase') }</a>
+            </div>
         </div>
     `)
+
+    /*<div class="div_ue0FY7z">
+            <div class="contenedor_loader"><span class="loader"></span></div>
+            <div class="div_kzd5iN4 scroll-y"><div class="div_h35b0gG"></div></div>
+        </div>*/
 
     const query = new findElement(ElementComponent)
 
@@ -84,8 +99,8 @@ export default ()=>{
         renderHTML(DataJSON)
     }
 
-    contenedorListItem.parentElement.remove()
-    loadData()
+    //contenedorListItem.parentElement.remove()
+    //loadData()
     
     //streamRealtimeByUser
     // const unsubscribe = streamRealtime(renderHTML)

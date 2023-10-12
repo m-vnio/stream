@@ -19,7 +19,6 @@ export default (data, Chat, user)=>{
     const timeHour = Time.getHours()
     const timeMinute = Time.getMinutes()
     const timeAM = Time.getHours() < 12
-
     const setTime = `${timeAM ? timeHour : timeHour - 12}:${ ( '0' + timeMinute).slice(-2) } ${ timeAM ? 'AM' : 'PM' }`
 
     const ElementComponent = createHTML(`

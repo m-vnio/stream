@@ -51,6 +51,7 @@ class dbFirebaseRealtime {
     subscribe(callback){
         if (typeof callback === "function") {
             this._unsubscribe   = onSnapshot(query(...this._query), callback)
+            
             return this._unsubscribe
         }
     }

@@ -7,8 +7,8 @@ export default ()=>{
     const fontFamily = json(localStorage.getItem('fontFamily'))
 
     const ElementComponent = createHTML(`
-        <div class="div_IK85t20">
-            <div class="div_31mQ4VP"></div>
+        <div class="div_KEVYWu2">
+            <div class="div_hS7SImh"></div>
             <div class="div_2V8ZNzZ">
                 <div class="div_kc3bagF">
                     <div class="div_UsFKG6Y">
@@ -39,7 +39,7 @@ export default ()=>{
 
     const query = new findElement(ElementComponent)
 
-    const ElementTap = query.get('.div_31mQ4VP')
+    const ElementTap = query.get('.div_hS7SImh')
 
     const Font = [ 
         { name : "predeterminado", font : "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'"},

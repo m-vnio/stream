@@ -1,6 +1,9 @@
 import { checkLoginFirebase, logoutFirebase } from "../firebase/auth.js";
+import { dbFirebase } from "../firebase/data.js";
+
 import inicio from "../page/inicio.js";
 import stream from "../page/stream.js";
+import streamId from "../page/streamId.js";
 import login from "../page/login.js";
 import register from "../page/register.js";
 
@@ -9,7 +12,11 @@ import user from "../page/user.js";
 import stiker from "../page/stiker.js";
 import stikerIndex from "../page/stikerIndex.js";
 
+import pageNotFound from "../page/pageNotFound.js";
+
 export default ()=>{
+
+    const db = new dbFirebase('user_data')
 
     const main  = createHTML(`<main id="main"></main>`) 
     document.getElementById('root').append(main)
@@ -31,21 +38,27 @@ export default ()=>{
 
     checkLoginFirebase((user)=> {
         if(user) {
-            const userLocal = json(localStorage.getItem('user') ?? 'false')
+            //
+            const userLocal = ls('user').data(false).push(true, true)
             const data      = { uid : user.uid, email : user.email }
 
             if(userLocal){
                 if(user.uid != userLocal.uid){
                     logoutFirebase()
-                    localStorage.removeItem('user')
+                    ls('user').drop()
                     location.hash = '#/login'
+                } else {
+                    (async ()=> {
+                        const data_user = await db.getAll({ where  : [[ "uid", "==", user.uid ]], limit : 1})
+                        data_user.forEach(doc => ls('user_data').data(doc.data()).put(true));
+                    })()
                 }
             } else {
-                localStorage.setItem('user', json(data, false))
+                ls('user').data(data).put(true)
                 location.hash = '#/'
             }
         } else {
-            localStorage.removeItem('user')
+            ls('user').drop()
             location.hash = '#/login'
         }
     })
@@ -55,11 +68,13 @@ export default ()=>{
     Routes.param('/', inicio) 
     Routes.param('/login', login) 
     Routes.param('/register', register) 
-    Routes.param('/stream/:id', stream)
+    Routes.param('/stream', stream)
+    Routes.param('/stream/:id', streamId)
     Routes.param('/setting', setting)
     Routes.param('/user', user)
     Routes.param('/stiker', stiker)
     Routes.param('/stiker/:index', stikerIndex)
+    Routes.param('*', pageNotFound)
     
     Routes.dispatch(()=> {
         main.innerHTML = ''

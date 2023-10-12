@@ -1,12 +1,13 @@
 .div_r59RR7t {
-  margin: 0 auto;
-  width: min(100%, 700px); 
-  height: 60px;
+  width: 100%; 
+  height: 60px; 
 }
 
 .div_xo0lE74 {
+  margin: 0 auto;
   display: flex;
-  height: 60px;
+  width: min(100%, 700px); 
+  height: 60px; 
 
   & a {
     text-decoration: none;

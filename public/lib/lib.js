@@ -264,7 +264,7 @@ class Hash {
         this._params = trimString(location.hash.slice(1), '/')
 
         const findRoute = this._routes.find(route => {
-
+            
             if(route.dinamic){
 
                 const splitRoute = route.route.split('/')
@@ -281,6 +281,8 @@ class Hash {
                 }
  
             } else if(route.route == this._params) {
+                return route
+            } else if(route.route == '*'){
                 return route
             }
             
@@ -350,3 +352,64 @@ function ls(item) {
 
     return _this
 }
+
+const diffDateBirthday =(Date1, Date2 = Date.now())=>{
+
+    const thisYear = new Date().getFullYear()
+
+    const lastYear = new Date(Date1)
+    lastYear.setFullYear(thisYear)
+    
+    const BirthdayThisYear = new Date(Date1)
+    BirthdayThisYear.setFullYear(thisYear)
+
+    if(Date2 > BirthdayThisYear.getTime()) BirthdayThisYear.setFullYear(thisYear + 1)
+    else lastYear.setFullYear(thisYear - 1)
+
+    const diffTotal         = BirthdayThisYear.getTime() - lastYear.getTime()
+    const diffelapsed       = Date2 - lastYear.getTime() 
+    const difdRemaining     = BirthdayThisYear.getTime() - Date2;
+
+    const day = {
+        total       : Math.floor(diffTotal / (1000 * 60 * 60 * 24)),
+        elapsed     : Math.round(diffelapsed / (1000 * 60 * 60 * 24)),
+        remaining   : Math.floor(difdRemaining / (1000 * 60 * 60 * 24))
+    }
+
+    const hour = {
+        total       : Math.floor((diffTotal / (1000 * 60 * 60))),
+        elapsed     : Math.round((diffelapsed / (1000 * 60 * 60))),
+        remaining   : Math.floor((difdRemaining / (1000 * 60 * 60)) % 24)
+    }
+
+    const minute = {
+        total       : Math.floor((diffTotal / 1000 / 60)),
+        elapsed     : Math.round((diffelapsed / 1000 / 60) % 60),
+        remaining   : Math.floor((difdRemaining / 1000 / 60) % 60)
+    }
+
+    const second = {
+        total       : Math.floor((diffTotal / 1000)),
+        elapsed     : Math.round((diffelapsed / 1000) % 60),
+        remaining   : Math.floor((difdRemaining / 1000) % 60)
+    }
+
+    const age = (BirthdayThisYear.getFullYear() - 1) - new Date(Date1).getFullYear()
+
+    const complete = {
+        total       : 100,
+        elapsed     : parseFloat(((day.elapsed / day.total) * 100).toFixed(2)),
+        remaining   : parseFloat(((day.remaining / day.total) * 100).toFixed(2))
+    } 
+
+    return {
+        day,
+        hour,
+        minute,
+        second,
+        age,
+        complete
+    }
+}
+
+

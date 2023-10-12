@@ -1,5 +1,5 @@
 import modalSetting from "../components/modalSetting.js"
-
+ 
 export default ()=>{
     const ElementComponent = createHTML(`
         <div class="div_ue0FY7z">
@@ -18,13 +18,15 @@ export default ()=>{
         </div>
     `)
 
-    const elementButton = ElementComponent.querySelector('.div_h35b0gG')
+    const query = new findElement(ElementComponent)
+    const root  = document.getElementById('root') 
+    const elementButton = query.get('.div_h35b0gG')
 
     elementButton.addEventListener('click', e=> {
         const button = e.target.closest('button')
         if(button){
             const action = button.dataset.action
-            if(action == 'apariencia') document.getElementById('root').append(modalSetting())
+            if(action == 'apariencia') root.append(modalSetting())
         }
     })
 
