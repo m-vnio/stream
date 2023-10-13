@@ -87,12 +87,12 @@ export default ()=>{
                         </a>
                     </div> 
                     <div class="div_FW1pCy1">
-                        <a href="#/stiker" class="a_K6KH1Ba">
+                        <button href="#/stiker" class="a_K6KH1Ba logout pointer">
                             <i class="fi fi-rr-exit"></i>
                             <div>
                                 <span>Cerrar Sesion</span>
                             </div>
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -108,6 +108,8 @@ export default ()=>{
     }
 
     setBirthday(parseInt(user_data.birthday) * 1000)
+
+    query.get('button.logout').addEventListener('click', logoutFirebase)
  
     document.getElementById('main').append(ElementComponent)
 }

@@ -14,7 +14,7 @@ export default ()=>{
                     <input type="password" name="password" placeholder="password" autocomplete="off">
                 </div>
                 <div class="div_6t5C30Y">
-                    <button type="submit"><span>Ingresar</span></button>
+                    <button type="submit" class="pointer"><span>Ingresar</span></button>
                 </div>
             </form>
         </div>

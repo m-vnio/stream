@@ -387,6 +387,7 @@
 
   background: var(--color-item);
   color: var(--color-letter);
+  font-size: 15px;
 
   &:hover {
     opacity: 0.5;
@@ -628,4 +629,4 @@
   }
 }
 
-/* div_L5jgPxN */
+/* a_K6KH1Ba */
