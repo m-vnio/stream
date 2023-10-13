@@ -2,18 +2,25 @@ import stikerOption from "../components/stikerOption.js"
 export default (params)=>{
 
     const ElementComponent = createHTML(`
-        <div class="div_vXa5q94">
-            <div class="contenedor_loader" ><span class="loader"></span></div>
-            <div class="div_GHk93TF scroll-y">
+        <div class="div_L5jgPxN">
+            <header class="header_225VF53">
+                <div class="div_lD7mjkb">
+                    <a href="#/stiker"><i class="fi fi-rr-arrow-small-left"></i></a>
+                    <h3>Stiker ~ Pack ${ params.index }</h3>
+                </div>
+            </header>
+            <div class="div_VV5Wk2L scroll-y">
+                <div class="contenedor_loader"><span class="loader"></span></div>
                 <div class="div_C0rVsHh"></div>
             </div>
         </div>
     `)
-
+    
     const query = new findElement(ElementComponent)
 
+    const elementContentItem = query.get('.div_VV5Wk2L')
     const elementLoad = query.get('.contenedor_loader')
-    const elementItem = query.get('.div_GHk93TF')
+    const elementItem = query.get('.div_C0rVsHh')
     
     elementItem.addEventListener('click', e => {
         const item = e.target.closest('.div_SlY3iuU')
@@ -41,12 +48,12 @@ export default (params)=>{
 
         const ArrayData = Data.stiker.slice(inicio, final)
 
-        if(elementItem.children[0].children.length == 0){
+        if(elementItem.children.length == 0){
             const elementTemp = document.createDocumentFragment()
             ArrayData.forEach(data => elementTemp.append(renderHTML(data))); 
             elementLoad.remove()
-            elementItem.children[0].append(elementTemp)
-            ElementComponent.append(elementItem)
+            elementItem.append(elementTemp)
+            elementContentItem.append(elementItem)
         }
     }
 
@@ -70,3 +77,14 @@ export default (params)=>{
     
     document.getElementById('main').append(ElementComponent) 
 }
+
+ /*
+        
+
+        <div class="div_vXa5q94">
+            <div class="contenedor_loader" ><span class="loader"></span></div>
+            <div class="div_GHk93TF scroll-y">
+                <div class="div_C0rVsHh"></div>
+            </div>
+        </div>
+    */

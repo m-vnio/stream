@@ -7,11 +7,17 @@ export default ()=>{
     let Stiker = []
 
     const ElementComponent = createHTML(`
-        <div class="div_vXa5q94">
-            <div class="contenedor_loader" ><span class="loader"></span></div>
-            <div class="div_GHk93TF scroll-y">
+        <div class="div_L5jgPxN">
+            <header class="header_225VF53">
+                <div class="div_lD7mjkb">
+                    <a href="#/user"><i class="fi fi-rr-arrow-small-left"></i></a>
+                    <h3>Stiker</h3>
+                </div>
+            </header>
+            <div class="div_VV5Wk2L scroll-y">
+                <div class="contenedor_loader"><span class="loader"></span></div>
                 <div class="div_jr45I15">
-                    <div class="div_80VEr3d">
+                    <div class="div_80VEr3d full">
                         <a href="#/stiker/0" class="div_79Hcs8q">
                             <h4>favoritos</h4>
                         </a>
@@ -23,8 +29,9 @@ export default ()=>{
 
     const query = new findElement(ElementComponent)
 
+    const elementContentItem = query.get('.div_VV5Wk2L')
     const elementLoad = query.get('.contenedor_loader')
-    const elementItem = query.get('.div_GHk93TF')
+    const elementItem = query.get('.div_jr45I15')
 
     elementItem.addEventListener('click', e => {
         const button = e.target.closest('button')
@@ -68,9 +75,9 @@ export default ()=>{
     const renderData =(Data)=>{
         const ArrayData = [ ...Array(Math.round(Data.stiker.length / 25)).keys() ]
 
-        if(elementItem.children[0].children.length > 1){
+        if(elementItem.children.length > 1){
             ArrayData.forEach(i => {
-                const element = elementItem.children[0].querySelector(`#div-${ i + 1 }`)
+                const element = elementItem.querySelector(`#div-${ i + 1 }`)
                 
                 if(element) {
                     const elementNew =renderHTML(i)
@@ -83,8 +90,8 @@ export default ()=>{
             const elementTemp = document.createDocumentFragment()
             ArrayData.forEach(i => elementTemp.append(renderHTML(i)));
             elementLoad.remove()
-            elementItem.children[0].append(elementTemp)
-            ElementComponent.append(elementItem)
+            elementItem.append(elementTemp)
+            elementContentItem.append(elementItem)
         }
 
     }
@@ -99,6 +106,7 @@ export default ()=>{
 
         renderData(DataJSON);
     }
+
     elementItem.remove()
     loadData()
     document.getElementById('main').append(ElementComponent)

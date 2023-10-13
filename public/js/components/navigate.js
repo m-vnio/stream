@@ -10,8 +10,8 @@ export default ()=>{
     const ElementComponent = createHTML(`
         <div class="div_r59RR7t">
             <div class="div_xo0lE74">
-                <a href="#/" data-name="home"><img src="public/img/icons/svg/icon-home.svg" alt="icon-svg"></a>
-                <a href="#/user" data-name="setting"><img src="public/img/icons/svg/icon-user.svg" alt="icon-svg"></a>
+                <a href="#/" data-name="home" class="pointer"><img src="public/img/icons/svg/icon-home.svg" alt="icon-svg"></a>
+                <a href="#/user" data-name="setting" class="pointer"><img src="public/img/icons/svg/icon-user.svg" alt="icon-svg"></a>
             </div>
         </div>
     `)

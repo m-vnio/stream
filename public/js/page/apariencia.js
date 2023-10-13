@@ -48,7 +48,7 @@ export default ()=>{
             </div>
         </div>
     `)
-
+ 
     const Font = [ 
         { name : "predeterminado", font : "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'"},
         { name : "Montserrat", font : "'Montserrat', sans-serif"},
@@ -105,47 +105,8 @@ export default ()=>{
         } else elementTemp.append(elementFont)
     });
 
-    elementFont.append(elementTemp)
-
-    // const root  = document.getElementById('root') 
-    // const elementButton = query.get('.div_h35b0gG')
-
-    // elementButton.addEventListener('click', e=> {
-    //     const button = e.target.closest('button')
-    //     if(button){
-    //         const action = button.dataset.action
-    //         if(action == 'apariencia') root.append(modalSetting())
-    //     }
-    // })
-
-
-
+    elementFont.append(elementTemp) 
 
     document.getElementById('main').append(ElementComponent)
     
 }
-
-/*
-    <div class="div_2V8ZNzZ">
-                        <div class="div_kc3bagF">
-                            <div class="div_UsFKG6Y">
-                                
-                            </div>
-                            <div class="div_AYs8msi scroll-y"> 
-                                <div class="div_w1AIy8F">
-                                    <label class="label_NWRrl70">
-                                        <input type="color" value="#ffffff">
-                                        <span>Hola?</span>
-                                    </label>
-                                    <label class="label_NWRrl70 right">
-                                        <input type="color" data-type="chat" >
-                                        <span>Adiós?</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="div_xAJ4fl5 scroll-x">
-                                <div class="div_j5G8e0D"></div>
-                            </div>
-                        </div>
-                    </div> div_2V8ZNzZ
-*/
