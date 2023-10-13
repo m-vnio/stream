@@ -5,6 +5,7 @@
 
   display: grid;
   grid-template-rows: 1fr auto;
+  background: var(--color-background);
 }
 
 .div_o4ubh {

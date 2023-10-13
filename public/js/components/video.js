@@ -1,11 +1,13 @@
 import { dbFirebase, dbFirebaseRealtime } from "../firebase/data.js"
 import emoji from "./emoji.js"
 import formLink from "./formLink.js"
+import videoHistory from "./videoHistory.js"
 
 export default (ElementComponentFullScreen)=>{
     //div_v05FO
-    const params = json(sessionStorage.getItem('params'))
-    const user   = json(localStorage.getItem('user'))
+    const params = JSON.parse(sessionStorage.getItem('params'))
+    const user      = ls('user').data({}).push(true, true)
+    const user_data = ls('user_data').data({}).push(true, true) 
 
     const db     = new dbFirebase('stream')
     const dbRealtime = new dbFirebaseRealtime('stream')
@@ -40,6 +42,7 @@ export default (ElementComponentFullScreen)=>{
                             <button class="button_hdZNr active" data-action="open_form_link"><img src="public/img/icons/svg/icon-plus.svg" alt="icon-svg"></button>
                         </div>
                         <div class="div_BXzT1">
+                            <button class="button_KXchF" data-action="open_history"><img src="public/img/icons/svg/icon-paper-clock-back.svg" alt="icon-svg"></button>
                             <button class="button_KXchF" data-action="open_emoji"><img src="public/img/icons/svg/icon-emoji.svg" alt="icon-svg"></button>
                         </div> 
                     </div> 
@@ -82,10 +85,12 @@ export default (ElementComponentFullScreen)=>{
     const root = document.getElementById('root')
     const elementEmoji = emoji()
     const elementFormLink = formLink()
+    const elementVideoHistory = videoHistory()
 
     const btnPlay = query.get('button[data-action=btnPlay]')
     const btnSeekedBack10 = query.get('button[data-action=seeked_back_10]')
     const btnOpenChat = query.get('button[data-action=open_chat]')
+    const btnpenHistory = query.get('button[data-action=open_history]')
     const btnOpenEmoji = query.get('button[data-action=open_emoji]')
     const btnOpenFormLink = query.get('button[data-action=open_form_link]')
     const btnActiveFullscreen = query.get('button[data-action=active_fullscreen]')
@@ -102,7 +107,13 @@ export default (ElementComponentFullScreen)=>{
 
     const ipt_duration      = query.get('.input_908X1')
     const hr_progreso       = query.get('.hr_A6t1K')
-    const span_duraction    = query.get('.span_4E0dR')
+    const span_duration    = query.get('.span_4E0dR')
+
+    const setVideoHistory =(message = '')=>{
+        const videoHistory = ls('video-history').data([]).push(true, true)
+        videoHistory.unshift({ message, datetime : Date.now().toString() })
+        ls('video-history').data(videoHistory).put(true)
+    }
 
     elementVideoContent.addEventListener('click', () => {
         elementVideoContent.classList.toggle('active')
@@ -146,6 +157,19 @@ export default (ElementComponentFullScreen)=>{
         btnSeekedBack10.style.pointerEvents = 'none'
         setTimeout(()=> btnSeekedBack10.style.pointerEvents = 'initial', 1500)
     })
+
+    span_duration.addEventListener("click", ()=> {
+        const progress = elementVideo.currentTime.toFixed(0)
+        db.edit(params.id, {
+            id_user : user.uid,
+            datetime_update : Date.now().toString(),
+            time_progress   : progress,
+            change : 'seeked'
+        })
+
+        span_duration.style.pointerEvents = 'none'
+        setTimeout(()=> span_duration.style.pointerEvents = 'initial', 1500)
+    })
     
     btnOpenChat.addEventListener('click', ()=> {
         btnOpenChat.classList.remove('notification')
@@ -157,6 +181,11 @@ export default (ElementComponentFullScreen)=>{
         elementVideoContent.classList.remove('active')
         if(document.fullscreenElement) document.fullscreenElement.append(elementEmoji) 
         else root.append(elementEmoji)
+    })
+
+    btnpenHistory.addEventListener('click', ()=> {
+        if(document.fullscreenElement) document.fullscreenElement.append(elementVideoHistory) 
+        else root.append(elementVideoHistory)
     })
 
     btnOpenFormLink.addEventListener('click', ()=> {
@@ -214,10 +243,16 @@ export default (ElementComponentFullScreen)=>{
             }
         }
     } 
-
+    
     //elementVideo
-    elementVideo.addEventListener("play", ()=> btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-pause.svg" alt="icon-svg">');
-    elementVideo.addEventListener("pause", ()=> btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-play.svg" alt="icon-svg">');
+    elementVideo.addEventListener("play", ()=> {
+        btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-pause.svg" alt="icon-svg">'
+        setVideoHistory(`se reanudo el video`)
+    })
+    elementVideo.addEventListener("pause", ()=> {
+        btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-play.svg" alt="icon-svg">'
+        setVideoHistory(`se pauso el video`)
+    });
 
     elementVideo.addEventListener("loadedmetadata", ()=> {
         ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
@@ -227,7 +262,7 @@ export default (ElementComponentFullScreen)=>{
         setTimeout(()=> {
             ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
             const Time = getTimeBySecond(parseInt(ipt_duration.max))
-            span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
+            span_duration.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
         }, 1250)
     })
 
@@ -237,7 +272,7 @@ export default (ElementComponentFullScreen)=>{
         if(parseInt(ipt_duration.max) == 0){
             ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
             const Time = getTimeBySecond(parseInt(ipt_duration.max))
-            span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
+            span_duration.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
         }
 
         if(change_input) return 
@@ -247,7 +282,7 @@ export default (ElementComponentFullScreen)=>{
             ipt_duration.dataset.value = ipt_duration.value
             hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
             const Time = getTimeBySecond(parseInt(ipt_duration.max) - parseInt(ipt_duration.value))
-            span_duraction.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
+            span_duration.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
         }
     })
 
@@ -268,7 +303,9 @@ export default (ElementComponentFullScreen)=>{
             datetime_update : Date.now().toString(),
             time_progress   : progress,
             change : 'seeked'
-        }) 
+        })
+
+        setVideoHistory('se cambio la posicion del video')
     })
 
     addRemoveEventListenerHashchange(window, 'open_link', e => {
@@ -285,6 +322,7 @@ export default (ElementComponentFullScreen)=>{
                 id_user : user.uid,
                 time_progress   : '0',
             })
+            setVideoHistory('se cambio de video')
         }
     })
 
@@ -351,18 +389,22 @@ export default (ElementComponentFullScreen)=>{
 
                 if(data.change == 'play'){
                     if(JSON.parse(localStorage.getItem('click'))){
-                        if(JSON.parse(data_update.play)) elementVideo.play()
+                        const play = JSON.parse(data_update.play)
+                        if(play) elementVideo.play()
                         else elementVideo.pause()
+                        setVideoHistory(`se ${ play ? 'reanudo' : 'pauso' } el video`) 
                     }
                 } 
                 else if(data.change == 'seeked'){
                     data_local.data_db_update = true
-                    elementVideo.currentTime = parseInt(data.time_progress) 
+                    elementVideo.currentTime = parseInt(data.time_progress)
+                    setVideoHistory('se cambio la posicion del video') 
                 } 
                 else if(data.change == 'link'){
                     data_local.data_db_update = true
                     elementVideo.currentTime = 0
-                    renderVideoURL(data.link) 
+                    renderVideoURL(data.link)
+                    setVideoHistory('se cambio de video')
                 }
             }
         }); 
@@ -370,15 +412,17 @@ export default (ElementComponentFullScreen)=>{
 
     const validate_click = JSON.parse(localStorage.getItem('click')) 
 
-    if(validate_click){
-        const unsubscribe = dbRealtime.subscribe(renderVideo)
-        addRemoveEventListener(window, 'hashchange', unsubscribe)
-    } else {
-        addRemoveEventListener(window, 'click', ()=> {
-            const unsubscribe = dbRealtime.subscribe(renderVideo)
-            addRemoveEventListener(window, 'hashchange', unsubscribe)
-        })
-    }
+    // if(validate_click){
+    //     const unsubscribe = dbRealtime.subscribe(renderVideo)
+    //     addRemoveEventListener(window, 'hashchange', unsubscribe)
+    // } else {
+    //     addRemoveEventListener(window, 'click', ()=> {
+    //         const unsubscribe = dbRealtime.subscribe(renderVideo)
+    //         addRemoveEventListener(window, 'hashchange', unsubscribe)
+    //     })
+    // }
+
+    videoHistory()
 
     return ElementComponent
 }

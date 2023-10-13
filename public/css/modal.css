@@ -137,4 +137,39 @@
 }
 
 
-/* div_2V8ZNzZ  */
+/* MODAL VIDEO HISTORY  */
+.div_oy1VxlI{
+  position: relative;
+  background: var(--color-background);
+  width: min(100%, 400px);
+  height: 100%;
+
+  display: flex;
+}
+
+.div_wcyPU0Y{
+  align-self: start;
+  display: grid;
+  width: 100%;
+}
+
+.div_0MIE1m1{ 
+  display: grid;
+  padding: 10px; 
+  gap: 10px;
+  
+  & span {
+    justify-self: end;
+    font-size: 13px;
+  }
+}
+
+.span_line{
+  background: rgb(181 178 178 / .2);
+  margin: auto;
+  width: calc(100% - 40px);
+  height: 1.25px;
+  display: flex;
+}
+
+/* div_wcyPU0Y */

@@ -64,10 +64,12 @@ export default ()=>{
         
         ElementComponent.remove()
         elementEmojiContent.innerHTML = '<span style="color:#ffffff"></span>'
-        elementEmojiContent.children[0].textContent = emoji.slice(0, 50)
-
-        ElementComponent.style.opacity = '.5' 
         
+        const message = elementEmojiContent.children[0].textContent = emoji.slice(0, 50)
+        ElementComponent.style.opacity = '.5'
+
+        setVideoHistory(message)
+
         db.add({
             id_stream   : params.id,
             id_user     : user.uid,
@@ -82,6 +84,12 @@ export default ()=>{
         }, 2000)
     }
 
+    const setVideoHistory =(message = '')=>{
+        const videoHistory = ls('video-history').data([]).push(true, true)
+        videoHistory.unshift({ message, datetime : Date.now().toString() })
+        ls('video-history').data(videoHistory).put(true)
+    }
+
     const renderHTML =(onSnapshot)=>{
         onSnapshot.forEach(doc => {
             const data = doc.data()
@@ -92,6 +100,8 @@ export default ()=>{
             if(Date.now() < (parseInt(data.datetime_add) + 7000)){
                 if(document.fullscreenElement) document.fullscreenElement.append(elementEmojiContent)
                 else root.append(elementEmojiContent)
+
+                setVideoHistory(data.emoji)
 
                 elementEmojiContent.innerHTML = `<span style="color:#ffffff">${ data.emoji }</span>`
                 setTimeout(()=> elementEmojiContent.remove() , 2000)
