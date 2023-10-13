@@ -37,7 +37,7 @@ body {
   display: grid;
   overflow: hidden;
   grid-template-rows: 1fr auto;
-  background: rgb(181 178 178 / 0.1);
+  /* background: rgb(181 178 178 / 0.1); */
 }
 
 .scroll-y {

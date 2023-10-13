@@ -34,14 +34,14 @@ export default ()=>{
     const theme = localStorage.getItem('theme')
 
     const themeLight = {
-        'color-background' : '#fffff',   
+        'color-background' : '#F7F7F7',   
         'color-item' : '#ffffff',   
         'color-letter' : '#1c1c1e',
         'filter-img'   : 'initial'
     }
 
     const themeDark  = {
-        'color-background' : '#000000',   
+        'color-background' : '#1c1c1e',   
         'color-item' : '#2C2C2E',   
         'color-letter' : '#EDF3FB',
         'filter-img'   :'invert(82%) sepia(99%) saturate(0%) hue-rotate(102deg) brightness(111%) contrast(100%)'
