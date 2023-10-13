@@ -265,8 +265,8 @@ export default ()=>{
         }
     }
 
-    // const unsubscribe = dbRealtime.subscribe(renderHTML)
-    // addRemoveEventListener(window, 'hashchange', unsubscribe)
+    const unsubscribe = dbRealtime.subscribe(renderHTML)
+    addRemoveEventListener(window, 'hashchange', unsubscribe)
 
     return ElementComponent
 }
