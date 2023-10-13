@@ -131,6 +131,11 @@
     height: 80px;
     border-radius: 5px;
   }
+
+  & a {
+    color: inherit;
+    font-weight: bold;
+  }
 }
 
 .div_qsJ0y {
@@ -325,4 +330,4 @@
 
 
 
-/* button_E8Vr8 div_S9WOJ54 div_A3yLovl*/
+/* button_E8Vr8 div_S9WOJ54 div_A3yLovl div_oeFkT*/

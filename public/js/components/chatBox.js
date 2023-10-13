@@ -39,6 +39,7 @@ export default (data, Chat, user)=>{
         </div>
     `)
 
+    const urlRegex = /(https?|ftp):\/\/[^\s/$.?#].[^\s]*/g;
     ElementComponent.setAttribute('data-data', JSON.stringify(data_data))
 
     const pMessageReplyText = ElementComponent.querySelector('.div_fR7XE p')
@@ -62,6 +63,11 @@ export default (data, Chat, user)=>{
 
     if(messageType == 'text'){
         pMessageText.textContent = data.message ?? ''
+
+        if (urlRegex.test(data.message)) {
+            pMessageText.innerHTML = pMessageText.innerHTML.replace(urlRegex, url => `<a href="${url}" target="_blank" rel="noopener">${url}</a>`); 
+        }
+
         imgMessageStiker.remove()
     } else if(messageType == 'stiker'){
         imgMessageStiker.src = 'public/img/stiker/' + data.message
