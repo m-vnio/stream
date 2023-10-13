@@ -109,10 +109,12 @@ export default (ElementComponentFullScreen)=>{
     const hr_progreso       = query.get('.hr_A6t1K')
     const span_duration    = query.get('.span_4E0dR')
 
+    const dispatchUpdateVideoHistory = new CustomEvent('updateVideoHistory')
     const setVideoHistory =(message = '')=>{
         const videoHistory = ls('video-history').data([]).push(true, true)
         videoHistory.unshift({ message, datetime : Date.now().toString() })
         ls('video-history').data(videoHistory).put(true)
+        dispatchEvent(dispatchUpdateVideoHistory)
     }
 
     elementVideoContent.addEventListener('click', () => {

@@ -84,10 +84,13 @@ export default ()=>{
         }, 2000)
     }
 
+    
+    const dispatchUpdateVideoHistory = new CustomEvent('updateVideoHistory')
     const setVideoHistory =(message = '')=>{
         const videoHistory = ls('video-history').data([]).push(true, true)
         videoHistory.unshift({ message, datetime : Date.now().toString() })
         ls('video-history').data(videoHistory).put(true)
+        dispatchEvent(dispatchUpdateVideoHistory)
     }
 
     const renderHTML =(onSnapshot)=>{

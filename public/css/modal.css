@@ -139,19 +139,31 @@
 
 /* MODAL VIDEO HISTORY  */
 .div_oy1VxlI{
+  aspect-ratio: 1 / 1;
+  align-self: end;
+
   position: relative;
   background: var(--color-background);
   color: var(--color-letter);
-  width: min(100%, 400px);
-  height: 100%;
+  width: 100%; 
 
   display: flex;
+  border-radius: 8px 8px 0 0;
 }
-
+ 
 .div_wcyPU0Y{
   align-self: start;
   display: grid;
   width: 100%;
+}
+ 
+@media (min-width: 600px) {
+  .div_oy1VxlI {
+    aspect-ratio: initial;
+    height: 100%;
+    width: min(100%, 375px);
+    border-radius: 0 8px 8px 0;
+  }
 }
 
 .div_0MIE1m1{ 

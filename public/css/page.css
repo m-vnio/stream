@@ -77,6 +77,7 @@
   & img {
     width: 20px;
     height: 20px;
+    filter: var(--filter-img);
   }
 }
 
@@ -789,4 +790,6 @@
     background: var(--color-letter);
   }
 }
+
+/* STREAM */
 

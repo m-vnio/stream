@@ -24,8 +24,9 @@ export default (DataModule = {})=>{
             const Time = new Date(parseInt(history.datetime))
             const timeHour = Time.getHours()
             const timeMinute = Time.getMinutes()
+            const timeSecond = Time.getSeconds()
             const timeAM = Time.getHours() < 12
-            const setTime = `${timeAM ? timeHour : timeHour - 12}:${ ( '0' + timeMinute).slice(-2) } ${ timeAM ? 'AM' : 'PM' }`
+            const setTime = `${timeAM ? timeHour : timeHour - 12}:${ ( '0' + timeMinute).slice(-2) }:${ ( '0' + timeSecond).slice(-2) } ${ timeAM ? 'AM' : 'PM' }`
 
             return `
                 ${ i == 0 ? '' : '<span class="span_line"></span>' }
@@ -39,6 +40,8 @@ export default (DataModule = {})=>{
     }
 
     renderData()
+    addEventListener('updateVideoHistory', renderData)
+    addEventListener('hashchange', ()=> ElementComponent.remove())
 
     return ElementComponent
 }
