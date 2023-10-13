@@ -5,7 +5,7 @@ export default ()=>{
         { name : 'setting', path : ['setting', 'config', 'user'] }
     ]
 
-    const RouteHide = ['stream', 'login', 'register', 'user']
+    const RouteShow = ['']
 
     const ElementComponent = createHTML(`
         <div class="div_r59RR7t">
@@ -21,7 +21,7 @@ export default ()=>{
     const def_setFocus =()=>{
         const path = location.hash.split('/')[1] ?? ''
 
-        if(RouteHide.includes(path)){
+        if(!RouteShow.includes(path)){
             setTimeout(()=> ElementComponent.remove())
             return
         }

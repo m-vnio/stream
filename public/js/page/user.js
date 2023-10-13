@@ -1,5 +1,4 @@
 import { logoutFirebase } from "../firebase/auth.js"
-import modalSetting from "../components/modalSetting.js"
 
 export default ()=>{
 

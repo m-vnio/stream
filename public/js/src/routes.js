@@ -7,7 +7,8 @@ import streamId from "../page/streamId.js";
 import login from "../page/login.js";
 import register from "../page/register.js";
 
-import setting from "../page/setting.js";
+// import setting from "../page/setting.js";
+import apariencia from "../page/apariencia.js";
 import user from "../page/user.js";
 import stiker from "../page/stiker.js";
 import stikerIndex from "../page/stikerIndex.js";
@@ -21,7 +22,7 @@ export default ()=>{
     const main  = createHTML(`<main id="main"></main>`) 
     document.getElementById('root').append(main)
 
-    const pageWithLogin     = ['', 'stream', 'setting', 'config', 'user']
+    const pageWithLogin     = ['', 'stream', 'config', 'user']
     const pageWithoutLogin  = ['login', 'register']
  
     const withLogin = (session, namePage) =>{
@@ -70,7 +71,8 @@ export default ()=>{
     Routes.param('/register', register) 
     Routes.param('/stream', stream)
     Routes.param('/stream/:id', streamId)
-    Routes.param('/setting', setting)
+    // Routes.param('/setting', setting)
+    Routes.param('/apariencia', apariencia)
     Routes.param('/user', user)
     Routes.param('/stiker', stiker)
     Routes.param('/stiker/:index', stikerIndex)

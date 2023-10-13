@@ -1,4 +1,4 @@
-/* fuentes */ 
+/* fuentes */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
@@ -8,9 +8,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
 /* root */
 :root {
-  --min-width : min(100%, 750px)
+  --min-width: min(100%, 750px);
 }
-
 
 * {
   margin: 0;
@@ -28,7 +27,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
 
-  background: var(--color-background); 
+  background: var(--color-background);
 }
 
 #root {
@@ -38,7 +37,7 @@ body {
   display: grid;
   overflow: hidden;
   grid-template-rows: 1fr auto;
-  background: rgb(181 178 178 / .1);
+  background: rgb(181 178 178 / 0.1);
 }
 
 .scroll-y {
@@ -112,4 +111,12 @@ img::selection {
 
 .modal.active {
   display: flex;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.pointer:hover {
+  opacity: 0.5;
 }
