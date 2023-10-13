@@ -141,6 +141,7 @@
 .div_oy1VxlI{
   position: relative;
   background: var(--color-background);
+  color: var(--color-letter);
   width: min(100%, 400px);
   height: 100%;
 
