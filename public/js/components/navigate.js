@@ -13,8 +13,8 @@ export default ()=>{
     const ElementComponent = createHTML(`
         <div class="div_r59RR7t">
             <div class="div_xo0lE74">
-                <a href="#/" data-name="home" class="pointer">${ Icon.get('icon-home') }</a>
-                <a href="#/user" data-name="setting" class="pointer">${ Icon.get('icon-user') }</a>
+                <a href="#/" class="a_8ka039d focus" data-name="home">${ Icon.get('icon-home') }</a>
+                <a href="#/user" class="a_8ka039d" data-name="setting">${ Icon.get('icon-user') }</a>
             </div>
         </div>
     `)

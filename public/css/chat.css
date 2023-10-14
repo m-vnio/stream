@@ -161,10 +161,9 @@
 }
 
 .form_68Klg {
-  background: none;
+  background: var(--color-item);
   display: grid;
   border-top: 1.25px solid rgb(255 255 255 / 0.1);
-
   &.active .div_Zk0B9 {
     display: grid;
   }
@@ -223,9 +222,21 @@
   color: var(--color-letter);
   cursor: pointer;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   &:hover {
     opacity: 0.5;
   }
+
+  & svg{
+    width: 16px;
+    height: 16px;
+    fill: var(--color-letter);
+  }
+
+  
 }
 
 /* div_o4ubh */
@@ -331,4 +342,4 @@
 
 
 
-/* button_E8Vr8 div_S9WOJ54 div_A3yLovl div_oeFkT*/
+/*  button_E8Vr8 */

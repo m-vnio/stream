@@ -30,9 +30,9 @@ main {
 
 .div_v05FO {
   display: flex;
-  overflow: hidden; 
+  overflow: hidden;
 
-  transition: width .2s ease-in-out;
+  transition: width 0.2s ease-in-out;
   width: 100%;
 }
 
@@ -70,7 +70,7 @@ button.icon img {
   filter: var(--filter-img);
 }
 
-button.icon svg{
+button.icon svg {
   fill: var(--color-letter);
   width: 20px;
   height: 20px;
@@ -103,9 +103,54 @@ button.icon svg{
     bottom: 0;
     width: 400px;
     justify-self: end;
-    transition: right .2s ease-in-out;
+    transition: right 0.2s ease-in-out;
   }
 }
 
+.button_8ka039d {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.5;
+  }
+
+  & svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--color-letter);
+  }
+}
+
+.a_8ka039d {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-decoration: none;
+
+  &:hover {
+    opacity: 0.5;
+  }
+
+  & svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--color-letter);
+  }
+
+  &.focus svg {
+    fill: var(--color-chat);
+  }
+}
 
 /* button_KXchF */

@@ -41,7 +41,7 @@ export default (ElementComponentFullScreen)=>{
                 <div class="div_Mbdqf">
                     <div class="div_6u0fO">
                         <div class="div_BXzT1">
-                            <button class="button_hdZNr active" data-action="open_form_link">${ Icon.get('icon-plus') }</button>
+                            <button class="button_KXchF" data-action="open_form_link">${ Icon.get('icon-plus') }</button>
                         </div>
                         <div class="div_BXzT1">
                             <button class="button_KXchF" data-action="open_history">${ Icon.get('icon-paper-clock-back') }</button>
@@ -416,17 +416,15 @@ export default (ElementComponentFullScreen)=>{
 
     const validate_click = JSON.parse(localStorage.getItem('click')) 
 
-    if(validate_click){
-        const unsubscribe = dbRealtime.subscribe(renderVideo)
-        addRemoveEventListener(window, 'hashchange', unsubscribe)
-    } else {
-        addRemoveEventListener(window, 'click', ()=> {
-            const unsubscribe = dbRealtime.subscribe(renderVideo)
-            addRemoveEventListener(window, 'hashchange', unsubscribe)
-        })
-    }
-
-    videoHistory()
+    // if(validate_click){
+    //     const unsubscribe = dbRealtime.subscribe(renderVideo)
+    //     addRemoveEventListener(window, 'hashchange', unsubscribe)
+    // } else {
+    //     addRemoveEventListener(window, 'click', ()=> {
+    //         const unsubscribe = dbRealtime.subscribe(renderVideo)
+    //         addRemoveEventListener(window, 'hashchange', unsubscribe)
+    //     })
+    // }button_hdZNr
 
     return ElementComponent
 }

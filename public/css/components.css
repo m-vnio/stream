@@ -1,0 +1,23 @@
+/* HEADER */
+.header_M6Brg5j {
+  background: var(--color-item);
+  width: 100%;
+  height: 60px;
+}
+
+.div_x36B32A {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.div_7Q6poiU {
+  display: flex;
+  align-items: center;
+}
+
+.h3_X0B6J {
+  color: var(--color-letter);
+}

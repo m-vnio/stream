@@ -6,26 +6,7 @@
 .div_xo0lE74 {
   margin: 0 auto;
   display: flex;
-  width: min(100%, 700px); 
+  justify-content: space-evenly;
+  width: var(--min-width); 
   height: 60px; 
-
-  & a {
-    text-decoration: none;
-    flex: 1;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--color-letter);
-
-    & svg {
-      fill: var(--color-letter);
-      width: 20px;
-      height: 20px;
-    }
-  }
-
-  & a.focus svg {
-    fill: var(--color-chat);
-  }
 }

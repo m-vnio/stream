@@ -82,7 +82,8 @@
   justify-content: center;
   align-items: center;
 
-  &.active, &.notification {
+  &.active,
+  &.notification {
     display: flex;
   }
 
@@ -106,8 +107,8 @@
     background: #ff0000;
   }
 
-  & svg{
-    fill: var(--color-letter);
+  & svg {
+    fill: #ffffff;
     width: 20px;
     height: 20px;
   }
@@ -191,6 +192,7 @@
 }
 
 .button_KXchF {
+  background: none;
   height: 50px;
   width: 50px;
 
@@ -204,7 +206,7 @@
   cursor: pointer;
 
   &:hover {
-    opacity: 0.7;
+    opacity: 0.5;
   }
 
   &.off {
@@ -215,7 +217,7 @@
   & svg {
     width: 20px;
     height: 20px;
-    fill: var(--color-letter);
+    fill: #ffffff;
   }
 }
 
