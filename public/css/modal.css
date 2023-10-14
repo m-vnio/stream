@@ -149,6 +149,8 @@
 
   display: flex;
   border-radius: 8px 8px 0 0;
+
+  overflow-y: auto;
 }
  
 .div_wcyPU0Y{
