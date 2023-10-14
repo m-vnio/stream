@@ -4,9 +4,11 @@ import chatOption from "./chatOption.js"
 import chatBox from "./chatBox.js"
 
 export default ()=>{
-    
+
+    const Icon  = new iconSVG()
+
     const params = json(sessionStorage.getItem('params'))
-    const user   = json(localStorage.getItem('user'))
+    const user   = ls('user').get(true)
 
     const db     = new dbFirebase('stream_chat')
     const dbRealtime = new dbFirebaseRealtime('stream_chat')
@@ -25,11 +27,11 @@ export default ()=>{
                         <button type="button" class="button_E8Vr8" data-action="cancelEdit"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                     <div class="div_b3Gh3">
-                        <button type="button" class="button_E8Vr8 icon" data-action="openStiker" ><img src="public/img/icons/svg/icon-stiker.svg" alt="icon-svg"></button>
+                        <button type="button" class="button_E8Vr8 icon" data-action="openStiker" >${ Icon.get('icon-stiker') }</button>
                         <label class="label_Fkf9B">
                             <textarea class="txt_W17W2" name="txt_message" placeholder="text..."></textarea>
                         </label>
-                        <button type="submit" class="button_E8Vr8 icon"><img src="public/img/icons/svg/icon-paper-plane.svg" alt="icon-svg"></button>
+                        <button type="submit" class="button_E8Vr8 icon">${ Icon.get('icon-paper-plane') }</button>
                     </div> 
                     <div class="div_Wk1L3WK"></div>
                 </form>

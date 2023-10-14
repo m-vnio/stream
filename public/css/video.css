@@ -105,6 +105,12 @@
     border-radius: 50%;
     background: #ff0000;
   }
+
+  & svg{
+    fill: var(--color-letter);
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .div_XjdZ8 {
@@ -204,6 +210,12 @@
   &.off {
     pointer-events: none;
     opacity: 0.7;
+  }
+
+  & svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--color-letter);
   }
 }
 
@@ -338,4 +350,4 @@
   }
 }
 
-/*  div_6u0fO  div_82gU7 button_hdZNr div_WiZV0*/
+/*  button_KXchF */

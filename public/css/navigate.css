@@ -17,16 +17,15 @@
     justify-content: center;
     align-items: center;
     color: var(--color-letter);
+
+    & svg {
+      fill: var(--color-letter);
+      width: 20px;
+      height: 20px;
+    }
   }
 
-  & a.focus img {
-    filter: invert(30%) sepia(100%) saturate(3655%) hue-rotate(234deg)
-      brightness(97%) contrast(91%);
-  }
-
-  & img {
-    filter: var(--filter-img);
-    width: 20px;
-    height: 20px;
+  & a.focus svg {
+    fill: var(--color-chat);
   }
 }

@@ -1,6 +1,8 @@
 export default (data = {})=>{
 
-    const user   = json(localStorage.getItem('user'))
+    const Icon  = new iconSVG()
+
+    const user   = ls('user').get(true)
     const userid = user.uid == data.id_user
     const isHide = data.status == 4 
     
@@ -12,8 +14,6 @@ export default (data = {})=>{
         { id : 5, icon : 'icon-hide', action : 'hide_show', name : 'ocultar', type : ['text', 'stiker'], status : (userid && !isHide) },
         { id : 6, icon : 'icon-trash', action : 'delete', name : 'eliminar', type : ['text', 'stiker'], status : userid }
     ]
-
-    const imgIcon = icon => `<img src="public/img/icons/svg/${ icon }.svg" alt="icon-svg">`
 
     const ElementComponent = createHTML(`
         <div class="div_KEVYWu2 absolute">
@@ -42,8 +42,8 @@ export default (data = {})=>{
                                 if(!button.status) return 
                                 if(!button.type.includes(data.type)) return
                                 
-                                return `<button class="icon" data-action="${ button.action }">
-                                    ${ imgIcon(button.icon) }
+                                return `<button class="icon pointer" data-action="${ button.action }">
+                                    ${ Icon.get(button.icon) }
                                     <span>${ button.name }</span>
                                 </button>`
 
@@ -78,7 +78,7 @@ export default (data = {})=>{
         const isStikerFavorite = stikerFavorite.find(stiker => stiker.id == id)
         elementMessageContent.innerHTML = `<img src="public/img/stiker/${ data.message }" alt="icon-stiker">` 
         elementMessageButton.innerHTML = `
-            <button data-data='${ JSON.stringify({ id, name }) }' data-action="stiker-favorite">${ imgIcon(`icon-favorite-${ isStikerFavorite ? 'dark' : 'light' }`) }</button>
+            <button class="icon pointer" data-data='${ JSON.stringify({ id, name }) }' data-action="stiker-favorite">${ Icon.get(`icon-favorite-${ isStikerFavorite ? 'dark' : 'light' }`) }</button>
         `
     }
 
@@ -99,10 +99,10 @@ export default (data = {})=>{
 
                 if(isStikerFavorite == -1) {
                     stikerFavorite.push(data)
-                    button.innerHTML = imgIcon('icon-favorite-dark')
+                    button.innerHTML = Icon.get('icon-favorite-dark')
                 } else {
                     stikerFavorite.splice(isStikerFavorite, 1)
-                    button.innerHTML = imgIcon('icon-favorite-light')
+                    button.innerHTML = Icon.get('icon-favorite-light')
                 }    
                 
                 ls('stiker-favorite').data(stikerFavorite).put(true)

@@ -5,6 +5,8 @@ import videoHistory from "./videoHistory.js"
 
 export default (ElementComponentFullScreen)=>{
     //div_v05FO
+    const Icon  = new iconSVG()
+
     const params = JSON.parse(sessionStorage.getItem('params'))
     const user      = ls('user').data({}).push(true, true)
     const user_data = ls('user_data').data({}).push(true, true) 
@@ -39,23 +41,23 @@ export default (ElementComponentFullScreen)=>{
                 <div class="div_Mbdqf">
                     <div class="div_6u0fO">
                         <div class="div_BXzT1">
-                            <button class="button_hdZNr active" data-action="open_form_link"><img src="public/img/icons/svg/icon-plus.svg" alt="icon-svg"></button>
+                            <button class="button_hdZNr active" data-action="open_form_link">${ Icon.get('icon-plus') }</button>
                         </div>
                         <div class="div_BXzT1">
-                            <button class="button_KXchF" data-action="open_history"><img src="public/img/icons/svg/icon-paper-clock-back.svg" alt="icon-svg"></button>
-                            <button class="button_KXchF" data-action="open_emoji"><img src="public/img/icons/svg/icon-emoji.svg" alt="icon-svg"></button>
+                            <button class="button_KXchF" data-action="open_history">${ Icon.get('icon-paper-clock-back') }</button>
+                            <button class="button_KXchF" data-action="open_emoji">${ Icon.get('icon-emoji') }</button>
                         </div> 
                     </div> 
                     <div class="div_XjdZ8">
                         <div class="div_3hBg2">
                             <div class="div_HGz61">
-                                <button class="button_KXchF" data-action="btnPlay"><img src="public/img/icons/svg/icon-play.svg" alt="icon-svg"></button>
-                                <button class="button_KXchF" data-action="seeked_back_10"><img src="public/img/icons/svg/icon-clock-rotate-left.svg" alt="icon-svg"></button>
+                                <button class="button_KXchF" data-action="btnPlay">${ Icon.get('icon-play') }</button>
+                                <button class="button_KXchF" data-action="seeked_back_10">${ Icon.get('icon-clock-rotate-left') }</button>
                             </div>
                             <span class="span_4E0dR">00:00:00</span>
                             <div class="div_HGz61">
-                                <button class="button_KXchF lock-unlock" style="visibility: hidden" data-action="lock_unlock"><img src="public/img/icons/svg/icon-lock.svg" alt="icon-svg"></button>
-                                <button class="button_KXchF" data-action="active_fullscreen"><img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg"></button>
+                                <button class="button_KXchF lock-unlock" style="visibility: hidden" data-action="lock_unlock">${ Icon.get('icon-lock') }</button>
+                                <button class="button_KXchF" data-action="active_fullscreen">${ Icon.get('icon-screen-max') }</button>
                             </div>
                         </div>
                         <div class="div_uN72K">
@@ -69,7 +71,7 @@ export default (ElementComponentFullScreen)=>{
                     </div>
                 </div>
                 <div class="div_1qCY1">
-                    <button class="button_hdZNr" data-action="open_chat"><img src="public/img/icons/svg/icon-message.svg" alt="icon-svg"></button>
+                    <button class="button_hdZNr" data-action="open_chat">${ Icon.get('icon-message') }</button>
                 </div>
                 <div class="div_82gU7" id="contenedor_emoji_mostrar"></div>
                 <div class="div_F6FFR" id="contenedor_chat_2">
@@ -204,8 +206,8 @@ export default (ElementComponentFullScreen)=>{
     btnLockUnlock.addEventListener('click', ()=> {
         elementVideoControlBotttom.classList.toggle('unlock')
 
-        const isElementUnlock = elementVideoControlBotttom.classList.contains('unlock')
-        btnLockUnlock.innerHTML = `<img src="public/img/icons/svg/icon-${ isElementUnlock ? 'unlock' : 'lock' }.svg" alt="icon-svg">` 
+        const isElementUnlock = elementVideoControlBotttom.classList.contains('unlock')  
+        btnLockUnlock.innerHTML = Icon.get(`icon-${ isElementUnlock ? 'unlock' : 'lock' }`)
     })
 
     addRemoveEventListenerHashchange(document, 'fullscreenchange', ()=> def_fullscreen(false))
@@ -214,7 +216,7 @@ export default (ElementComponentFullScreen)=>{
         if(document.fullscreenElement){     
             if(status) return document.exitFullscreen() 
             ElementComponentFullScreen.classList.add('active')
-            btnActiveFullscreen.innerHTML = '<img src="public/img/icons/svg/icon-screen-min.svg" alt="icon-svg">'
+            btnActiveFullscreen.innerHTML = Icon.get('icon-screen-min')
             btnOpenChat.classList.add('active')
             ElementComponent.classList.remove('active')
             elementButtonTop.classList.add('active')
@@ -229,12 +231,12 @@ export default (ElementComponentFullScreen)=>{
         } else {
             if(status) return ElementComponentFullScreen.requestFullscreen()
             ElementComponentFullScreen.classList.remove('active')
-            btnActiveFullscreen.innerHTML = '<img src="public/img/icons/svg/icon-screen-max.svg" alt="icon-svg">'
+            btnActiveFullscreen.innerHTML = Icon.get('icon-screen-max')
             btnOpenChat.classList.remove('active')
             ElementComponent.classList.add('active')
             elementButtonTop.classList.remove('active')
             btnLockUnlock.style.visibility = 'hidden'
-            btnLockUnlock.innerHTML = `<img src="public/img/icons/svg/icon-lock.svg" alt="icon-svg">`
+            btnLockUnlock.innerHTML = Icon.get('icon-lock')
 
             elementVideoControlBotttom.classList.remove('unlock')
 
@@ -248,11 +250,11 @@ export default (ElementComponentFullScreen)=>{
     
     //elementVideo
     elementVideo.addEventListener("play", ()=> {
-        btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-pause.svg" alt="icon-svg">'
+        btnPlay.innerHTML = Icon.get('icon-pause') 
         setVideoHistory(`se reanudo el video`)
     })
     elementVideo.addEventListener("pause", ()=> {
-        btnPlay.innerHTML = '<img src="public/img/icons/svg/icon-play.svg" alt="icon-svg">'
+        btnPlay.innerHTML = Icon.get('icon-play')
         setVideoHistory(`se pauso el video`)
     });
 

@@ -1,5 +1,7 @@
 export default ()=>{
 
+    const Icon  = new iconSVG()
+
     const stream = {
         id : '1',
         id_user : '1695101156748',
@@ -14,7 +16,7 @@ export default ()=>{
                     <h3 class="h3_X0B6J text-ellipsis">${ stream.name ?? 'hola' }</h3>
                 </div>
                 <div class="div_6y9bH">
-                    <button class="button_Ma0S6 icon"><img src="public/img/icons/svg/icon-user-group.svg" alt="icon-svg"></button>
+                    <button class="button_Ma0S6 icon">${ Icon.get('icon-user-group') }</button>
                 </div>
             </div>
         </header>

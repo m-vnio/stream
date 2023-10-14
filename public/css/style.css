@@ -70,6 +70,12 @@ button.icon img {
   filter: var(--filter-img);
 }
 
+button.icon svg{
+  fill: var(--color-letter);
+  width: 20px;
+  height: 20px;
+}
+
 @media (min-width: 800px) {
   .div_U09zC {
     grid-template-rows: 1fr;
@@ -100,3 +106,6 @@ button.icon img {
     transition: right .2s ease-in-out;
   }
 }
+
+
+/* button_KXchF */
