@@ -1,7 +1,14 @@
 import { dbFirebase } from "../firebase/data.js";
+import day15Frase from "../components/day15Frase.js";
+import day15 from "../components/day15.js";
 
 export default ()=>{
 
+    if(new Date().toLocaleDateString() == '14/10/2023'){
+        day15Frase()
+        day15()
+    }
+    
     
     const user = ls('user').data({}).push(true, true)
 

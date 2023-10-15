@@ -21,3 +21,49 @@
 .h3_X0B6J {
   color: var(--color-letter);
 }
+
+/* happy 15 */
+.div_FPeq2on {
+  position: fixed;
+  inset: 0;
+
+  background: #f9f5f2;
+  display: flex;
+}
+
+.button_albJJ1k{
+  position: absolute; top: 0; right: 0;
+  width: 60px;
+  height: 60px;
+
+  & svg{
+    width: 20px;
+    height: 20px;
+    fill: #2C2C2E;
+  }
+}
+
+.div_f83a60G {
+  margin: auto;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+
+.div_pV2AZGL{
+  margin: auto;
+  width: var(--min-width);
+  font-size: 25px;
+  padding: 20px;
+  text-align: center;
+  display: grid;
+  gap: 20px;
+}
