@@ -4,7 +4,7 @@ import day15 from "../components/day15.js";
 
 export default ()=>{
 
-    if(new Date().toLocaleDateString() == '14/10/2023'){
+    if(new Date().toLocaleDateString() == '15/10/2023'){
         day15Frase()
         day15()
     }
