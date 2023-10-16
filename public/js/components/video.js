@@ -416,15 +416,15 @@ export default (ElementComponentFullScreen)=>{
 
     const validate_click = JSON.parse(localStorage.getItem('click')) 
 
-    // if(validate_click){
-    //     const unsubscribe = dbRealtime.subscribe(renderVideo)
-    //     addRemoveEventListener(window, 'hashchange', unsubscribe)
-    // } else {
-    //     addRemoveEventListener(window, 'click', ()=> {
-    //         const unsubscribe = dbRealtime.subscribe(renderVideo)
-    //         addRemoveEventListener(window, 'hashchange', unsubscribe)
-    //     })
-    // }button_hdZNr
+    if(validate_click){
+        const unsubscribe = dbRealtime.subscribe(renderVideo)
+        addRemoveEventListener(window, 'hashchange', unsubscribe)
+    } else {
+        addRemoveEventListener(window, 'click', ()=> {
+            const unsubscribe = dbRealtime.subscribe(renderVideo)
+            addRemoveEventListener(window, 'hashchange', unsubscribe)
+        })
+    }
 
     return ElementComponent
 }
