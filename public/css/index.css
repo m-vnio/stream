@@ -28,6 +28,7 @@ body {
   user-select: none;
 
   background: var(--color-background);
+  overscroll-behavior: contain;
 }
 
 #root {
