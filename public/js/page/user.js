@@ -22,7 +22,7 @@ export default ()=>{
                             <div class="div_q9SpFZJ"></div>
                             <div class="div_751XNwm">
                                 <div class="div_LSlRYXR">
-                                    <h4>${ user_data.name.toUpperCase() }</h4>
+                                    <h4>${ (user_data.name ?? '').toUpperCase() }</h4>
                                     <span>${ user_data.descripcion }</span>
                                 </div>
                             </div>
