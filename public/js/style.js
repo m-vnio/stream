@@ -1,5 +1,5 @@
-
 export default ()=>{
+ 
 
     const versionChange = '1696632403938'
 
@@ -16,8 +16,8 @@ export default ()=>{
 
     localStorage.setItem('click', 'false')
 
-    const styleID = 'style-style'
-    const style = getElement(`#${ styleID }`)
+    const style = document.getElementById('style-style')
+    const metaThemeColor = document.getElementById('meta-theme-color')
 
     if(!localStorage.getItem('theme')){
         localStorage.setItem('theme', 'light')
@@ -57,6 +57,8 @@ export default ()=>{
         ['color-chat', localStorage.getItem('theme_chat')],
         ['fontFamily-letter', json(localStorage.getItem('fontFamily')).font]
     ]
+
+    metaThemeColor.setAttribute('content', themeSetting['color-background'])
 
     style.innerHTML = ':root {' + ArrayToString(Style, style => { return `--${ style[0] } : ${ style[1] };\n` }) + '}'           
 }
