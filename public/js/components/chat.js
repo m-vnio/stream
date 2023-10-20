@@ -24,14 +24,14 @@ export default ()=>{
                 <form class="form_68Klg" data-action="add" autocomplete="off">
                     <div class="div_Zk0B9"> 
                         <p class="p_IA4wz text-ellipsis"></p>
-                        <button type="button" class="button_E8Vr8" data-action="cancelEdit">${ Icon.get('icon-cross') }</button>
+                        <button type="button" class="button_E8Vr8" data-action="cancelEdit">${ Icon.get('fi fi-rr-cross') }</button>
                     </div>
                     <div class="div_b3Gh3">
-                        <button type="button" class="button_E8Vr8" data-action="openStiker" >${ Icon.get('icon-stiker') }</button>
+                        <button type="button" class="button_E8Vr8" data-action="openStiker" >${ Icon.get('fi fi-rr-sticker') }</button>
                         <label class="label_Fkf9B">
                             <textarea class="txt_W17W2" name="txt_message" placeholder="text..."></textarea>
                         </label>
-                        <button type="submit" class="button_E8Vr8">${ Icon.get('icon-paper-plane') }</button>
+                        <button type="submit" class="button_E8Vr8">${ Icon.get('fi fi-rr-paper-plane') }</button>
                     </div> 
                     <div class="div_Wk1L3WK"></div>
                 </form>
@@ -90,7 +90,7 @@ export default ()=>{
     })
 
     formChat.txt_message.addEventListener('focus', e => {
-        if(elementContentStiker.classList.contains('active')) history.back()
+        elementContentStiker.classList.remove('active')
     })
 
     formChat.txt_message.addEventListener('input', e => {
@@ -112,13 +112,13 @@ export default ()=>{
 
     btnOpenStiker.addEventListener('click', ()=> { 
         //ElementComponent.append(elementChatStiker)
-        if(elementContentStiker.classList.contains('active')){
-            history.back()
-        } else {
-            elementContentStiker.classList.add('active')
-            history.pushState(null, null, location.href)
-        }
-
+        elementContentStiker.classList.toggle('active')
+        // if(elementContentStiker.classList.contains('active')){
+        //     history.back()
+        // } else {
+        //     elementContentStiker.classList.add('active')
+        //     history.pushState(null, null, location.href)
+        // }
         
     })
 
@@ -216,10 +216,10 @@ export default ()=>{
 
     })
 
-    addEventListener('popstate', e => {
-        if(elementContentStiker.classList.contains('active'))
-            elementContentStiker.classList.remove('active')
-    })
+    // addEventListener('popstate', e => {
+    //     if(elementContentStiker.classList.contains('active'))
+    //         elementContentStiker.classList.remove('active')
+    // })
 
     const renderHTML =(onSnapshot)=>{
         let index = 0

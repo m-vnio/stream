@@ -12,6 +12,7 @@ import apariencia from "../page/apariencia.js";
 import user from "../page/user.js";
 import stiker from "../page/stiker.js";
 import stikerIndex from "../page/stikerIndex.js";
+import count from "../page/count.js";
 
 import pageNotFound from "../page/pageNotFound.js";
 
@@ -51,7 +52,7 @@ export default ()=>{
                 } else {
                     (async ()=> {
                         const data_user = await db.getAll({ where  : [[ "uid", "==", user.uid ]], limit : 1})
-                        data_user.forEach(doc => ls('user_data').data(doc.data()).put(true));
+                        data_user.forEach(doc => ls('user_data').data({ id : doc.id, ...doc.data() }).put(true));
                     })()
                 }
             } else {
@@ -76,6 +77,7 @@ export default ()=>{
     Routes.param('/user', user)
     Routes.param('/stiker', stiker)
     Routes.param('/stiker/:index', stikerIndex)
+    Routes.param('/count', count)
     Routes.param('*', pageNotFound)
     
     Routes.dispatch(()=> {

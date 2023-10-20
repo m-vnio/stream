@@ -41,23 +41,23 @@ export default (ElementComponentFullScreen)=>{
                 <div class="div_Mbdqf">
                     <div class="div_6u0fO">
                         <div class="div_BXzT1">
-                            <button class="button_KXchF" data-action="open_form_link">${ Icon.get('icon-plus') }</button>
+                            <button class="button_KXchF" data-action="open_form_link">${ Icon.get('fi fi-rr-plus') }</button>
                         </div>
                         <div class="div_BXzT1">
-                            <button class="button_KXchF" data-action="open_history">${ Icon.get('icon-paper-clock-back') }</button>
-                            <button class="button_KXchF" data-action="open_emoji">${ Icon.get('icon-emoji') }</button>
+                            <button class="button_KXchF" data-action="open_history">${ Icon.get('fi fi-rr-time-fast') }</button>
+                            <button class="button_KXchF" data-action="open_emoji">${ Icon.get('fi fi-rr-smile') }</button>
                         </div> 
                     </div> 
                     <div class="div_XjdZ8">
                         <div class="div_3hBg2">
                             <div class="div_HGz61">
-                                <button class="button_KXchF" data-action="btnPlay">${ Icon.get('icon-play') }</button>
-                                <button class="button_KXchF" data-action="seeked_back_10">${ Icon.get('icon-clock-rotate-left') }</button>
+                                <button class="button_KXchF" data-action="btnPlay">${ Icon.get('fi fi-rr-play') }</button>
+                                <button class="button_KXchF" data-action="seeked_back_10">${ Icon.get('fi fi-rr-time-past') }</button>
                             </div>
                             <span class="span_4E0dR">00:00:00</span>
                             <div class="div_HGz61">
-                                <button class="button_KXchF lock-unlock" style="visibility: hidden" data-action="lock_unlock">${ Icon.get('icon-lock') }</button>
-                                <button class="button_KXchF" data-action="active_fullscreen">${ Icon.get('icon-screen-max') }</button>
+                                <button class="button_KXchF lock-unlock" style="visibility: hidden" data-action="lock_unlock">${ Icon.get('fi fi-rr-lock') }</button>
+                                <button class="button_KXchF" data-action="active_fullscreen">${ Icon.get('fi fi-rr-expand') }</button>
                             </div>
                         </div>
                         <div class="div_uN72K">
@@ -71,7 +71,7 @@ export default (ElementComponentFullScreen)=>{
                     </div>
                 </div>
                 <div class="div_1qCY1">
-                    <button class="button_hdZNr" data-action="open_chat">${ Icon.get('icon-message') }</button>
+                    <button class="button_hdZNr" data-action="open_chat">${ Icon.get('fi fi-rr-messages') }</button>
                 </div>
                 <div class="div_82gU7" id="contenedor_emoji_mostrar"></div>
                 <div class="div_F6FFR" id="contenedor_chat_2">
@@ -207,7 +207,7 @@ export default (ElementComponentFullScreen)=>{
         elementVideoControlBotttom.classList.toggle('unlock')
 
         const isElementUnlock = elementVideoControlBotttom.classList.contains('unlock')  
-        btnLockUnlock.innerHTML = Icon.get(`icon-${ isElementUnlock ? 'unlock' : 'lock' }`)
+        btnLockUnlock.innerHTML = Icon.get(`fi fi-rr-${ isElementUnlock ? 'unlock' : 'lock' }`)
     })
 
     addRemoveEventListenerHashchange(document, 'fullscreenchange', ()=> def_fullscreen(false))
@@ -216,7 +216,7 @@ export default (ElementComponentFullScreen)=>{
         if(document.fullscreenElement){     
             if(status) return document.exitFullscreen() 
             ElementComponentFullScreen.classList.add('active')
-            btnActiveFullscreen.innerHTML = Icon.get('icon-screen-min')
+            btnActiveFullscreen.innerHTML = Icon.get('fi fi-rr-compress')
             btnOpenChat.classList.add('active')
             ElementComponent.classList.remove('active')
             elementButtonTop.classList.add('active')
@@ -231,7 +231,7 @@ export default (ElementComponentFullScreen)=>{
         } else {
             if(status) return ElementComponentFullScreen.requestFullscreen()
             ElementComponentFullScreen.classList.remove('active')
-            btnActiveFullscreen.innerHTML = Icon.get('icon-screen-max')
+            btnActiveFullscreen.innerHTML = Icon.get('fi fi-rr-expand')
             btnOpenChat.classList.remove('active')
             ElementComponent.classList.add('active')
             elementButtonTop.classList.remove('active')
@@ -250,11 +250,11 @@ export default (ElementComponentFullScreen)=>{
     
     //elementVideo
     elementVideo.addEventListener("play", ()=> {
-        btnPlay.innerHTML = Icon.get('icon-pause') 
+        btnPlay.innerHTML = Icon.get('fi fi-rr-pause') 
         setVideoHistory(`se reanudo el video`)
     })
     elementVideo.addEventListener("pause", ()=> {
-        btnPlay.innerHTML = Icon.get('icon-play')
+        btnPlay.innerHTML = Icon.get('fi fi-rr-play')
         setVideoHistory(`se pauso el video`)
     });
 

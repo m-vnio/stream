@@ -7,12 +7,12 @@ export default (data = {})=>{
     const isHide = data.status == 4 
     
     const Button = [
-        { id : 1, icon : 'icon-copy', action : 'copy', name : 'copiar', type : ['text'], status : true },
+        { id : 1, icon : 'fi fi-rr-copy', action : 'copy', name : 'copiar', type : ['text'], status : true },
         { id : 2, icon : 'icon-reply', action : 'reply', name : 'responder', type : ['text', 'stiker'], status : !isHide },
-        { id : 3, icon : 'icon-pen', action : 'update', name : 'editar', type : ['text'], status : (userid && !isHide) },
-        { id : 4, icon : 'icon-show', action : 'hide_show', name : 'mostrar', type : ['text', 'stiker'], status : (userid && isHide) },
-        { id : 5, icon : 'icon-hide', action : 'hide_show', name : 'ocultar', type : ['text', 'stiker'], status : (userid && !isHide) },
-        { id : 6, icon : 'icon-trash', action : 'delete', name : 'eliminar', type : ['text', 'stiker'], status : userid }
+        { id : 3, icon : 'fi fi-rr-pencil', action : 'update', name : 'editar', type : ['text'], status : (userid && !isHide) },
+        { id : 4, icon : 'fi fi-rr-eye', action : 'hide_show', name : 'mostrar', type : ['text', 'stiker'], status : (userid && isHide) },
+        { id : 5, icon : 'fi fi-rr-eye-crossed', action : 'hide_show', name : 'ocultar', type : ['text', 'stiker'], status : (userid && !isHide) },
+        { id : 6, icon : 'fi fi-rr-trash', action : 'delete', name : 'eliminar', type : ['text', 'stiker'], status : userid }
     ]
 
     const ElementComponent = createHTML(`
@@ -78,7 +78,7 @@ export default (data = {})=>{
         const isStikerFavorite = stikerFavorite.find(stiker => stiker.id == id)
         elementMessageContent.innerHTML = `<img src="public/img/stiker/${ data.message }" alt="icon-stiker">` 
         elementMessageButton.innerHTML = `
-            <button class="icon pointer" data-data='${ JSON.stringify({ id, name }) }' data-action="stiker-favorite">${ Icon.get(`icon-favorite-${ isStikerFavorite ? 'dark' : 'light' }`) }</button>
+            <button class="icon pointer" data-data='${ JSON.stringify({ id, name }) }' data-action="stiker-favorite">${ Icon.get(`fi fi-${ isStikerFavorite ? 'sr' : 'rr' }-star`) }</button>
         `
     }
 
@@ -99,10 +99,11 @@ export default (data = {})=>{
 
                 if(isStikerFavorite == -1) {
                     stikerFavorite.push(data)
-                    button.innerHTML = Icon.get('icon-favorite-dark')
+                    button.innerHTML = Icon.get('fi fi-sr-star')
+                    
                 } else {
                     stikerFavorite.splice(isStikerFavorite, 1)
-                    button.innerHTML = Icon.get('icon-favorite-light')
+                    button.innerHTML = Icon.get('fi fi-rr-star')
                 }    
                 
                 ls('stiker-favorite').data(stikerFavorite).put(true)

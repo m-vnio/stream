@@ -1,6 +1,5 @@
 export default ()=>{
 
-
     const Icon  = new iconSVG() 
 
     const Route = [
@@ -13,8 +12,8 @@ export default ()=>{
     const ElementComponent = createHTML(`
         <div class="div_r59RR7t">
             <div class="div_xo0lE74">
-                <a href="#/" class="a_8ka039d focus" data-name="home">${ Icon.get('icon-home') }</a>
-                <a href="#/user" class="a_8ka039d" data-name="setting">${ Icon.get('icon-user') }</a>
+                <a href="#/" class="a_8ka039d focus" data-name="home">${ Icon.get('fi fi-rr-house-blank') }</a>
+                <a href="#/user" class="a_8ka039d" data-name="setting">${ Icon.get('fi fi-rr-user') }</a>
             </div>
         </div>
     `)

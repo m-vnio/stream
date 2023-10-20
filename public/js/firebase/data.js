@@ -2,7 +2,7 @@ import app from "./config.js";
 import { getFirestore, collection, doc, addDoc, getDoc, getDocs,  deleteDoc, updateDoc, onSnapshot, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
 const db    = getFirestore(); 
-
+ 
 class dbFirebase {
     constructor(db_name){
         this.db_name = db_name
@@ -12,8 +12,8 @@ class dbFirebase {
         addDoc(collection(db, this.db_name), data)
     }
 
-    edit(id = false, data = {}){
-        if(id) updateDoc(doc(db, this.db_name, id), data)
+    async edit(id = false, data = {}){
+        if(id) return updateDoc(doc(db, this.db_name, id), data)
     }
 
     drop(id = false){
