@@ -312,7 +312,7 @@ class findElement {
     }
 
     getAll(query){
-        this._root.querySelectorAll(query)
+        return this._root.querySelectorAll(query)
     }
 }
 

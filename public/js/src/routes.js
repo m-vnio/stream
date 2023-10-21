@@ -52,7 +52,7 @@ export default ()=>{
                 } else {
                     (async ()=> {
                         const data_user = await db.getAll({ where  : [[ "uid", "==", user.uid ]], limit : 1})
-                        data_user.forEach(doc => ls('user_data').data({ id : doc.id, ...doc.data() }).put(true));
+                        data_user.forEach(doc => ls('user_data').data({ id : doc.id, ...doc.data(), email : user.email }).put(true));
                     })()
                 }
             } else {

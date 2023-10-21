@@ -4,8 +4,11 @@ import { dbFirebase } from "../firebase/data.js";
 export default ()=>{
 
     const hostURL  = uri => 'https://apimanagestorage.000webhostapp.com' + uri
+    const user      = ls('user').data({}).push(true, true)
     const user_data = ls('user_data').data({}).push(true, true)
     const db = new dbFirebase('user_data')
+
+    const CustomEventUserData = new CustomEvent('custom-event-user-data')
 
     const ElementComponent = createHTML(`
         <div class="div_L5jgPxN">
@@ -117,7 +120,7 @@ export default ()=>{
 
         if(fileWallpaper != ''){ 
             data_file.append('file_wallpaper', elementFormPerfil.wallpaper.files[0])
-        }
+        } 
 
         if(fileAvatar != '' || fileWallpaper != ''){
             fetch(hostURL('/upload-files/app/uploadFile.php'), {
@@ -126,12 +129,18 @@ export default ()=>{
             })
             .then(res => res.json())
             .then((resData)=> {
-                db.edit(user_data.id, {...data, ...resData}).then(console.log)
+                db.edit(user_data.id, {...data, ...resData}).then(loadData)
             })
         } else {
-            db.edit(user_data.id, data).then(console.log)
+            db.edit(user_data.id, data).then(loadData)
         }
     })
+
+    const loadData  = async ()=> {
+        const data_user = await db.getAll({ where  : [[ "uid", "==", user.uid ]], limit : 1})
+        data_user.forEach(doc => ls('user_data').data({ id : doc.id, ...doc.data(), email : user.email }).put(true));
+        dispatchEvent(CustomEventUserData)
+    }
  
     setBirthday(parseInt(user_data.birthday))
     document.getElementById('main').append(ElementComponent)
