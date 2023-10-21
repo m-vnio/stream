@@ -187,4 +187,23 @@
   display: flex;
 }
 
-/* div_wcyPU0Y */
+/* MODAL VIDEO USER  */
+.div_753wTS9{
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  height: 60px;
+  align-items: center;
+
+  & img {
+    width: 40px;
+    height: 40px;
+    margin: auto;
+    border-radius: 50%;
+
+    object-fit: cover;
+  }
+}
+
+.div_tfe1dZh{
+  display: grid;
+}

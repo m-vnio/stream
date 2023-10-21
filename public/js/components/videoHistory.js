@@ -1,6 +1,4 @@
-export default (DataModule = {})=>{
-
-    
+export default ()=>{
 
     const ElementComponent = createHTML(`
         <div class="div_KEVYWu2" style="padding:0">

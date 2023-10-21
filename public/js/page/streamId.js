@@ -44,11 +44,11 @@ export default (params)=>{
         }
     }
 
-    loadVerify()
+    //loadVerify()
     
-    // elementLoad.remove()
-    // elementItem.prepend(header())
-    // elementItemVideoChat.append(video(elementItemVideoChat), chat()) 
+    elementLoad.remove()
+    elementItem.prepend(header())
+    elementItemVideoChat.append(video(elementItemVideoChat), chat()) 
     
     document.getElementById('main').append(ElementComponent)
 }

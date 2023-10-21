@@ -30,13 +30,15 @@ export default ()=>{
                                 </label>
                                 <label class="label_96QeWL5">
                                     <input type="file" name="avatar">
-                                    
                                     <img src="${ hostURL(`/upload-files/storage/avatar/${ user_data.avatar }`) }">
                                 </label>
                             </div>
                             
                             <label class="label_eE2nEE4">
                                 <input type="text" value="${ user_data.name ?? '' }" name="name" placeholder="nombre">
+                            </label>
+                            <label class="label_eE2nEE4">
+                                <input type="text" value="${ user_data.username ?? '' }" name="username" placeholder="username">
                             </label>
                             <label class="label_eE2nEE4">
                                 <input type="text" value="${ user_data.descripcion ?? '' }" name="descripcion" placeholder="descripcion">
@@ -102,6 +104,7 @@ export default ()=>{
 
         const data = {
             name : elementFormPerfil.name.value,
+            username : elementFormPerfil.username.value,
             descripcion : elementFormPerfil.descripcion.value,
             birthday : elementFormPerfil.birthday.dataset.value
         }
