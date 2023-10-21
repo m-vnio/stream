@@ -161,7 +161,7 @@
 }
 
 .form_68Klg {
-  background: var(--color-item);
+  background: var(--color-background);
   display: grid;
   border-top: 1.25px solid rgb(255 255 255 / 0.1);
   &.active .div_Zk0B9 {
