@@ -48,6 +48,39 @@
   }
 }
 
+.div_ETUVd9w{
+  margin: auto;
+  display: grid;
+  gap: 40px;
+
+  grid-template-columns: 80px 80px 80px;  
+  grid-template-rows: 80px;
+}
+
+.button_4P1Dopv{
+  cursor: pointer; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  pointer-events: initial;
+
+  &:hover{
+    opacity: .5;
+  }
+
+  &.desactive{
+    pointer-events: none;
+  }
+
+  & svg {
+    width: 30px;
+    height: 30px;
+    fill: #ffffff;
+  }
+  
+}
+
 .div_BXzT1 {
   display: flex;
 }
@@ -140,6 +173,7 @@
 
 .span_4E0dR {
   color: #ffffff;
+  margin: 0 15px;
 }
 
 .div_3hBg2 {
@@ -277,7 +311,6 @@
 
     font-size: 25px;
     cursor: pointer;
-    user-select: none;
 
     aspect-ratio: 1 / 1;
 
@@ -352,4 +385,4 @@
   }
 }
 
-/*  button_KXchF */
+/*   div_Mbdqf */

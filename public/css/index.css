@@ -121,3 +121,6 @@ img::selection {
 .pointer:hover {
   opacity: 0.5;
 }
+
+
+/* user-select */

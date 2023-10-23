@@ -14,7 +14,7 @@ export default ()=>{
         <header class="header_M6Brg5j">
             <div class="div_x36B32A">
                 <div class="div_7Q6poiU">
-                    <a href="#/" class="a_8ka039d">${ Icon.get('fi fi-rr-arrow-small-left') }</a>
+                    <a href="#/stream" class="a_8ka039d">${ Icon.get('fi fi-rr-arrow-small-left') }</a>
                     <h3 class="h3_X0B6J text-ellipsis">${ stream.name ?? 'hola' }</h3>
                 </div>
                 <div class="div_7Q6poiU">

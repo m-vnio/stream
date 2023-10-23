@@ -48,12 +48,13 @@ export default (ElementComponentFullScreen)=>{
                             <button class="button_KXchF" data-action="open_emoji">${ Icon.get('fi fi-rr-smile') }</button>
                         </div> 
                     </div> 
+                    <div class="div_ETUVd9w">
+                        <button class="button_4P1Dopv" data-action="seeked_back_10">${ Icon.get('fi fi-rr-time-past') }</button>
+                        <button class="button_4P1Dopv" data-action="btnPlay">${ Icon.get('fi fi-rr-play') }</button>
+                        <button class="button_4P1Dopv lock-unlock" data-action="lock_unlock">${ Icon.get('fi fi-rr-lock') }</button>
+                    </div>
                     <div class="div_XjdZ8">
                         <div class="div_3hBg2">
-                            <div class="div_HGz61">
-                                <button class="button_KXchF" data-action="btnPlay">${ Icon.get('fi fi-rr-play') }</button>
-                                <button class="button_KXchF" data-action="seeked_back_10">${ Icon.get('fi fi-rr-time-past') }</button>
-                            </div>
                             <span class="span_4E0dR">00:00:00</span>
                             <div class="div_HGz61">
                                 <button class="button_KXchF lock-unlock" style="visibility: hidden" data-action="lock_unlock">${ Icon.get('fi fi-rr-lock') }</button>
@@ -128,51 +129,19 @@ export default (ElementComponentFullScreen)=>{
         }
     })
 
+    let activeVideoPlay = false
     btnPlay.addEventListener("click", ()=> {
-        if(elementVideo.paused) elementVideo.play()
-        else elementVideo.pause()
-
-        const progress = elementVideo.currentTime.toFixed(0)
-        
-        db.edit(params.id, {
-            play    : !elementVideo.paused,
-            id_user : user.uid,
-            datetime_update : Date.now().toString(),
-            time_progress   : progress,
-            change : 'play'
-        })
-
-        btnPlay.style.pointerEvents = 'none'
-        setTimeout(()=> btnPlay.style.pointerEvents = 'initial', 1500)
+        if(activeVideoPlay) {
+            elementVideo[ elementVideo.paused ? 'play' : 'pause' ]() 
+        }
     })
 
     btnSeekedBack10.addEventListener("click", ()=> {
-        elementVideo.currentTime = elementVideo.currentTime.toFixed(0) - 10  
-        
-        const progress = elementVideo.currentTime.toFixed(0)
-
-        db.edit(params.id, {
-            id_user : user.uid,
-            datetime_update : Date.now().toString(),
-            time_progress   : progress,
-            change : 'seeked'
-        })
-
-        btnSeekedBack10.style.pointerEvents = 'none'
-        setTimeout(()=> btnSeekedBack10.style.pointerEvents = 'initial', 1500)
+        elementVideo.currentTime = elementVideo.currentTime.toFixed(0) - 10
     })
 
     span_duration.addEventListener("click", ()=> {
-        const progress = elementVideo.currentTime.toFixed(0)
-        db.edit(params.id, {
-            id_user : user.uid,
-            datetime_update : Date.now().toString(),
-            time_progress   : progress,
-            change : 'seeked'
-        })
-
-        span_duration.style.pointerEvents = 'none'
-        setTimeout(()=> span_duration.style.pointerEvents = 'initial', 1500)
+        defVideoSeeked()
     })
     
     btnOpenChat.addEventListener('click', ()=> {
@@ -249,34 +218,63 @@ export default (ElementComponentFullScreen)=>{
     } 
     
     //elementVideo
-    elementVideo.addEventListener("play", ()=> {
-        btnPlay.innerHTML = Icon.get('fi fi-rr-pause') 
-        setVideoHistory(`se reanudo el video`)
-    })
-    elementVideo.addEventListener("pause", ()=> {
-        btnPlay.innerHTML = Icon.get('fi fi-rr-play')
-        setVideoHistory(`se pauso el video`)
-    });
 
-    elementVideo.addEventListener("loadedmetadata", ()=> {
-        ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
-        const segundos_diferencia = Math.round((Date.now() - data_update.data_update) / 1000) 
-        elementVideo.currentTime = parseInt(data_update.time_progress) + segundos_diferencia
+    const renderTimeProgress =(time)=>{
+        const Time = getTimeBySecond(time)
+        const arrayTime = []
 
+        if(Time.hours > 0 ) arrayTime.push(Time.hours)
+        arrayTime.push(('0'+ Time.minutes).slice(-2))
+        arrayTime.push(('0'+ Time.seconds).slice(-2))
+
+        return arrayTime.map(time => time).join(':')
+    }
+
+    const defVideoPlayPause =()=>{
+        const play = !elementVideo.paused
+        const progress = elementVideo.currentTime.toFixed(0)
+
+        db.edit(params.id, {
+            play    : !elementVideo.paused,
+            id_user : user.uid,
+            datetime_update : Date.now().toString(),
+            time_progress   : progress,
+            change : 'play',
+            message : `${ user_data.username } ha ${ play ? 'reanudado' : 'pausado' } el video`
+        })
+
+        btnPlay.innerHTML = Icon.get(play ? 'fi fi-rr-pause' : 'fi fi-rr-play')
+        setVideoHistory(`has ${ play ? 'reanudado' : 'pausado' } el video`)
+    }
+
+    const defVideoLoadedmetadata = e =>{
         setTimeout(()=> {
-            ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
-            const Time = getTimeBySecond(parseInt(ipt_duration.max))
-            span_duration.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
-        }, 1250)
-    })
+            ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0)) 
+            span_duration.textContent = renderTimeProgress(parseInt(ipt_duration.max))
+        })
+    }
 
+    const defVideoSeeked =()=>{
+        const progress = elementVideo.currentTime.toFixed(0)
 
-    elementVideo.addEventListener("timeupdate", ()=> {
+        db.edit(params.id, {
+            id_user : user.uid,
+            datetime_update : Date.now().toString(),
+            time_progress   : progress,
+            change : 'seeked',
+            message : `${ user_data.username } ha cambiado posicion del video`
+        })
 
+        setVideoHistory('has cambiado posicion del video') 
+
+        activeVideoPlay = true
+        btnPlay.innerHTML = Icon.get(elementVideo.paused ? 'fi fi-rr-play' : 'fi fi-rr-pause')
+    }
+
+    const defVideoTimeupdate =(e)=>{
         if(parseInt(ipt_duration.max) == 0){
             ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0))
-            const Time = getTimeBySecond(parseInt(ipt_duration.max))
-            span_duration.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
+            span_duration.textContent = renderTimeProgress(parseInt(ipt_duration.max))
         }
 
         if(change_input) return 
@@ -285,10 +283,51 @@ export default (ElementComponentFullScreen)=>{
         if(ipt_duration.value != ipt_duration.dataset.value){
             ipt_duration.dataset.value = ipt_duration.value
             hr_progreso.style.width = ((parseInt(ipt_duration.value) / parseInt(ipt_duration.max)) * 100).toFixed(0) + '%'
-            const Time = getTimeBySecond(parseInt(ipt_duration.max) - parseInt(ipt_duration.value))
-            span_duration.textContent = `${ ('0'+ Time.hours).slice(-2) }:${ ('0'+ Time.minutes).slice(-2) }:${ ('0'+ Time.seconds).slice(-2) }`
+            span_duration.textContent = renderTimeProgress(parseInt(ipt_duration.max) - parseInt(ipt_duration.value))
         }
-    })
+    }
+    
+    const activeAddEventListenerVideoSeeked =()=> elementVideo.addEventListener("seeked", defVideoSeeked)
+    const desactiveAddEventListenerVideoSeeked =()=> elementVideo.removeEventListener("seeked", defVideoSeeked)
+
+    const activeAddEventListenerVideoPlayPause =()=>{
+        btnPlay.innerHTML = Icon.get(elementVideo.paused ? 'fi fi-rr-play' : 'fi fi-rr-pause')
+        setTimeout(()=> {
+            elementVideo.addEventListener("play", defVideoPlayPause)
+            elementVideo.addEventListener("pause", defVideoPlayPause)
+        })
+    }; activeAddEventListenerVideoPlayPause()
+
+    const desactiveAddEventListenerVideoPlayPause =()=>{
+        elementVideo.removeEventListener("play", defVideoPlayPause)
+        elementVideo.removeEventListener("pause", defVideoPlayPause)
+    }
+
+    const activeDesactiveAddEventListenerVideoSeeked =()=>{
+ 
+        activeVideoPlay = false
+        btnPlay.innerHTML = '<span class="loader" style="color:#ffffff"></span>'
+
+        const defEventListener = () => { 
+            if(JSON.parse(localStorage.getItem('click'))){
+                desactiveAddEventListenerVideoPlayPause()
+                elementVideo[ JSON.parse(data_update.play) ? 'play' : 'pause' ]()
+                activeAddEventListenerVideoPlayPause()
+            }
+
+            activeVideoPlay = true
+
+            btnPlay.innerHTML = Icon.get(elementVideo.paused ? 'fi fi-rr-play' : 'fi fi-rr-pause')
+            elementVideo.removeEventListener('seeked', defEventListener)
+            activeAddEventListenerVideoSeeked()
+        }
+
+        elementVideo.addEventListener('seeked', defEventListener)
+
+    }; activeDesactiveAddEventListenerVideoSeeked()
+    
+    elementVideo.addEventListener("loadedmetadata", defVideoLoadedmetadata)
+    elementVideo.addEventListener("timeupdate", defVideoTimeupdate)
 
     //elementInput
     let change_input = false
@@ -299,23 +338,13 @@ export default (ElementComponentFullScreen)=>{
 
     ipt_duration.addEventListener('change', () => {
         change_input = false
+        activeVideoPlay = false
+        btnPlay.innerHTML = '<span class="loader" style="color:#ffffff"></span>'
+        
         elementVideo.currentTime = parseInt(ipt_duration.value) 
-        const progress = elementVideo.currentTime.toFixed(0)
-
-        db.edit(params.id, {
-            id_user : user.uid,
-            datetime_update : Date.now().toString(),
-            time_progress   : progress,
-            change : 'seeked'
-        })
-
-        setVideoHistory('se cambio la posicion del video')
     })
 
-    addRemoveEventListenerHashchange(window, 'open_link', e => {
-        // elementVideo.setAttribute('src', e.detail.link)
-        // elementVideo.setAttribute('autoplay', '')
-        // elementVideo.currentTime = 0
+    addRemoveEventListenerHashchange(window, 'open_link', e => { 
         renderVideoURL(e.detail.link)
         if(e.detail.submit) {
             db.edit(params.id, {
@@ -325,14 +354,14 @@ export default (ElementComponentFullScreen)=>{
                 change : 'link',
                 id_user : user.uid,
                 time_progress   : '0',
+                message : `${ user_data.username } ha cambiado el video`
             })
-            setVideoHistory('se cambio de video')
+            setVideoHistory('has cambiado el video')
         }
     })
 
     addRemoveEventListenerHashchange(window, 'send_notification_message', ()=> {
         if(document.fullscreenElement){
-            //element_mensaje_notificacion.style.display = 'flex'
             if(!ElementComponent.classList.contains('active'))
                 btnOpenChat.classList.add('notification')
         }
@@ -376,13 +405,17 @@ export default (ElementComponentFullScreen)=>{
 
     //rendervideo
     const renderVideo =(querySnapshot)=>{
+        console.log('hola');
         querySnapshot.forEach(doc => {
             const data = data_update = doc.data()
-            data_update.data_update  = Date.now()
 
-            if(fisrt_time.render){
+            if(fisrt_time.render){   
                 fisrt_time.render = false
+
                 renderVideoURL(data.link)
+                desactiveAddEventListenerVideoSeeked()
+                elementVideo.currentTime = parseInt(data.time_progress) + Math.round((Date.now() - parseInt(data.datetime_update)) / 1000)
+                activeDesactiveAddEventListenerVideoSeeked()
                 return
             }
             
@@ -392,23 +425,26 @@ export default (ElementComponentFullScreen)=>{
                 data_local.datetime_update = parseInt(data.datetime_update)
 
                 if(data.change == 'play'){
-                    if(JSON.parse(localStorage.getItem('click'))){
+                    if(JSON.parse(localStorage.getItem('click')))
+                    {
                         const play = JSON.parse(data_update.play)
-                        if(play) elementVideo.play()
-                        else elementVideo.pause()
-                        setVideoHistory(`se ${ play ? 'reanudo' : 'pauso' } el video`) 
+                        desactiveAddEventListenerVideoPlayPause()
+                        elementVideo[ play ? 'play' : 'pause' ]()
+                        activeAddEventListenerVideoPlayPause()
+                        setVideoHistory(data.message ?? '') 
                     }
                 } 
                 else if(data.change == 'seeked'){
-                    data_local.data_db_update = true
-                    elementVideo.currentTime = parseInt(data.time_progress)
-                    setVideoHistory('se cambio la posicion del video') 
+
+                    desactiveAddEventListenerVideoSeeked()
+                    elementVideo.currentTime = parseInt(data.time_progress) + Math.round((Date.now() - parseInt(data.datetime_update)) / 1000)
+                    activeDesactiveAddEventListenerVideoSeeked()
+                    setVideoHistory(data.message ?? '') 
+                    
                 } 
                 else if(data.change == 'link'){
-                    data_local.data_db_update = true
-                    elementVideo.currentTime = 0
                     renderVideoURL(data.link)
-                    setVideoHistory('se cambio de video')
+                    setVideoHistory(data.message ?? '')
                 }
             }
         }); 

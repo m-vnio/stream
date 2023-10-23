@@ -258,9 +258,7 @@
   width: min(100%, 400px);
   height: min(100%, 400px);
   overflow: hidden;
-  border-radius: 8px;
-
-  user-select: none;
+  border-radius: 8px; 
 }
 
 @media (min-width: 750px) {
@@ -342,4 +340,4 @@
 
 
 
-/*  button_E8Vr8 */
+/*  button_E8Vr8 user-select*/
