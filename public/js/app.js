@@ -5,8 +5,11 @@ import navigate from "./components/navigate.js"
 
 import { dbFirebase } from "./firebase/data.js"
 
+import serverWorker from "./pwa/serverWorker.js"
+
 export default ()=>{
 
+    //serverWorker()
     
     const contextmenuIncludeTarget = ['INPUT', 'TEXTAREA']
     const db = new dbFirebase('user_data')

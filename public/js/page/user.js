@@ -79,6 +79,12 @@ export default ()=>{
                                 <span>Apariencia</span>
                             </div>
                         </a>
+                        <a href="#/notification" class="a_K6KH1Ba" style="display:none">
+                            ${ Icon.get('fi fi-rr-bell') }
+                            <div>
+                                <span>Notificaciones</span>
+                            </div>
+                        </a>
                         <a href="#/stiker" class="a_K6KH1Ba">
                             ${ Icon.get('fi fi-rr-sticker') }
                             <div>

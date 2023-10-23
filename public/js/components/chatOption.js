@@ -8,7 +8,7 @@ export default (data = {})=>{
     
     const Button = [
         { id : 1, icon : 'fi fi-rr-copy', action : 'copy', name : 'copiar', type : ['text'], status : true },
-        { id : 2, icon : 'icon-reply', action : 'reply', name : 'responder', type : ['text', 'stiker'], status : !isHide },
+        { id : 2, icon : 'fi fi-rr-undo', action : 'reply', name : 'responder', type : ['text', 'stiker'], status : !isHide },
         { id : 3, icon : 'fi fi-rr-pencil', action : 'update', name : 'editar', type : ['text'], status : (userid && !isHide) },
         { id : 4, icon : 'fi fi-rr-eye', action : 'hide_show', name : 'mostrar', type : ['text', 'stiker'], status : (userid && isHide) },
         { id : 5, icon : 'fi fi-rr-eye-crossed', action : 'hide_show', name : 'ocultar', type : ['text', 'stiker'], status : (userid && !isHide) },

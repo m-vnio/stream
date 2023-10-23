@@ -14,6 +14,8 @@ import stiker from "../page/stiker.js";
 import stikerIndex from "../page/stikerIndex.js";
 import count from "../page/count.js";
 
+import notification from "../page/notification.js";
+
 import pageNotFound from "../page/pageNotFound.js";
 
 export default ()=>{
@@ -78,6 +80,7 @@ export default ()=>{
     Routes.param('/stiker', stiker)
     Routes.param('/stiker/:index', stikerIndex)
     Routes.param('/count', count)
+    Routes.param('/notification', notification)
     Routes.param('*', pageNotFound)
     
     Routes.dispatch(()=> {
