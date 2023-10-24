@@ -13,7 +13,7 @@
 
 .form_slr4j {
   margin: auto;
-  background: var(--color-bacground);
+  background: var(--color-background);
   width: min(100%, 450px);
 
   display: grid;

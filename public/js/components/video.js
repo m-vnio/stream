@@ -1,5 +1,6 @@
 import { dbFirebase, dbFirebaseRealtime } from "../firebase/data.js"
 import emoji from "./emoji.js"
+import emojis from "./emojis.js"
 import formLink from "./formLink.js"
 import videoHistory from "./videoHistory.js"
 
@@ -78,8 +79,7 @@ export default (ElementComponentFullScreen)=>{
                 <div class="div_F6FFR" id="contenedor_chat_2">
                     <div class="div_3b7ZM background"></div>
                 </div>
-            </div>
-            <div data-css="contenedor_video_fullscreen"></div>
+            </div> 
         </div>
     `)
 
@@ -111,6 +111,8 @@ export default (ElementComponentFullScreen)=>{
     const ipt_duration      = query.get('.input_908X1')
     const hr_progreso       = query.get('.hr_A6t1K')
     const span_duration    = query.get('.span_4E0dR')
+
+    ElementComponent.append(emojis())
 
     const dispatchUpdateVideoHistory = new CustomEvent('updateVideoHistory')
     const setVideoHistory =(message = '')=>{
@@ -306,7 +308,7 @@ export default (ElementComponentFullScreen)=>{
     const activeDesactiveAddEventListenerVideoSeeked =()=>{
  
         activeVideoPlay = false
-        btnPlay.innerHTML = '<span class="loader" style="color:#ffffff"></span>'
+        btnPlay.innerHTML = '<span class="loader" style="--color:#ffffff"></span>'
 
         const defEventListener = () => { 
             if(JSON.parse(localStorage.getItem('click'))){
@@ -339,7 +341,7 @@ export default (ElementComponentFullScreen)=>{
     ipt_duration.addEventListener('change', () => {
         change_input = false
         activeVideoPlay = false
-        btnPlay.innerHTML = '<span class="loader" style="color:#ffffff"></span>'
+        btnPlay.innerHTML = '<span class="loader" style="--color:#ffffff"></span>'
         
         elementVideo.currentTime = parseInt(ipt_duration.value) 
     })
@@ -405,7 +407,6 @@ export default (ElementComponentFullScreen)=>{
 
     //rendervideo
     const renderVideo =(querySnapshot)=>{
-        console.log('hola');
         querySnapshot.forEach(doc => {
             const data = data_update = doc.data()
 
