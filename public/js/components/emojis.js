@@ -31,13 +31,7 @@ export default ()=>{
 
         const elementoEmoji = child.cloneNode(true);
         elementoEmoji.textContent = message
-        
-        if(ElementComponent.children.length) {
-            const position = rand(100)
-
-            elementoEmoji.style.left = `${ position }%`
-        }
-
+        if(ElementComponent.children.length > 0) elementoEmoji.style.left = `${ rand(80) }%` 
         ElementComponent.append(elementoEmoji)
 
         setVideoHistory(message)

@@ -13,7 +13,7 @@ export default ()=>{
                     </div>
                     <form class="form_lK4nv" autocomplete="off">
                         <input type="text" placeholder="emoji" name="emoji">
-                        <button type="submit">${ Icon.get('fi fi-rr-paper-plane') }</button>
+                        <button type="submit" class="pointer">${ Icon.get('fi fi-rr-paper-plane') }</button>
                     </form>
                 </div>
             </div>
