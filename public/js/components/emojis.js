@@ -33,7 +33,7 @@ export default ()=>{
         elementoEmoji.textContent = message
         
         if(ElementComponent.children.length) {
-            const position = rand(20, 80)
+            const position = rand(100)
 
             elementoEmoji.style.left = `${ position }%`
         }
