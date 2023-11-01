@@ -59,7 +59,7 @@ export default ()=>{
             if(fisrt_time.render) return
             if(data.id_user == user.uid) return
 
-            if(Date.now() < (parseInt(data.datetime_add) + 7000)){ 
+            if(Date.now() < (parseInt(data.datetime_add) + 2000)){ 
 
                 defSetEmoji(data.message)
             }
