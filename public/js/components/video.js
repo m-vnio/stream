@@ -139,7 +139,7 @@ export default (ElementComponentFullScreen)=>{
     })
 
     btnSeekedBack10.addEventListener("click", ()=> {
-        elementVideo.currentTime = elementVideo.currentTime.toFixed(0) - 10
+        elementVideo.currentTime = elementVideo.currentTime.toFixed(0) - 5
     })
 
     span_duration.addEventListener("click", ()=> {
