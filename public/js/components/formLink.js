@@ -1,11 +1,12 @@
 export default ()=>{
     const ElementComponent = createHTML(`
-        <div class="div_PGtVi">
+        <div class="div_KEVYWu2">
+            <div class="div_hS7SImh"></div>
             <form class="form_slr4j" id="form_link" autocomplete="off">
                 <input type="text" name="link" class="input_V94sL" placeholder="link">
                 <div class="div_oH3Hj">
-                    <button class="button_0JQ7M button-play" type="button"><i class="fa-solid fa-play"></i></button>
-                    <button class="button_0JQ7M" type="submit"><i class="fa-solid fa-circle-play"></i></button>
+                    <button class="pointer button-play" type="button">yo</button>
+                    <button class="pointer dark" type="submit">todos</button>
                 </div>
             </form>
         </div>
@@ -13,10 +14,11 @@ export default ()=>{
 
     const query = new findElement(ElementComponent)
 
+    const elementTap = query.get('.div_hS7SImh')
     const form_link  = query.get('.form_slr4j')
     const buttonPlay = query.get('.button-play')
      
-    clickElement(ElementComponent, ()=> ElementComponent.remove())
+    elementTap.addEventListener('click', ()=> ElementComponent.remove())
 
     buttonPlay.addEventListener('click', () => {
         ElementComponent.remove()

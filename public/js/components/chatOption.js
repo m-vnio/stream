@@ -2,9 +2,11 @@ export default (data = {})=>{
 
     const Icon  = new iconSVG()
 
-    const user   = ls('user').get(true)
-    const userid = user.uid == data.id_user
+    const auth   = ls('auth').get(true)
+    const userid = auth.uid == data.id_user
     const isHide = data.status == 4 
+
+    const api = (uri = '') => ls('api').get() + uri
     
     const Button = [
         { id : 1, icon : 'fi fi-rr-copy', action : 'copy', name : 'copiar', type : ['text'], status : true },
@@ -73,17 +75,14 @@ export default (data = {})=>{
     }
 
     if(data.type == 'stiker') {
-        const id    = data.message.replace(/\D/g, "");
+        //const id    = data.message.replace(/\D/g, "");
         const name  = data.message
-        const isStikerFavorite = stikerFavorite.find(stiker => stiker.id == id)
-        elementMessageContent.innerHTML = `<img src="public/img/stiker/${ data.message }" alt="icon-stiker">` 
+        const isStikerFavorite = stikerFavorite.stiker.find(stiker => stiker == name)
+        elementMessageContent.innerHTML = `<img src="${ api(`/stream/storage/stiker/${ data.message }`) }" alt="icon-stiker">` 
         elementMessageButton.innerHTML = `
-            <button class="icon pointer" data-data='${ JSON.stringify({ id, name }) }' data-action="stiker-favorite">${ Icon.get(`fi fi-${ isStikerFavorite ? 'sr' : 'rr' }-star`) }</button>
+            <button class="icon pointer" data-data="${ name }" data-action="stiker-favorite">${ Icon.get(`fi fi-${ isStikerFavorite ? 'sr' : 'rr' }-star`) }</button>
         `
     }
-
-                            
-
 
     elementTap.addEventListener('click', ()=> ElementComponent.remove())
 
@@ -94,19 +93,24 @@ export default (data = {})=>{
             const action = button.dataset.action
 
             if(action == 'stiker-favorite'){
-                const data = JSON.parse(button.dataset.data)
-                const isStikerFavorite = stikerFavorite.findIndex(stiker => stiker.id == data.id)
+                const data = button.dataset.data
+                const index = stikerFavorite.stiker.findIndex(stiker => stiker == data)
 
-                if(isStikerFavorite == -1) {
-                    stikerFavorite.push(data)
+                if(index == -1) {
+                    stikerFavorite.stiker.push(data)
                     button.innerHTML = Icon.get('fi fi-sr-star')
                     
                 } else {
-                    stikerFavorite.splice(isStikerFavorite, 1)
+                    stikerFavorite.stiker.splice(index, 1)
                     button.innerHTML = Icon.get('fi fi-rr-star')
                 }    
-                
-                ls('stiker-favorite').data(stikerFavorite).put(true)
+
+                datapi.patch(api(`/stream/app/trigger/stiker.php?id=${ stikerFavorite.id }`), { stiker : JSON.stringify(stikerFavorite.stiker) })
+                    .then(res => {
+                        if(res) {
+                            ls('stiker-favorite').data(stikerFavorite).put(true)
+                        }
+                    })
             } 
         }
     })
@@ -127,7 +131,8 @@ export default (data = {})=>{
                 dispatchEvent(new CustomEvent('hide_message', { detail : data }))
             } else if(action == 'copy'){
                 const clipboard = navigator.clipboard
-                if(clipboard) clipboard.writeText(data.message)
+                if(clipboard) clipboard.writeText(data.message) 
+                else copyToClipboard(data.message)
             }
 
             ElementComponent.remove()

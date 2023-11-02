@@ -1,95 +1,71 @@
-import { checkLoginFirebase, logoutFirebase } from "../firebase/auth.js";
-import { dbFirebase } from "../firebase/data.js";
-
 import inicio from "../page/inicio.js";
 import stream from "../page/stream.js";
+import streamLink from "../page/streamLink.js";
+import streamLinkId from "../page/streamLinkId.js";
 import streamId from "../page/streamId.js";
 import login from "../page/login.js";
-import register from "../page/register.js";
 
 // import setting from "../page/setting.js";
 import apariencia from "../page/apariencia.js";
 import user from "../page/user.js";
 import stiker from "../page/stiker.js";
-import stikerIndex from "../page/stikerIndex.js";
 import count from "../page/count.js";
 
 import notification from "../page/notification.js";
 
 import pageNotFound from "../page/pageNotFound.js";
 
+import test from "../page/test.js";
+
 export default ()=>{
 
-    const db = new dbFirebase('user_data')
-
+    const api = (uri = '') => ls('api').get() + uri
+     
     const main  = createHTML(`<main id="main"></main>`) 
     document.getElementById('root').append(main)
 
-    const pageWithLogin     = ['', 'stream', 'config', 'user']
-    const pageWithoutLogin  = ['login', 'register']
- 
-    const withLogin = (session, namePage) =>{
-        if(pageWithLogin.includes(namePage)){
-            if(!session) location.hash = '#/login'
-        }
-    }
+    const defAuth = auth =>{
+        
+        const namePage  = location.hash.split('/')[1] ?? ''
+        ls('auth').data(auth).put(true)
 
-    const withoutLogin = (session, namePage) =>{
-        if(pageWithoutLogin.includes(namePage)){
-            if(session) location.hash = '#/'
-        } 
-    }
-
-    checkLoginFirebase((user)=> {
-        if(user) {
-            //
-            const userLocal = ls('user').data(false).push(true, true)
-            const data      = { uid : user.uid, email : user.email }
-
-            if(userLocal){
-                if(user.uid != userLocal.uid){
-                    logoutFirebase()
-                    ls('user').drop()
-                    location.hash = '#/login'
-                } else {
-                    (async ()=> {
-                        const data_user = await db.getAll({ where  : [[ "uid", "==", user.uid ]], limit : 1})
-                        data_user.forEach(doc => ls('user_data').data({ id : doc.id, ...doc.data(), email : user.email }).put(true));
-                    })()
-                }
-            } else {
-                ls('user').data(data).put(true)
-                location.hash = '#/'
-            }
+        if(auth) {
+            if(['login', 'register'].includes(namePage)) location.hash = '#/' 
         } else {
-            ls('user').drop()
-            location.hash = '#/login'
+            if(['', 'stream', 'config', 'user', 'apariencia', 'count'].includes(namePage)) location.hash = '#/register' 
         }
-    })
+
+    } 
 
     const Routes = new Hash()
 
     Routes.param('/', inicio) 
+
+    Routes.param('/test', test)
+
     Routes.param('/login', login) 
-    Routes.param('/register', register) 
+    Routes.param('/register', login) 
     Routes.param('/stream', stream)
+    Routes.param('/stream/link', streamLink)
+    Routes.param('/stream/link/:id', streamLinkId)
     Routes.param('/stream/:id', streamId)
     // Routes.param('/setting', setting)
     Routes.param('/apariencia', apariencia)
     Routes.param('/user', user)
     Routes.param('/stiker', stiker)
-    Routes.param('/stiker/:index', stikerIndex)
     Routes.param('/count', count)
     Routes.param('/notification', notification)
     Routes.param('*', pageNotFound)
     
     Routes.dispatch(()=> {
+        const auth = ls('auth').data(null).push(true, true)
+
         main.innerHTML = ''
+        defAuth(auth)
 
-        const namePage  = location.hash.split('/')[1] ?? ''
-        const session   = json(localStorage.getItem('user') ?? 'false')
-
-        withLogin(session, namePage)
-        withoutLogin(session, namePage)
+        datapi.get(api(`/stream/app/trigger/token.php?token=${ auth ? auth.token : 'null' }`)).then(data => {
+            if(JSON.stringify(data) == JSON.stringify(auth)) return
+            defAuth(data)
+        })
     })
 }

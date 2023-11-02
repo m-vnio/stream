@@ -1,54 +1,56 @@
 export default (DataModule = {})=>{
+ 
+    const auth      = ls('auth').data({}).push(true, true)
+    const api = (uri = '') => ls('api').get() + uri
 
     let Stiker    = []
-    fetch('./public/json/stiker.json')
-        .then( res => res.json() )
-        .then( data => Stiker = data)
-
-    const imgIcon = icon => `<img src="public/img/icons/svg/${ icon }.svg" alt="icon-svg">`
 
     const ElementComponent = createHTML(`
         <div class="div_H8m7YkD">
             <div class="div_9w65NCd scroll-x">
                 <div class="div_G533kHG">
-                    <button type="button" data-action="favorite">${ imgIcon('icon-favorite-light') }</button>
-                    <div class="div_zq2nbRg"></div>
+                    <span class="focus" data-collection="favorite">favoritos</span>
+                    <span data-collection="all">todos</span>
                 </div>
             </div>
-            <div class="div_4m9E0dI scroll-y">
+            <div class="div_JnZWjLM scroll-y">
+                <div class="contenedor_loader"><span class="loader"></span></div>
+                <div class="div_8dh8A1c"><h2>no hay stikers</h2></div>
                 <div class="div_K23c15w"></div>
             </div>
         </div>
     `)
-
+    
     const query = new findElement(ElementComponent)
 
-    const elementItemHead = query.get('.div_zq2nbRg')
-    const elementItem = query.get('.div_K23c15w')
-    const btnFavorite = query.get('button[data-action=favorite]')
+    const elementItem       = query.get('.div_JnZWjLM')
+    const elementItemLoad   = query.get('.contenedor_loader')
+    const elementItemEmpty  = query.get('.div_8dh8A1c')
+    const elementItemData   = query.get('.div_K23c15w')
 
+    const elementcollection = query.get('.div_G533kHG')
 
-    btnFavorite.addEventListener('click', ()=> loadDataBody())
+    elementcollection.addEventListener('click', e => {
+        const span = e.target.closest('span')
 
-    elementItemHead.addEventListener('click', e => {
-        const button = e.target.closest('button')
-        if(button) {
-            const id = button.dataset.id
+        if(span){
+            const spanFocus = elementcollection.querySelector('span.focus')
+            if(span == spanFocus) return
+            if(spanFocus) spanFocus.classList.remove('focus')
+            span.classList.add('focus')
 
-            const final = 25 * (parseInt(id) || 1)
-            const inicio = final - 25
-
-            renderData({ stiker : Stiker.slice(inicio, final) }) 
+            const collection = span.dataset.collection
+            dataLoad(collection)
         }
     })
 
-    elementItem.addEventListener('click', e => {
+    elementItemData.addEventListener('click', e => {
         const item = e.target.closest('.div_6dnYWBn')
         if(item) {
 
             dispatchEvent(new CustomEvent(DataModule.dispatch, { detail : {
                 message : {
-                        message : item.dataset.name,
+                        message : item.dataset.data,
                         type    : 'stiker'
                     }
             }}))
@@ -56,147 +58,76 @@ export default (DataModule = {})=>{
         }
     })
 
-    const renderHTMLHead =(data)=>{
-        const element = createHTML(`<button type="button" data-id="${ data.id }">${ data.id }</button>`)
-        return element
+    const handleIntersection =(entries, observer)=>{
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) { 
+              dataRender(Stiker, false)
+              observer.unobserve(entry.target); 
+            }
+        });
     }
 
+    const options = {
+        root: null, 
+        rootMargin: '0px', 
+        threshold: 0.5, 
+    };
 
-    const renderHTML =(data)=>{
-        const element = createHTML(`
-            <div class="div_6dnYWBn" data-name="${ data.name }"><img src="public/img/stiker/${ data.name }" alt="icon-stiker"></div>
-        `)
+    const observer = new IntersectionObserver(handleIntersection, options);
 
-        return element
-    }
+    const dataRender = (Data = [], first = true) =>{
 
-    const renderDataHead =(Data)=>{
-        if(elementItemHead.children.length) {
-            console.log('es mayor cero');
-        } else {
-            const elementTemp = document.createDocumentFragment()
-            Data.stiker.forEach((data) => elementTemp.append(renderHTMLHead(data)));
-            elementItemHead.append(elementTemp)
+        elementItemLoad.remove() 
+
+        if(first) {
+            if(!Data.length) {
+                elementItemData.remove() 
+                elementItem.append(elementItemEmpty)
+                return 
+            }
         }
-    }
 
-    const renderData =(Data)=>{
         const elementTemp = document.createDocumentFragment()
+        
+        Data.splice(0, 30).forEach(data => {
 
-        if(Data.stiker.length) {
-            Data.stiker.forEach((data) => elementTemp.append(renderHTML(data)));
-            elementItem.innerHTML = ''
-            elementItem.append(elementTemp)
-        } else {
-            elementItem.innerHTML = '<div class="div_S9WOJ54">~ lista vacia ~</div>'
-        } 
+            const element = createHTML(`
+                <div class="div_6dnYWBn" data-data="${ data }">
+                    <img src="${ api(`/stream/storage/stiker/${ data }`) }"> 
+                </div>
+            `)
+
+            elementTemp.append(element)
+
+        })
+        
+        elementItemEmpty.remove()
+        elementItemData.append(elementTemp)
+        elementItem.append(elementItemData)
+        const element = elementItemData.children[elementItemData.children.length - 1]
+        if(element) observer.observe(element)
     }
 
-    const loadDataHead =()=>{
-        renderDataHead({ stiker : ls('stiker-collection').data([]).push(true, true).filter(data => data.status) })
+    const dataLoad = collection =>{
+        elementItemData.innerHTML = ''
+        elementItemEmpty.remove()
+        elementItemData.remove()
+        elementItem.append(elementItemLoad)
+
+        datapi.get(api(`/stream/app/trigger/stiker.php?collection=${ collection }&token=${ auth.token }`))
+                .then(data => {
+                    Stiker = data.stiker
+                    
+                    if(collection == 'favorite') {
+                        ls('stiker-favorite').data(data).put(true)
+                    } 
+
+                    dataRender(Stiker, true)
+                })
     }
 
-    loadDataHead()
-
-    const loadDataBody =()=>{ 
-        renderData({ stiker : ls('stiker-favorite').data([]).push(true, true) })
-    } 
-
-    loadDataBody()
+    
+    dataLoad('favorite')
 
     return ElementComponent
 }
-
-// import { dbFirebase } from "../firebase/data.js"
-
-// export default ()=>{
-
-//     // const db     = new dbFirebase('stream_chat')
-//     // const params = json(sessionStorage.getItem('params'))
-//     // const user   = json(localStorage.getItem('user'))
-
-//     const ElementComponent = createHTML(`
-//         <div>
-//             <div class="scroll-y" data-css="contenedor_stiker">
-//                 <div data-css="contenido_stiker">
-//                     <div data-css="item_stiker"></div>  
-//                 </div>
-//             </div>
-//         </div>
-//     `)
-
-//     const style = new createCSS('chat-stiker', ElementComponent)
-
-//     const color_item    = 'var(--color-item)'  
-
-//     style.css(`
-//         & { position : absolute; inset : 0; background : rgb(0 0 0 / .3); display: grid }
-//     `)
-
-//     const contenedor_stiker = style.element('contenedor_stiker').css(`
-//         & { 
-             
-//             width : 100%; 
-//             height : 75%; 
-//             background : ${ color_item };
-//             align-self: end; 
-//             align-self: flex-end;
-//             border-radius:8px 8px 0 0; 
-//         }
-//     `)
-
-//     const contenido_stiker = style.element('contenido_stiker').css(`
-//         & { 
-//             width : 100%; 
-//             display: grid;
-//             grid-template-columns: repeat(auto-fill, minmax(min(100%, 70px), 1fr));
-//             padding : 15px;
-//             gap : 15px;
-//             overflow : hidden;
-//         } 
-//     `)
-
-//     const item_stiker = style.element('item_stiker').css(`
-//         & { 
-//             aspect-ratio: 1/1; 
-//             border-radius:8px;
-//             overflow : hidden; 
-//             display: flex;
-//             cursor : pointer
-//         } 
-
-//         & img{
-//             margin : auto;
-//             max-width : 100%;
-//             max-height: 100%; 
-//             object-fit: cover;
-//         }
-//     `)
-
-//     clickElement(ElementComponent, ()=> ElementComponent.remove())
-
-//     contenido_stiker.element.addEventListener('click', e => {
-
-//     })
-
-//     clickElementclosest(contenido_stiker.element, `.${ item_stiker.className }`, target => {
-     
-//         dispatchEvent(new CustomEvent('set_message', { detail : {
-//             message : {
-//                 message : target.dataset.name,
-//                 type    : 'stiker'
-//             }
-//         } }))
-
-//         ElementComponent.remove()
-//     })
-
-//     fetch('./public/json/chat-stiker.json')
-//     .then(res => res.json())
-//     .then(data => contenido_stiker.element.innerHTML = ArrayToString(data, data => {
-//         return `<div class="${ item_stiker.className }" data-name="${ data.name }" ><img src="public/img/stiker/${ data.name }"></div>`
-//     }))
-
-//     item_stiker.element.remove()
-//     return ElementComponent
-// }

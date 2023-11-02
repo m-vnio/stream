@@ -29,9 +29,9 @@ function addRemoveEventListenerHashchange (element, type, callback){
     }
 }
 
-function json(_var_, _json_ = true) {
-    return _json_ ? JSON.parse(_var_) : JSON.stringify(_var_)
-}
+// function json(_var_, _json_ = true) {
+//     return _json_ ? JSON.parse(_var_) : JSON.stringify(_var_)
+// }
  
 function trimString(text = '', symbol = '') {
     if(symbol != ''){
@@ -412,4 +412,88 @@ const diffDateBirthday =(Date1, Date2 = Date.now())=>{
     }
 }
 
+const datapi = (()=> {
+    const method = async (uri = '', data = {}, method = 'POST')=>{
+        
+        const option = {
+            method,
+            //headers : { 'Content-Type': 'application/json' },
+            body : JSON.stringify(data)
+        }
 
+        if(['PATCH', 'DELETE'].includes(method)){
+            //option.headers = { 'Content-Type': 'application/json' }
+        }
+
+        const res = await fetch(uri, option)
+        return await res.json()
+    }
+        
+    const get = async (uri = '')=>{
+        const res = await fetch(uri)
+        const data = await res.json()
+
+        return await data
+    }
+
+    const post = async (...params)=>{
+        return await method(...params, 'POST')
+    }
+
+    const put = async (...params)=>{
+        return await method(...params, 'PUT')
+    }
+
+    const _delete = async (...params)=>{
+        return await method(...params, 'DELETE')
+    }
+
+    const patch = async (...params)=>{
+        return await method(...params, 'PATCH')
+    }
+
+    return { get, post, put, patch, delete : _delete }
+})()
+
+
+function copyToClipboard(text = '') {
+    const textarea = document.createElement('textarea')
+    textarea.setAttribute('style', 'position: fixed; top: 0; transform: translateY(-100%);')
+    textarea.value = text;
+
+    document.body.append(textarea);
+
+    textarea.select();
+    textarea.setSelectionRange(0, text.length);
+
+    document.execCommand('copy');
+
+    textarea.remove()
+}
+
+class FileLoad {
+    constructor(file = null){
+        this.__file = file
+        this.__progress
+        this.__load
+    }
+
+    progress(callback){
+        this.__progress = callback
+    }
+
+    load(callback) {
+        this.__load = callback
+    }
+
+    start(){
+        const reader = new FileReader()
+        reader.addEventListener('progress', e => {
+            if(typeof this.__progress == 'function') this.__progress(e)
+        })
+        reader.addEventListener('load', e => {
+            if(typeof this.__load == 'function') this.__load(e)
+        })
+        reader.readAsDataURL(this.__file)
+    }
+}

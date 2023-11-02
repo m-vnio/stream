@@ -2,15 +2,14 @@ import notification from "../pwa/notification.js"
 
 export default ()=>{
 
-    const theme         = ls('theme').get()
-    const themeChat     = ls('theme_chat').get()
-    const fontFamily    = ls('fontFamily').get(true)
+    const Icon  = new iconSVG()
+    const theme         = ls('theme').get() 
 
     const ElementComponent = createHTML(`
         <div class="div_L5jgPxN">
             <header class="header_225VF53">
                 <div class="div_lD7mjkb">
-                    <a href="#/user"><i class="fi fi-rr-arrow-small-left"></i></a>
+                    <a href="#/user">${ Icon.get('fi fi-rr-arrow-small-left') }</a>
                     <h3>Notificacion</h3>
                 </div>
                 <div class="div_Xs7U5Y6">
@@ -40,8 +39,8 @@ export default ()=>{
     const elementToggleNotification = query.get('input[data-type = notificacion]')
 
     const validateNotificacion = async ()=>{
-        const [enableNotifications, disableNotifications] = await notification((status)=> {
-            elementToggleNotification.checked = status ? true : false
+        const [enableNotifications, disableNotifications] = await notification((subscription)=> {
+            elementToggleNotification.checked = subscription ? true : false
         })
 
         elementToggleNotification.addEventListener('change', e => {
@@ -55,3 +54,4 @@ export default ()=>{
     document.getElementById('main').append(ElementComponent)
     
 }
+

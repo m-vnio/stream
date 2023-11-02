@@ -1,36 +1,26 @@
-import { dbFirebase, dbFirebaseRealtime } from "../firebase/data.js"
 import emoji from "./emoji.js"
 import emojis from "./emojis.js"
 import formLink from "./formLink.js"
 import videoHistory from "./videoHistory.js"
 
+import socket from "../pwa/socket.js"
+
 export default (ElementComponentFullScreen)=>{
     //div_v05FO
+    const api = uri => ls('api').get() + uri
+
     const Icon  = new iconSVG()
 
     const params = JSON.parse(sessionStorage.getItem('params'))
-    const user      = ls('user').data({}).push(true, true)
-    const user_data = ls('user_data').data({}).push(true, true) 
 
-    const db     = new dbFirebase('stream')
-    const dbRealtime = new dbFirebaseRealtime('stream')
-    dbRealtime.query({ where : [["id", "==", params.id]], limit : 1 })
+    const auth      = ls('auth').data({}).push(true, true)
+    const user_data = ls('user_data').data({}).push(true, true) 
  
     let data_update = {
         play : 'false',
         time_progress   : '0',
         datetime_update : Date.now(),
         data_update : Date.now()
-    }
-
-    const fisrt_time = {
-        render : true,
-        seeker : true
-    }
-
-    const data_local = {
-        datetime_update : 0,
-        data_db_update : false
     }
 
     const ElementComponent = createHTML(`
@@ -139,7 +129,7 @@ export default (ElementComponentFullScreen)=>{
     })
 
     btnSeekedBack10.addEventListener("click", ()=> {
-        elementVideo.currentTime = elementVideo.currentTime.toFixed(0) - 10
+        elementVideo.currentTime = elementVideo.currentTime.toFixed(0) - 5
     })
 
     span_duration.addEventListener("click", ()=> {
@@ -190,8 +180,7 @@ export default (ElementComponentFullScreen)=>{
             btnActiveFullscreen.innerHTML = Icon.get('fi fi-rr-compress')
             btnOpenChat.classList.add('active')
             ElementComponent.classList.remove('active')
-            elementButtonTop.classList.add('active')
-            btnLockUnlock.style.visibility = 'initial' 
+            elementButtonTop.classList.add('active') 
 
             if(/Mobi|Android/i.test(navigator.userAgent)){
                 if(window.screen.orientation && window.screen.orientation.lock){
@@ -205,9 +194,7 @@ export default (ElementComponentFullScreen)=>{
             btnActiveFullscreen.innerHTML = Icon.get('fi fi-rr-expand')
             btnOpenChat.classList.remove('active')
             ElementComponent.classList.add('active')
-            elementButtonTop.classList.remove('active')
-            btnLockUnlock.style.visibility = 'hidden'
-            btnLockUnlock.innerHTML = Icon.get('icon-lock')
+            elementButtonTop.classList.remove('active') 
 
             elementVideoControlBotttom.classList.remove('unlock')
 
@@ -218,9 +205,17 @@ export default (ElementComponentFullScreen)=>{
             }
         }
     } 
+
+    const setSocketServer =(data, change = '')=>{
+
+        datapi.patch(api(`/stream/app/trigger/stream.php?id=${ params.id }&token=${ auth.token }`), data)
+        
+        data.change = change
+        data.id_stream = params.id
+        socket.emit('video', JSON.stringify(data))
+    }
     
     //elementVideo
-
     const renderTimeProgress =(time)=>{
         const Time = getTimeBySecond(time)
         const arrayTime = []
@@ -236,14 +231,14 @@ export default (ElementComponentFullScreen)=>{
         const play = !elementVideo.paused
         const progress = elementVideo.currentTime.toFixed(0)
 
-        db.edit(params.id, {
+        const data = {
             play    : !elementVideo.paused,
-            id_user : user.uid,
-            datetime_update : Date.now().toString(),
+            datetime_update : Date.now(),
             time_progress   : progress,
-            change : 'play',
             message : `${ user_data.username } ha ${ play ? 'reanudado' : 'pausado' } el video`
-        })
+        }
+
+        setSocketServer(data, 'play')
 
         btnPlay.innerHTML = Icon.get(play ? 'fi fi-rr-pause' : 'fi fi-rr-play')
         setVideoHistory(`has ${ play ? 'reanudado' : 'pausado' } el video`)
@@ -253,20 +248,23 @@ export default (ElementComponentFullScreen)=>{
         setTimeout(()=> {
             ipt_duration.setAttribute('max', elementVideo.duration.toFixed(0)) 
             span_duration.textContent = renderTimeProgress(parseInt(ipt_duration.max))
+
+            activeVideoPlay = true
+            btnPlay.innerHTML = Icon.get(elementVideo.paused ? 'fi fi-rr-play' : 'fi fi-rr-pause')
         })
     }
 
     const defVideoSeeked =()=>{
         const progress = elementVideo.currentTime.toFixed(0)
 
-        db.edit(params.id, {
-            id_user : user.uid,
+        const data = {
+            play    : !elementVideo.paused,
             datetime_update : Date.now().toString(),
             time_progress   : progress,
-            change : 'seeked',
             message : `${ user_data.username } ha cambiado posicion del video`
-        })
+        }
 
+        setSocketServer(data, 'seeked') 
         setVideoHistory('has cambiado posicion del video') 
 
         activeVideoPlay = true
@@ -317,7 +315,7 @@ export default (ElementComponentFullScreen)=>{
                 activeAddEventListenerVideoPlayPause()
             }
 
-            activeVideoPlay = true
+            activeVideoPlay = true 
 
             btnPlay.innerHTML = Icon.get(elementVideo.paused ? 'fi fi-rr-play' : 'fi fi-rr-pause')
             elementVideo.removeEventListener('seeked', defEventListener)
@@ -325,7 +323,6 @@ export default (ElementComponentFullScreen)=>{
         }
 
         elementVideo.addEventListener('seeked', defEventListener)
-
     }; activeDesactiveAddEventListenerVideoSeeked()
     
     elementVideo.addEventListener("loadedmetadata", defVideoLoadedmetadata)
@@ -349,15 +346,16 @@ export default (ElementComponentFullScreen)=>{
     addRemoveEventListenerHashchange(window, 'open_link', e => { 
         renderVideoURL(e.detail.link)
         if(e.detail.submit) {
-            db.edit(params.id, {
+
+            const data = {
                 link : e.detail.link,
-                datetime_update : Date.now().toString(),
-                play : 'true',
-                change : 'link',
-                id_user : user.uid,
-                time_progress   : '0',
+                play : 0,
+                datetime_update : Date.now(),
+                time_progress   : 0,
                 message : `${ user_data.username } ha cambiado el video`
-            })
+            }
+
+            setSocketServer(data, 'link')  
             setVideoHistory('has cambiado el video')
         }
     })
@@ -376,6 +374,7 @@ export default (ElementComponentFullScreen)=>{
             else {  if (volumen < 10) elementVideo.volume = (++volumen / 10) }
         }
     })
+     
 
     //rendervideoURL
     const renderVideoURL = url =>{
@@ -406,62 +405,44 @@ export default (ElementComponentFullScreen)=>{
     }
 
     //rendervideo
-    const renderVideo =(querySnapshot)=>{
-        querySnapshot.forEach(doc => {
-            const data = data_update = doc.data()
+    const dataRender =(data = {}, change = '*')=>{
+        data_update = data
 
-            if(fisrt_time.render){   
-                fisrt_time.render = false
+        if(['link', '*'].includes(change)){
+            renderVideoURL(data.link);
+        }
 
-                renderVideoURL(data.link)
-                desactiveAddEventListenerVideoSeeked()
-                elementVideo.currentTime = parseInt(data.time_progress) + Math.round((Date.now() - parseInt(data.datetime_update)) / 1000)
-                activeDesactiveAddEventListenerVideoSeeked()
-                return
-            }
-            
-            if(data.id_user == user.uid) return
+        if(['seeked', '*'].includes(change)){
+            desactiveAddEventListenerVideoSeeked();
+            elementVideo.currentTime = parseInt(data.time_progress) + Math.round((Date.now() - parseInt(data.datetime_update)) / 1000)
+            activeDesactiveAddEventListenerVideoSeeked()
+        }
 
-            if(parseInt(data.datetime_update) > data_local.datetime_update){
-                data_local.datetime_update = parseInt(data.datetime_update)
-
-                if(data.change == 'play'){
-                    if(JSON.parse(localStorage.getItem('click')))
-                    {
-                        const play = JSON.parse(data_update.play)
-                        desactiveAddEventListenerVideoPlayPause()
-                        elementVideo[ play ? 'play' : 'pause' ]()
-                        activeAddEventListenerVideoPlayPause()
-                        setVideoHistory(data.message ?? '') 
-                    }
-                } 
-                else if(data.change == 'seeked'){
-
-                    desactiveAddEventListenerVideoSeeked()
-                    elementVideo.currentTime = parseInt(data.time_progress) + Math.round((Date.now() - parseInt(data.datetime_update)) / 1000)
-                    activeDesactiveAddEventListenerVideoSeeked()
-                    setVideoHistory(data.message ?? '') 
-                    
-                } 
-                else if(data.change == 'link'){
-                    renderVideoURL(data.link)
-                    setVideoHistory(data.message ?? '')
-                }
-            }
-        }); 
+        if(['play'].includes(change)){
+            desactiveAddEventListenerVideoPlayPause()
+            elementVideo[ data.play ? 'play' : 'pause' ]()
+            activeAddEventListenerVideoPlayPause()
+        } 
     }
 
     const validate_click = JSON.parse(localStorage.getItem('click')) 
 
-    if(validate_click){
-        const unsubscribe = dbRealtime.subscribe(renderVideo)
-        addRemoveEventListener(window, 'hashchange', unsubscribe)
-    } else {
-        addRemoveEventListener(window, 'click', ()=> {
-            const unsubscribe = dbRealtime.subscribe(renderVideo)
-            addRemoveEventListener(window, 'hashchange', unsubscribe)
-        })
+    const dataLoad =()=>{
+        datapi.get(api(`/stream/app/trigger/stream.php?id=${ params.id }&token=${ auth.token }`)).then(dataRender) 
     }
+
+    if(validate_click) dataLoad()
+    else addRemoveEventListener(window, 'click', dataLoad)
+    
+
+    socket.on('video', data => {
+        data = JSON.parse(data)
+        if(data.id_stream == params.id){
+            dataRender(data, data.change)
+        }
+    })
+
+    //      
 
     return ElementComponent
 }

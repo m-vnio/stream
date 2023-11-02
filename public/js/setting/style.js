@@ -19,7 +19,7 @@ export default ()=>{
 
     const theme = {
         light : {
-            'color-background'  : '#EDF3FB',
+            'color-background'  : '#F7F7F7',
             'color-item'        : '#ffffff',
             'color-letter'      : '#1c1c1e',
             'filter-img'        : 'initial'
@@ -27,28 +27,31 @@ export default ()=>{
         dark  :  {
             'color-background' : '#1c1c1e',   
             'color-item' : '#2C2C2E',   
-            'color-letter' : '#EDF3FB',
+            'color-letter' : '#F7F7F7',
             'filter-img'   :'invert(82%) sepia(99%) saturate(0%) hue-rotate(102deg) brightness(111%) contrast(100%)'
         }
     }
 
     const styleRoot = {
-        'color-background'  : '#EDF3FB',
+        'color-background'  : '#F7F7F7',
         'color-item'        : '#ffffff',
         'color-letter'      : '#1c1c1e',
         'filter-img'        : 'initial',
+
+        // styleSetting.
         'color-chat'        : 'initial',
         'fontFamily-letter' : ''
     }
 
     console.log(document.getElementById('style-setting'));
 
+    styleSetting.innerHTML = `:root {${ ArrayToString(Object.keys(theme), key => `--${ key } : ${ theme[key] };\n`) }}`
 
     // if(!localStorage.getItem('theme'))
     //     localStorage.setItem('theme', 'light')
 
     // const themeLight = {
-    //     'color-background' : '#EDF3FB',
+    //     'color-background' : '#F7F7F7',
     //     'color-item'    : '#ffffff',
     //     'color-letter'  : '#1c1c1e',
     //     'filter-img'    : 'initial'
@@ -57,7 +60,7 @@ export default ()=>{
     // const themeDark  = {
     //     'color-background' : '#1c1c1e',   
     //     'color-item' : '#2C2C2E',   
-    //     'color-letter' : '#EDF3FB',
+    //     'color-letter' : '#F7F7F7',
     //     'filter-img'   :'invert(82%) sepia(99%) saturate(0%) hue-rotate(102deg) brightness(111%) contrast(100%)'
     // }
 

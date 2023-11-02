@@ -1,32 +1,50 @@
 export default (data)=>{
 
-    const stikerFavorite = ls('stiker-favorite').data([]).push(true, true)
+    const api = (uri = '') => ls('api').get() + uri
 
-    const isStikerFavorite = stikerFavorite.find(stiker => stiker.id == data.id)
+    const Icon  = new iconSVG()
+    const stikerFavorite = ls('stiker-favorite').data({}).push(true, true)
+    const isStikerFavorite = stikerFavorite.stiker.find(stiker => stiker == data)
 
-    const imgIcon = icon => `<img src="public/img/icons/svg/${ icon }.svg" alt="icon-svg">`
-    
     const ElementComponent = createHTML(`
-        <div class="div_KEVYWu2">
+        <div class="div_KEVYWu2 p-none">
             <div class="div_hS7SImh"></div>
-            <div class="div_d788b1q">
-                <button data-action="favorite">${ imgIcon('icon-favorite-' + (isStikerFavorite ? 'dark' : 'light')) }</button>
+            <div class="div_o5YYc7z element-width">
+                <div class="div_nePa18j">
+                    <div class="div_0Xy0kH1">
+                        <img src="${ api(`/stream/storage/stiker/${ data }`) }"> 
+                    </div>
+                    <div class="div_87f623c scroll-x">
+                        <div class="div_DJuQ0ML">
+                            <button class="pointer" data-action="favorite">${ Icon.get(`fi fi-${ isStikerFavorite ? 'sr' : 'rr' }-star`) }</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    `)
+    `) 
 
-    const findChild = query => ElementComponent.querySelector(query)
+    const query = new findElement(ElementComponent)
+    const btnFavorite = query.get('button[data-action="favorite"]')
 
-    findChild('.div_hS7SImh').addEventListener('click', ()=> ElementComponent.remove())
-    findChild('button[ data-action = favorite ]').addEventListener('click', ()=> {
-        if(isStikerFavorite) 
-            localStorage.setItem('stiker-favorite', JSON.stringify(stikerFavorite.filter(stiker => stiker.id != data.id)))
-        else {
-            stikerFavorite.push(data)
-            localStorage.setItem('stiker-favorite', JSON.stringify(stikerFavorite))
-        }
-        ElementComponent.remove()
+    query.get('.div_hS7SImh').addEventListener('click', ()=> ElementComponent.remove())
+
+    btnFavorite.addEventListener('click', e => {
+        const stikerFavorite = ls('stiker-favorite').data([]).push(true, true)
+        const index = stikerFavorite.stiker.findIndex(stiker => stiker == data)
+
+        if(index == -1) stikerFavorite.stiker.push(data)
+        else stikerFavorite.stiker.splice(index, 1)  
+        
+        btnFavorite.innerHTML = Icon.get(`fi fi-${ index == -1 ? 'sr' : 'rr' }-star`)
+
+        datapi.patch(api(`/stream/app/trigger/stiker.php?id=${ stikerFavorite.id }`), { stiker : JSON.stringify(stikerFavorite.stiker) })
+            .then(res => {
+                if(res) {
+                    ls('stiker-favorite').data(stikerFavorite).put(true)
+                }
+            })
     })
-
+ 
     return ElementComponent
 }

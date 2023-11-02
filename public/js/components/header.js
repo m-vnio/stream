@@ -3,12 +3,7 @@ import videoUser from "./videoUser.js"
 export default ()=>{
 
     const Icon  = new iconSVG()
-
-    const stream = {
-        id : '1',
-        id_user : '1695101156748',
-        name : 'NIVI ~ V♥N'
-    }
+    const stream = ls('stream').data({}).push(true, true) 
 
     const ElementComponent = createHTML(`
         <header class="header_M6Brg5j">
@@ -35,14 +30,4 @@ export default ()=>{
     return ElementComponent
 }
 
-/*
-    <div class="div_9vVlk">
-                <div class="div_6y9bH">
-                    <a href="#/" class="a_Ma0S6"><i class="fa-solid fa-caret-left"></i></a>
-                    <h3 class="h3_X0B6J text-ellipsis">${ stream.name ?? 'hola' }</h3>
-                </div>
-                <div class="div_6y9bH">
-                    <button class="button_Ma0S6 icon">${ Icon.get('icon-user-group') }</button>
-                </div>
-            </div>
-*/
+ 

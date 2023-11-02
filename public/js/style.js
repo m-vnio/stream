@@ -31,6 +31,8 @@ export default ()=>{
         localStorage.setItem('fontFamily', JSON.stringify({ name : "predeterminado", font : "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'" }))
     }
 
+    localStorage.setItem('api', 'https://api-nivi.victor01sp.com')
+
     const theme = localStorage.getItem('theme')
 
     const themeLight = {
@@ -55,7 +57,7 @@ export default ()=>{
         ['color-letter', themeSetting['color-letter']], 
         ['filter-img', themeSetting['filter-img']], 
         ['color-chat', localStorage.getItem('theme_chat')],
-        ['fontFamily-letter', json(localStorage.getItem('fontFamily')).font]
+        ['fontFamily-letter', JSON.parse(localStorage.getItem('fontFamily')).font]
     ]
 
     metaThemeColor.setAttribute('content', themeSetting['color-background'])

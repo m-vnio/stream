@@ -1,75 +1,58 @@
-import { dbFirebase, dbFirebaseRealtime } from "../firebase/data.js";
+import socket from "../pwa/socket.js";
 
 export default ()=>{
 
     const params = JSON.parse(sessionStorage.getItem('params'))
-    const user   = ls('user').get(true)
-    const db     = new dbFirebase('stream_emoji') 
-    const dbRealtime     = new dbFirebaseRealtime('stream_emoji')
-    dbRealtime.query({ where : [["id_stream", "==", params.id]], orderBy : ["datetime_add", "desc"], limit : 1 })
+    const auth      = ls('auth').data({}).push(true, true)
 
-    const ElementComponent = createHTML(`<div class="div_82gU7"><span style="color:#ffffff"></span></div>`)
+    const ElementComponent = createHTML(`<div class="div_82gU7"><span style="color:#ffffff">❤️</span></div>`)
 
     const query = new findElement(ElementComponent)
 
     const child = query.get('span')
     child.remove()
 
-    const fisrt_time = {
-        render : true
-    }
-
     const dispatchUpdateVideoHistory = new CustomEvent('updateVideoHistory')
     const setVideoHistory =(message = '')=>{
         const videoHistory = ls('video-history').data([]).push(true, true)
         videoHistory.unshift({ message, datetime : Date.now().toString() })
-        ls('video-history').data(videoHistory).put(true)
+        ls('video-history').data(videoHistory.slice(0, 50)).put(true)
         dispatchEvent(dispatchUpdateVideoHistory)
     }
 
     const defSetEmoji = message =>{
-
-        const elementoEmoji = child.cloneNode(true);
-        elementoEmoji.textContent = message
-        if(ElementComponent.children.length > 0) elementoEmoji.style.left = `${ rand(80) }%` 
-        ElementComponent.append(elementoEmoji)
-
         setVideoHistory(message)
-
-        db.add({
-            id_stream    : params.id,
-            id_user      : user.uid,
-            datetime_add : Date.now().toString(),
-            message
-        })
-
+        const elementoEmoji         = child.cloneNode(true);
+        elementoEmoji.textContent   = message
+        if(ElementComponent.children.length > 0){
+            elementoEmoji.style[ rand(1) ? 'left' : 'right' ] = `${ rand(60) }%`
+        } 
+        ElementComponent.append(elementoEmoji)
         setTimeout(()=> elementoEmoji.remove(), 2000)
 
     }
 
-    addEventListener('custom-event-emojis-mostrar', e => {
+    addRemoveEventListenerHashchange(window, 'custom-event-emojis-mostrar', e => {
         const message = e.detail.message
         defSetEmoji(message)
+
+        const data = {
+            id_stream    : params.id,
+            id_user      : auth.uid,
+            datetime_add : Date.now().toString(),
+            message
+        }
+
+        socket.emit('emoji', JSON.stringify(data))
+    }) 
+ 
+
+    socket.on('emoji', data => {
+        data = JSON.parse(data)
+        if(data.id_stream == params.id){
+            defSetEmoji(data.message)
+        }
     })
-
-    const renderHTML =(onSnapshot)=>{
-        onSnapshot.forEach(doc => {
-            const data = doc.data()
-
-            if(fisrt_time.render) return
-            if(data.id_user == user.uid) return
-
-            if(Date.now() < (parseInt(data.datetime_add) + 7000)){ 
-
-                defSetEmoji(data.message)
-            }
-        });
-
-        fisrt_time.render = false
-    }
-
-    const unsubscribe = dbRealtime.subscribe(renderHTML)
-    addRemoveEventListener(window, 'hashchange', unsubscribe) 
-
+    
     return ElementComponent
 }

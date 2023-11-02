@@ -51,26 +51,53 @@ self.addEventListener("push", (e) => {
     },
   };
 
-  e.waitUntil(self.registration.showNotification(title, options));
+  const respuesta = self.clients.matchAll().then((clients) => {
+    const client = clients.find((client) => {
+      const url = new URL(client.url);
+      const pathhash = url.pathname + url.hash;
+
+      if (client.visibilityState === "visible") return data.url == pathhash;
+      return false;
+    });
+
+    return client == undefined
+      ? self.registration.showNotification(title, options)
+      : false;
+  });
+  e.waitUntil(respuesta);
 });
 
 self.addEventListener("notificationclick", (e) => {
   const url = e.notification.data.url;
 
-  const respuesta = clients.matchAll().then((clientes) => {
-    const cliente = clientes.find((c) => {
-      return c.visibilityState === "visible";
-    });
+  const respuesta = self.clients.matchAll().then((clients) => {
+    const client = clients.find(
+      (client) => client.visibilityState === "visible"
+    );
 
-    if (cliente !== undefined) {
-      cliente.navigate(url);
-      cliente.focus();
+    if (client !== undefined) {
+      client.navigate(url);
+      client.focus();
     } else {
-      clients.openWindow(url);
+      self.clients.openWindow(url);
     }
 
     return e.notification.close();
   });
 
   e.waitUntil(respuesta);
+});
+
+self.addEventListener("message", (e) => {
+  const data = JSON.parse(e.data);
+
+  if (data.type == "stream") {
+    self.registration.getNotifications().then((notifications) => {
+      notifications.forEach((notification) => {
+        if (notification.data.url === data.pathhash) {
+          notification.close();
+        }
+      });
+    });
+  }
 });

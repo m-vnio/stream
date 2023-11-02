@@ -3,7 +3,7 @@ export default ()=>{
     const ElementComponent = createHTML(`
         <div class="div_KEVYWu2" style="padding:0">
             <div class="div_hS7SImh"></div>
-            <div class="div_oy1VxlI">
+            <div class="div_oy1VxlI scroll-y">
                 <div class="div_wcyPU0Y"></div>
             </div>
         </div>    

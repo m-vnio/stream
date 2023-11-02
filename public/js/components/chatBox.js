@@ -1,4 +1,7 @@
-export default (data, Chat, user)=>{
+export default (data, user)=>{
+    const Icon  = new iconSVG()
+    const api =(uri = '') => ls('api').get() + uri
+
     const data_data = {
         id              : data.id,
         datetime_update : data.datetime_update ?? 0,
@@ -8,7 +11,7 @@ export default (data, Chat, user)=>{
         id_user         : data.id_user
     }
 
-    const chatReply = Chat.find(chat => chat.id == data.id_message_reply) ?? {}
+    const chatReply = data.message_reply ?? {}
 
     const messageReplyType = chatReply.type ?? ''
 
@@ -21,19 +24,33 @@ export default (data, Chat, user)=>{
     const timeAM = Time.getHours() < 12
     const setTime = `${timeAM ? timeHour : timeHour - 12}:${ ( '0' + timeMinute).slice(-2) } ${ timeAM ? 'AM' : 'PM' }`
 
+    const Files = JSON.parse(data.files)
+
     const ElementComponent = createHTML(`
         <div class="div_T5m0f ${ messageUser }" id="div-${ data.id }">
+            <div class="div_0fPA54j">${ Icon.get('fi fi-rr-undo') }</div>
             <div class="div_5f0m7 ${ messageType }">
+
                 <div class="div_fR7XE" data-id-reply="div-${ chatReply.id }">
                     <p class="text-ellipsis"></p>
                     <img alt="stiker-not-found">
                 </div>
+                
+                <div class="div_dJwcjIT">
+                    ${ ArrayToString(Files, file => {
+                        return `<img src="${ api(`/stream/storage/chat/${ file.name }`) }">`
+                    })}
+                </div>
+
                 <div class="div_7Rn9q">
                     <div class="div_oeFkT ${ messageType }">
                         <p></p>
                         <img alt="stiker-not-found">
                     </div>
-                    <div class="div_qsJ0y"><span>${ setTime }</span></div>
+                    <div class="div_qsJ0y"> 
+                        <span>${ setTime }</span>
+                        <span class="emoji" style="display:none">❤️</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,11 +59,17 @@ export default (data, Chat, user)=>{
     const urlRegex = /(https?|ftp):\/\/[^\s/$.?#].[^\s]*/g;
     ElementComponent.setAttribute('data-data', JSON.stringify(data_data))
 
+    const elementMessageReply = ElementComponent.querySelector('.div_fR7XE')
+    const elementFiles = ElementComponent.querySelector('.div_dJwcjIT')
+
     const pMessageReplyText = ElementComponent.querySelector('.div_fR7XE p')
     const imgMessageReplyStiker = ElementComponent.querySelector('.div_fR7XE img')
 
     const pMessageText  = ElementComponent.querySelector('.div_oeFkT p')
     const imgMessageStiker = ElementComponent.querySelector('.div_oeFkT img')
+
+    if(!chatReply.id) elementMessageReply.remove()
+    if(!Files.length) elementFiles.remove()
 
     if(data.status == 4) ElementComponent.style.opacity = '.5'
 
@@ -54,7 +77,7 @@ export default (data, Chat, user)=>{
         pMessageReplyText.textContent = chatReply.message ?? ''
         imgMessageReplyStiker.remove()
     } else if(messageReplyType == 'stiker'){
-        imgMessageReplyStiker.src = 'public/img/stiker/' + chatReply.message 
+        imgMessageReplyStiker.src = api('/stream/storage/stiker/' + chatReply.message)  
         pMessageReplyText.remove()
     } else {
         pMessageReplyText.remove()
@@ -70,7 +93,7 @@ export default (data, Chat, user)=>{
 
         imgMessageStiker.remove()
     } else if(messageType == 'stiker'){
-        imgMessageStiker.src = 'public/img/stiker/' + data.message
+        imgMessageStiker.src = api('/stream/storage/stiker/' + data.message) 
         pMessageText.remove()
     }
 

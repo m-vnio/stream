@@ -1,15 +1,16 @@
-import { logoutFirebase } from "../firebase/auth.js"
 
 export default ()=>{
 
     const Icon  = new iconSVG() 
-    const hostURL  = uri => 'https://apimanagestorage.000webhostapp.com' + uri
+    const auth      = ls('auth').data({}).push(true, true)
+
+    const api = (uri = '') => ls('api').get() + uri 
 
     const ElementComponent = createHTML(`
         <div class="div_5Zz84Ni">
             <div class="div_9d2AH62"><img src="" alt="" data-render="img" data-name="wallpaper"></div>
             <div class="div_pB6zzvH">
-                <a href="#/"><i class="fi fi-rr-arrow-small-left"></i></a>
+                <a href="#/">${ Icon.get('fi fi-rr-arrow-small-left') }</a>
             </div>
             <div class="div_e6dR5Cp">
                 <div class="div_g90gE7g"> 
@@ -22,8 +23,8 @@ export default ()=>{
                             <div class="div_q9SpFZJ"></div>
                             <div class="div_751XNwm">
                                 <div class="div_LSlRYXR">
-                                    <h4 data-render="text" data-name="name">-</h4>
-                                    <span data-render="text" data-name="descripcion">-</span>
+                                    <h4 data-render="text" data-name="fullname">-</h4>
+                                    <span data-render="text" data-name="biography">-</span>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +46,7 @@ export default ()=>{
                                     ${ Icon.get('fi fi-rr-venus-mars') }
                                     <div>
                                         <span>Genero</span>
-                                        <h5 class="text-ellipsis" data-render="text" data-name="genero">-</h5>
+                                        <h5 class="text-ellipsis" data-render="text" data-name="gender">-</h5>
                                     </div>
                                 </div>
                                 <div class="button_4tqA7O4">
@@ -79,7 +80,7 @@ export default ()=>{
                                 <span>Apariencia</span>
                             </div>
                         </a>
-                        <a href="#/notification" class="a_K6KH1Ba" style="display:none">
+                        <a href="#/notification" class="a_K6KH1Ba">
                             ${ Icon.get('fi fi-rr-bell') }
                             <div>
                                 <span>Notificaciones</span>
@@ -110,9 +111,12 @@ export default ()=>{
     const ElementRenderText = query.getAll('[data-render = text]')
     const ElementRenderIMG = query.getAll('[data-render = img]')
 
-    query.get('button.logout').addEventListener('click', logoutFirebase)
+    query.get('button.logout').addEventListener('click', ()=> {
+        ls('auth').drop()
+        location.hash = '#/login'
+    })
 
-    const renderData =()=>{
+    const renderData = () =>{
         const user_data = ls('user_data').data({}).push(true, true)
 
         ElementRenderText.forEach(element => {
@@ -130,9 +134,14 @@ export default ()=>{
             const key   = element.dataset.name
             const value = user_data[key] ?? ''
 
-            if(key == 'por definir'){
-                //element.textContent = value.toUpperCase()
-            } else element.src = hostURL(`/upload-files/storage/${ key }/${ value }`)
+            if(key == 'avatar'){
+                element.src = api(`/stream/storage/${ key }/${ value || 'avatar.png' }`)
+            } 
+            else if(key == 'wallpaper') {
+                if(value == '') element.remove()
+                else element.src = api(`/stream/storage/${ key }/${ value }`)
+            }
+            else element.src = api(`/stream/storage/${ key }/${ value }`)
         })
     }
 
@@ -141,9 +150,14 @@ export default ()=>{
         const Birthday = new Date(birthday)
         return `${ Birthday.getDate() } ${ Month[Birthday.getMonth()] } ${ Birthday.getFullYear() }`
     }
-
-    renderData()
-    addEventListener('custom-event-user-data', renderData)
  
+    datapi.get(api(`/stream/app/trigger/user.php?uid=${ auth.uid }`))
+    .then( data => {
+        ls('user_data').data(data).put(true)
+        renderData()
+    } ) 
+
+    addEventListener('custom-event-user-data', renderData)
+
     document.getElementById('main').append(ElementComponent)
 }

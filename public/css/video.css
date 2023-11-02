@@ -48,28 +48,28 @@
   }
 }
 
-.div_ETUVd9w{
+.div_ETUVd9w {
   margin: auto;
   display: grid;
   gap: 40px;
 
-  grid-template-columns: 80px 80px 80px;  
+  grid-template-columns: 80px 80px 80px;
   grid-template-rows: 80px;
 }
 
-.button_4P1Dopv{
-  cursor: pointer; 
+.button_4P1Dopv {
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
 
   pointer-events: initial;
 
-  &:hover{
-    opacity: .5;
+  &:hover {
+    opacity: 0.5;
   }
 
-  &.desactive{
+  &.desactive {
     pointer-events: none;
   }
 
@@ -78,7 +78,6 @@
     height: 30px;
     fill: #ffffff;
   }
-  
 }
 
 .div_BXzT1 {
@@ -356,7 +355,7 @@
 /* reaccion emoji */
 .div_82gU7 {
   position: fixed;
-  inset: 0; 
+  inset: 0;
   pointer-events: none;
 
   display: flex;
@@ -368,7 +367,7 @@
   & span {
     font-size: 35px;
     position: absolute;
-    bottom: 0;
+    bottom: 100%; 
     animation: forwards animation_emoji 2s ease-in-out;
   }
 }
@@ -390,4 +389,4 @@
   }
 }
 
-/*   div_Mbdqf  form_lK4nv*/
+/*   div_Mbdqf  div_82gU7*/

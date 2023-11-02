@@ -6,11 +6,11 @@ import navigate from "./components/navigate.js"
 import serverWorker from "./pwa/serverWorker.js"
 
 export default ()=>{
+ 
 
-    //serverWorker()
-    
+    //serverWorker() 
     const contextmenuIncludeTarget = ['INPUT', 'TEXTAREA']
-
+    
     style()
 
     routes()
@@ -23,6 +23,5 @@ export default ()=>{
     })
 
     addRemoveEventListener(window, 'click', ()=> localStorage.setItem('click', 'true'))
-    
 } 
 

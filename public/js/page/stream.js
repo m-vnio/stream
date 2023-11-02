@@ -1,31 +1,46 @@
-import { dbFirebase } from "../firebase/data.js"
-
-import header from "../components/header.js"
-import video from "../components/video.js"
-import chat from "../components/chat.js"
+import formStream from "../components/formStream.js"
 
 export default (params)=>{
+    const api = (uri = '') => ls('api').get() + '/stream/app/trigger/stream_user.php' + uri
 
-    const user  = json(localStorage.getItem('user'))
-
-    const db_1 = new dbFirebase('stream')
-    const db_2 = new dbFirebase('stream_user')
-
-    const imgIcon = icon => `<img src="public/img/icons/svg/${ icon }.svg" alt="icon-svg">`
-
+    const Icon  = new iconSVG()
+    const auth  = ls('auth').data({}).push(true, true) 
+     
     const ElementComponent = createHTML(`
-        <div class="div_08H2LYs">
-            <div class="contenedor_loader"><span class="loader"></span></div>
-            <div class="div_Z3l5me3"></div>
+        <div class="div_L5jgPxN">
+            <header class="header_225VF53">
+                <div class="div_lD7mjkb">
+                    <a href="#/">${ Icon.get('fi fi-rr-arrow-small-left') }</a>
+                    <h3>video</h3>
+                </div>
+                <div class="div_lD7mjkb">
+                    <a href="#/stream/link">${ Icon.get('fi fi-rr-portal-enter') }</a>
+                </div>
+            </header>
+            <div class="div_VV5Wk2L scroll-y">
+                <div class="contenedor_loader"><span class="loader"></span></div>
+                <div class="div_Hu171ix"><h3>~ lista vacia ~</h3></div>
+                <div class="div_Z3l5me3"></div>
+                <div class="div_ckiK8W2"><button class="pointer">${ Icon.get('fi fi-rr-plus') }</button></div>
+            </div>
         </div>
     `)
 
     const query = new findElement(ElementComponent)
+    const root = document.getElementById('root')
+    const elementformStream = formStream()
 
+    const contenedorItem = query.get('.div_VV5Wk2L')
     const contenedorLoader = query.get('.contenedor_loader')
+    const contenedorListEmpty = query.get('.div_Hu171ix')
     const contenedorListItem = query.get('.div_Z3l5me3')
+    const btnFormStream = query.get('.div_ckiK8W2 button')
 
-    const def_createHTML =(data)=>{
+    btnFormStream.addEventListener('click', e => {
+        root.append(elementformStream)
+    })
+
+    const defElementHTML =(data)=>{
         const data_data = {
             datetime_update : data.datetime_update
         }
@@ -33,67 +48,75 @@ export default (params)=>{
         return createHTML(`
             <a id="div-${ data.id }" href="#/stream/${ data.id }" class="a_eBF5R8K" data-data='${ JSON.stringify(data_data) }'>
                 <span class="text-ellipsis">${ data.name }</span>
-                ${ imgIcon('icon-arrow-small-right') }
+                ${ Icon.get('fi fi-rr-arrow-small-right') }
             </a>
         `)
     }
 
-    const renderHTML =(Data)=>{ 
+    const dataRender =(Data)=>{ 
+        contenedorLoader.remove()
 
-        // const Data = []
-        // onSnapshot.forEach(doc => Data.push({ id : doc.id, ...doc.data() }));
-
-        Data = Data.stream_user.map((stream_user)=> Data.stream.find(stream => stream.id  == stream_user.id_stream))
- 
         if(Data.length == 0) {
-            ElementComponent.innerHTML = '<div class="div_Hu171ix"><h3>~ lista vacia ~</h3></div>'
-            return 
+            contenedorListItem.remove()
+            return contenedorItem.append(contenedorListEmpty)
         }
- 
-        if(contenedorListItem.children.length == 0) {
+
+        if(contenedorListItem.children.length){
+            Data.map(data => {
+                const query     = `#div-${ data.id }`
+                const element   = contenedorListItem.querySelector(query)
+                const elementCurrent = defElementHTML(data)
+
+                if(element) {
+                    if(elementCurrent.outerHTML != element.outerHTML) element.replaceWith(defElementHTML(data));
+                } else contenedorListItem.append(elementCurrent) 
+                
+            })
+        } else {
             const elementTemp = document.createDocumentFragment()
-            Data.map(data => elementTemp.append(def_createHTML(data)))
-            contenedorLoader.remove()
+            Data.map(data => elementTemp.append(defElementHTML(data)))
+            contenedorListEmpty.remove()
             contenedorListItem.append(elementTemp)
-            ElementComponent.append(contenedorListItem)
-            return
+            contenedorItem.append(contenedorListItem)
         }
-
-        Data.map(data => {
-            const query     = `#div-${ data.id }`
-            const element   = contenedorListItem.querySelector(query)
-
-            if(element) {
-                const data_data = JSON.parse(element.dataset.data)
-                if(parseInt(data.datetime_update) > parseInt(data_data.datetime_update)){
-                    element.replaceWith(def_createHTML(data));
-                }
-                return
-            }
-
-            contenedorListItem.append(def_createHTML(data))
-        })
-
+        
     }
 
-    const loadData = async ()=>{
-        const Data_1 = await db_1.getAll({ limit : 20 })
-        const Data_2 = await db_2.getAll({ where  : [[ "id_user", "==", user.uid ]], limit : 20})
-
-        const DataJSON = {
-            stream      : [],
-            stream_user : []
-        }
-
-        Data_1.forEach(doc => DataJSON.stream.push(doc.data()))
-        Data_2.forEach(doc => DataJSON.stream_user.push(doc.data()))
-        renderHTML(DataJSON)
+    const dataLoad = ()=>{  
+        datapi.get(api(`?uid=${ auth.uid }`)).then(dataRender)
     }
 
+    contenedorListEmpty.remove()
     contenedorListItem.remove()
-    loadData()
+    dataLoad()
+    addEventListener('dispatchEventLoadStrem', dataLoad)
 
-
+    
     document.getElementById('main').append(ElementComponent)
 }
  
+
+/*
+
+<div class="div_L5jgPxN">
+    <header class="header_225VF53">
+        <div class="div_lD7mjkb">
+            <a href="#/user"><i class="fi fi-rr-arrow-small-left"></i></a>
+            <h3>Apariencia</h3>
+        </div>
+        <div class="div_Xs7U5Y6">
+            <label class="label_5kB8k1C">
+                <input data-type="apariencia" type="checkbox" ${ theme == 'dark' ? 'checked' : '' }>
+                <span></span>
+            </label>
+        </div>
+    </header>
+    <div class="div_VV5Wk2L scroll-y">
+            <div class="contenedor_loader"><span class="loader"></span></div>
+        <div class="div_Hu171ix"><h3>~ lista vacia ~</h3></div>
+        <div class="div_Z3l5me3"></div>
+        <div class="div_ckiK8W2"><button class="pointer">${ Icon.get('fi fi-rr-plus') }</button></div>
+    </div>
+</div>
+
+*/

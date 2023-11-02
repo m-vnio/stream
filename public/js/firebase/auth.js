@@ -1,47 +1,47 @@
-import app from "./config.js"; 
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut  } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"
+// import app from "./config.js"; 
+// import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut  } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"
 
-const auth = getAuth();
+// const auth = getAuth();
 
-const registerFirebase =(data = {})=>{
+// const registerFirebase =(data = {})=>{
 
-    if(data.email === '') return
-    if(data.password === '') return
-    createUserWithEmailAndPassword(auth, data.email, data.password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
+//     if(data.email === '') return
+//     if(data.password === '') return
+//     createUserWithEmailAndPassword(auth, data.email, data.password)
+//         .then((userCredential) => {
+//             const user = userCredential.user;
+//         })
+//         .catch((error) => {
+//             const errorCode = error.code;
+//             const errorMessage = error.message;
+//         });
 
-}
+// }
 
-const loginFirebase =(data = {})=>{
+// const loginFirebase =(data = {})=>{
 
-    if(data.email === '') return
-    if(data.password === '') return 
+//     if(data.email === '') return
+//     if(data.password === '') return 
   
-    signInWithEmailAndPassword(auth, data.email, data.password)
-    .then((userCredential) => {
-      const user = userCredential.user; 
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+//     signInWithEmailAndPassword(auth, data.email, data.password)
+//     .then((userCredential) => {
+//       const user = userCredential.user; 
+//     })
+//     .catch((error) => {
+//       const errorCode = error.code;
+//       const errorMessage = error.message;
+//     });
 
-} 
+// } 
 
-const checkLoginFirebase = async (callback) =>{
-    if(typeof callback == 'function'){
-      onAuthStateChanged(auth, callback)
-    }
-}
+// const checkLoginFirebase = async (callback) =>{
+//     if(typeof callback == 'function'){
+//       onAuthStateChanged(auth, callback)
+//     }
+// }
 
-const logoutFirebase =()=>{
-    signOut(auth)
-}
+// const logoutFirebase =()=>{
+//     signOut(auth)
+// }
  
-export { registerFirebase, loginFirebase, checkLoginFirebase, logoutFirebase }
+// export { registerFirebase, loginFirebase, checkLoginFirebase, logoutFirebase }

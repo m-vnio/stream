@@ -1,20 +1,18 @@
 import style from "../style.js"
-import { dbFirebase } from "../firebase/data.js";
 
 export default ()=>{
 
-    const hostURL  = uri => 'https://apimanagestorage.000webhostapp.com' + uri
-    const user      = ls('user').data({}).push(true, true)
-    const user_data = ls('user_data').data({}).push(true, true)
-    const db = new dbFirebase('user_data')
+    const Icon = new iconSVG()
+    const api = (uri = '') => ls('api').get() + uri
 
-    const CustomEventUserData = new CustomEvent('custom-event-user-data')
+    const auth      = ls('auth').data({}).push(true, true)
+    const user_data = ls('user_data').data({}).push(true, true)
 
     const ElementComponent = createHTML(`
         <div class="div_L5jgPxN">
             <header class="header_225VF53">
                 <div class="div_lD7mjkb">
-                    <a href="#/user"><i class="fi fi-rr-arrow-small-left"></i></a>
+                    <a href="#/user">${ Icon.get('fi fi-rr-arrow-small-left') }</a>
                     <h3>Cuenta</h3>
                 </div>
             </header>
@@ -25,28 +23,41 @@ export default ()=>{
                         <form class="form_9L6695u" autocomplete="off"> 
                             <div class="div_WGwF07F">
                                 <label class="label_XzVf530">
-                                    <input type="file" name="wallpaper">
-                                    <img src="${ hostURL(`/upload-files/storage/wallpaper/${ user_data.wallpaper }`) }">
+                                    <input type="file" name="wallpaper" accept="image/*">
+                                    <img src="${ api(`/stream/storage/wallpaper/${ user_data.wallpaper }`) }" style="opacity:${ user_data.wallpaper ? 1 : 0 }">
                                 </label>
                                 <label class="label_96QeWL5">
-                                    <input type="file" name="avatar">
-                                    <img src="${ hostURL(`/upload-files/storage/avatar/${ user_data.avatar }`) }">
+                                    <input type="file" name="avatar" accept="image/*">
+                                    <img src="${ api(`/stream/storage/avatar/${ user_data.avatar || 'avatar.png' }`) }">
                                 </label>
                             </div>
                             
                             <label class="label_eE2nEE4">
-                                <input type="text" value="${ user_data.name ?? '' }" name="name" placeholder="nombre">
+                                <input type="text" value="${ user_data.fullname ?? '' }" name="fullname" placeholder="nombre">
+                            </label>
+                            <label class="label_eE2nEE4">
+                                <input type="text" value="${ user_data.lastname ?? '' }" name="lastname" placeholder="nombre">
                             </label>
                             <label class="label_eE2nEE4">
                                 <input type="text" value="${ user_data.username ?? '' }" name="username" placeholder="username">
                             </label>
                             <label class="label_eE2nEE4">
-                                <input type="text" value="${ user_data.descripcion ?? '' }" name="descripcion" placeholder="descripcion">
+                                <input type="text" value="${ user_data.biography ?? '' }" name="biography" placeholder="biography">
                             </label>
                             <label class="label_A6w2qK5">
                                 <input type="date" data-value="${ user_data.birthday ?? '' }" name="birthday">
                                 <span>cumpleaños</span>
                             </label>
+                            <div class="div_A6w2qK5">
+                                <label class="pointer">
+                                    <input type="radio" name="gender" value="male" ${ (user_data.gender ?? '') == 'male' ? 'checked' : '' }>
+                                    masculino
+                                </label>
+                                <label class="pointer">
+                                    <input type="radio" name="gender" value="female" ${ (user_data.gender ?? '') == 'female' ? 'checked' : '' }>
+                                    femenino
+                                </label>
+                            </div>
                             <div class="div_ZL6A3xH">
                                 <button type="submit" class="pointer">guardar</button>
                             </div>
@@ -78,6 +89,7 @@ export default ()=>{
         reader.addEventListener("load", () => {
             let url = URL.createObjectURL(file_file) 
             elementImgWallpaper.setAttribute("src", url)
+            elementImgWallpaper.style.opacity = '1'
         })
     })
     
@@ -103,48 +115,50 @@ export default ()=>{
         e.preventDefault()
 
         const data = {
-            name : elementFormPerfil.name.value,
+            fullname : elementFormPerfil.fullname.value,
+            lastname : elementFormPerfil.lastname.value,
             username : elementFormPerfil.username.value,
-            descripcion : elementFormPerfil.descripcion.value,
-            birthday : elementFormPerfil.birthday.dataset.value
+            biography : elementFormPerfil.biography.value,
+            birthday : elementFormPerfil.birthday.dataset.value,
+            gender : elementFormPerfil.gender.value
         }
 
         const data_file = new FormData()
         const fileAvatar = elementFormPerfil.avatar.value
         const fileWallpaper = elementFormPerfil.wallpaper.value
 
-        const idFile = Date.now().toString()
-
-        data_file.append('data', JSON.stringify({ id_file : idFile }))
-
-        if(fileAvatar != ''){ 
-            data_file.append('file_avatar', elementFormPerfil.avatar.files[0])
-        }
-
-        if(fileWallpaper != ''){ 
-            data_file.append('file_wallpaper', elementFormPerfil.wallpaper.files[0])
-        } 
+        data_file.append('data', JSON.stringify(data))
 
         if(fileAvatar != '' || fileWallpaper != ''){
-            fetch(hostURL('/upload-files/app/uploadFile.php'), {
+            if(fileAvatar != ''){ 
+                data_file.append('avatar', elementFormPerfil.avatar.files[0])
+            }
+    
+            if(fileWallpaper != ''){ 
+                data_file.append('wallpaper', elementFormPerfil.wallpaper.files[0])
+            } 
+
+            fetch(api(`/stream/app/trigger/user.php?uid=${ auth.uid }&file=true`), {
                 method : 'POST',
                 body : data_file
-            })
-            .then(res => res.json())
-            .then((resData)=> {
-                db.edit(user_data.id, {...data, ...resData}).then(loadData)
-            })
+            }).then(loadData) 
+
         } else {
-            db.edit(user_data.id, data).then(loadData)
+
+            // datapi.patch(api(`/stream/app/trigger/user.php?uid=${ auth.uid }`), data)
+            //     .then(loadData)
+
         }
     })
 
-    const loadData  = async ()=> {
-        const data_user = await db.getAll({ where  : [[ "uid", "==", user.uid ]], limit : 1})
-        data_user.forEach(doc => ls('user_data').data({ id : doc.id, ...doc.data(), email : user.email }).put(true));
-        dispatchEvent(CustomEventUserData)
-    }
+    const loadData = () => {
+        datapi.get(api(`/stream/app/trigger/user.php?uid=${ auth.uid }`))
+        .then( data => {
+            ls('user_data').data(data).put(true)
+        } )
  
+    }
+    
     setBirthday(parseInt(user_data.birthday))
     document.getElementById('main').append(ElementComponent)
 }

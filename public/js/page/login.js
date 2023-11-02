@@ -1,39 +1,25 @@
-import { loginFirebase } from "../firebase/auth.js"
+import formLogin from "../components/formLogin.js"
 
 export default ()=>{
-
     const ElementComponent = createHTML(`
-        <div class="div_4a73aBM">
-            <form class="form_botZH81" autocomplete="off">
-                <div class="div_6I1oX0I">
-                    <a href="#/login" class="focus">Login</a>
-                    <a href="#/register">Register</a>
-                </div>
-                <div class="div_N0HmgbL">
-                    <input type="email" name="email" placeholder="email" autocomplete="off">
-                    <input type="password" name="password" placeholder="password" autocomplete="off">
-                </div>
-                <div class="div_6t5C30Y">
-                    <button type="submit" class="pointer"><span>Ingresar</span></button>
-                </div>
-            </form>
+        <div class="div_TGskMqH scroll-y">
+            <div class="div_bk3v9ra">
+                <button class="pointer dark" data-status="true">login</button>
+                <button class="pointer" data-status="false">register</button>
+            </div>
         </div>
     `)
 
     const query = new findElement(ElementComponent)
-    const formLogin = query.get('.form_botZH81') 
+    const root  = document.getElementById('root')
 
-    formLogin.addEventListener('submit', e => {
-        e.preventDefault()
+    const Form  = { login : formLogin(true), register : formLogin(false) }
 
-        const data = {
-            email : formLogin.email.value.trim(),
-            password : formLogin.password.value.trim()
-        }
-
-        if(data.email == '' || data.password == '') return
-        loginFirebase(data)
+    query.get('.div_bk3v9ra').addEventListener('click', e => {
+        const button = e.target.closest('button')
+        if(button) root.append( JSON.parse(button.dataset.status) ? Form.login : Form.register) 
     })
 
+    //document.getElementById('root').append()
     document.getElementById('main').append(ElementComponent)
 }

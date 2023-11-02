@@ -1,13 +1,11 @@
-import { dbFirebase } from "../firebase/data.js"
-
 import header from "../components/header.js"
 import video from "../components/video.js"
 import chat from "../components/chat.js"
 
 export default (params)=>{
+    const api = (uri = '') => ls('api').get() + '/stream/app/trigger/stream.php' + uri
 
-    const db    = new dbFirebase('stream_user')
-    const user  = json(localStorage.getItem('user'))
+    const auth = ls('auth').data({}).push(true, true)  
 
     const ElementComponent = createHTML(`
         <div class="div_M08rV">
@@ -22,19 +20,21 @@ export default (params)=>{
     const elementItem = query.get('.div_jpEIOZm')
     const elementItemVideoChat = query.get('.div_U09zC')
  
-    const loadVerify = async ()=>{
-        elementItem.remove()
-        const DataVerify = await db.getAll({ where : [['id_user', '==', user.uid], ['id_stream', '==', params.id]],limit : 1 })
+    const dataRender = (Data)=>{ 
+        ls('stream').data(Data).put(true)
 
-        const Data = []
-        DataVerify.forEach( doc => Data.push(doc.data()));
-
-        if(Data.length != 0){
+        if(Data){
             elementLoad.remove()
             elementItem.prepend(header())
             elementItemVideoChat.append(video(elementItemVideoChat), chat()) 
-            
             ElementComponent.append(elementItem)
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.controller.postMessage(JSON.stringify({
+                    type : 'stream',
+                    pathhash : location.pathname + location.hash
+                }))
+            }
         } else {
             ElementComponent.innerHTML = `
                 <div class="div_13e1BW1">
@@ -44,11 +44,14 @@ export default (params)=>{
         }
     }
 
-    //loadVerify()
+    const dataLoad = ()=>{
+        ElementComponent.append(elementLoad)
+        elementItem.remove()
+
+        datapi.get(api(`?id=${ params.id }&token=${ auth.token }`)).then(dataRender)
+    }
     
-    elementLoad.remove()
-    elementItem.prepend(header())
-    elementItemVideoChat.append(video(elementItemVideoChat), chat()) 
-    
+    dataLoad()
+
     document.getElementById('main').append(ElementComponent)
 }
