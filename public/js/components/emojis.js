@@ -52,30 +52,7 @@ export default ()=>{
         if(data.id_stream == params.id){
             defSetEmoji(data.message)
         }
-    })
-<<<<<<< HEAD
-    
-=======
+    }) 
 
-    const renderHTML =(onSnapshot)=>{
-        onSnapshot.forEach(doc => {
-            const data = doc.data()
-
-            if(fisrt_time.render) return
-            if(data.id_user == user.uid) return
-
-            if(Date.now() < (parseInt(data.datetime_add) + 2000)){ 
-
-                defSetEmoji(data.message)
-            }
-        });
-
-        fisrt_time.render = false
-    }
-
-    const unsubscribe = dbRealtime.subscribe(renderHTML)
-    addRemoveEventListener(window, 'hashchange', unsubscribe) 
-
->>>>>>> fbc7fd3687eb96f3f719762d127cf9c8ad241882
     return ElementComponent
 }
