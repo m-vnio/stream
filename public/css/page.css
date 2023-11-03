@@ -144,6 +144,7 @@
     padding: 10px 30px;
     border-radius: 30px;
     border: 1.25px solid var(--color-letter);
+    color: var(--color-letter);
 
     &.focus{
       background: var(--color-letter);
@@ -1021,11 +1022,13 @@
     background: none;
     height: 60px;
     border-radius: 60px;
-    border: 1.25px solid #000000;
+    border: 1.25px solid var(--color-letter);
+
+    color: var(--color-letter);
 
     &.dark {
-      background: #000000;
-      color: #ffffff;
+      background: var(--color-letter);
+      color: var(--color-item);
     }
   }
 }
@@ -1052,7 +1055,7 @@
   }
 }
 
-/* label_A6w2qK5  div_80VEr3d*/
+/* label_A6w2qK5  LOGIN*/
 
 @media (min-width: 600px) {
   .div_jr45I15 { 
