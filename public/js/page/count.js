@@ -143,7 +143,8 @@ export default ()=>{
             fetch(api(`/stream/api/user?token=${ auth.token }&file=true`), {
                 method : 'POST',
                 body : data_file
-            }).then(loadData)
+            }).then(res => res.json())
+            .then(console.log)
 
         } else {
             datapi.patch(api(`/stream/api/user?token=${ auth.token }`), data)

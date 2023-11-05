@@ -115,6 +115,7 @@ export default ()=>{
         
         datapi.get(api(`/stream/api/stiker?collection=${ collection }&token=${ auth.token }`))
                 .then(data => {
+                    console.log(data);
                     Stiker = data.stiker
                     
                     if(collection == 'favorite') {
