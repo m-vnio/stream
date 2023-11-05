@@ -396,7 +396,7 @@ export default ()=>{
         if(elementItemChat.children.length) {
             
             Chat.forEach((data, index) => {
-
+                console.log(data);
                 const element = elementItemChat.querySelector(`#div-${ data.id }`)
                 
                 if(index++ == 0){
@@ -489,42 +489,57 @@ export default ()=>{
 
 
     /* */
+    let activeScroll = false
+    elementItem.addEventListener('scroll', () => activeScroll = true )
 
     const handleSwipeRight = element =>{
         let startX = 0;
+        let startY = 0;
         let isSwiping = false;
         let limit = 0
+        let move = 0
 
         let elementChat = false
+        
          
-        function handleSwipeStart(event) {
-            elementChat = event.target.closest('.div_T5m0f')
+        function handleSwipeStart(e) {
+            activeScroll = false 
+            elementChat = e.target.closest('.div_T5m0f')
 
             if(elementChat) {
                 isSwiping = true;
-                startX = event.touches[0].clientX;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
                 elementChat.style.transition = "none";
                 limit = 0
+                move = 0
             }
           
         }
          
-        function handleSwipeMove(event) {
+        function handleSwipeMove(e) {
             if(elementChat) {
+                if(activeScroll) return
                 if (isSwiping) {
-                    const currentX = event.touches[0].clientX;
+
+                    if( ++move == 1 ) {
+                        if((e.touches[0].clientY - startY) != 0) return
+                    }
+
+                    const currentX = e.touches[0].clientX;
                     const deltaX = currentX - startX; 
+
                     if(deltaX < 0) return
-                    if(deltaX > 100) return 
+                    if(deltaX > 100) return
+
                     limit = deltaX
                     elementChat.style.transform = `translateX(${deltaX}px)`;
                   }
             }
-          
         }
         
         // Función para manejar el final del deslizamiento
-        function handleSwipeEnd(event) {
+        function handleSwipeEnd() {
             if(elementChat) {
                 if (isSwiping) {
                     isSwiping = false;
@@ -534,6 +549,7 @@ export default ()=>{
                         dispatchEvent(new CustomEvent('open_reply_message', { detail : JSON.parse(elementChat.dataset.data) }))
                     }
                     limit = 0
+                    move = 0
                 }
             }
 
