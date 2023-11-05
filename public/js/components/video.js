@@ -423,6 +423,8 @@ export default (ElementComponentFullScreen)=>{
             elementVideo[ data.play ? 'play' : 'pause' ]()
             activeAddEventListenerVideoPlayPause()
         } 
+
+        if(change != '*') setVideoHistory(data.message)
     }
 
     const validate_click = JSON.parse(localStorage.getItem('click')) 
