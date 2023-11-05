@@ -8,13 +8,14 @@ export default (login = true)=>{
             <div class="div_z08HdDa scroll-y">
                 <form class="form_50roGPo" autocomplete="off">
                     <input type="hidden" name="method" data-type="auth" value="email">
+                    <input type="hidden" name="phone" data-type="user" value="">
                     <h2>${ login ? 'Login' : 'Register' }</h2>
                     ${ login ? '' : `
                         <input type="text" name="fullname" data-type="user" placeholder="nombre" autocomplete="off">
                         <input type="text" name="lastname" data-type="user" placeholder="apellido" autocomplete="off">
                         <input type="text" name="username" data-type="user" placeholder="usuario" autocomplete="off">
                     ` }
-                    <input type="email" name="method_key" data-type="auth" placeholder="correo" autocomplete="off">
+                    <input type="email" name="email" data-type="user" placeholder="correo" autocomplete="off">
                     <input type="password" data-type="auth" name="password" placeholder="contraseña" autocomplete="off">
                     <div class="div_i9lYRnC">
                         <button type="submit" class="pointer">${ login ? 'Ingresar' : 'Crear Cuenta' }</button>
@@ -31,13 +32,7 @@ export default (login = true)=>{
 
     const Input = query.getAll('.form_50roGPo input') 
 
-    elementTap.addEventListener('click', ()=> {
-        form.parentElement.classList.add('hide')
-        setTimeout(()=> {
-            ElementComponent.remove()
-            form.parentElement.classList.remove('hide')
-        }, 300)
-    })
+    elementTap.addEventListener('click', ()=> ElementComponent.remove() )
 
     form.addEventListener('submit', e => {
         e.preventDefault()
@@ -47,9 +42,9 @@ export default (login = true)=>{
         Input.forEach(input => {
             data[input.dataset.type][ input.name ] = input.value
         });
-        //https://apimanagestream.000webhostapp.com/stream/app/trigger/auth.php?action=register
+        //https://apimanagestream.000webhostapp.com/stream/api/auth?action=register
 
-        datapi.post(api(`/stream/app/trigger/auth.php?action=${ login ? 'login' : 'register' }`), data)
+        datapi.post(api(`/stream/api/auth?action=${ login ? 'login' : 'register' }`), data)
         .then(data => {
             console.log(data);
             if(data.status){

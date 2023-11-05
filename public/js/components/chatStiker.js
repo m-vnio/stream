@@ -114,7 +114,7 @@ export default (DataModule = {})=>{
         elementItemData.remove()
         elementItem.append(elementItemLoad)
 
-        datapi.get(api(`/stream/app/trigger/stiker.php?collection=${ collection }&token=${ auth.token }`))
+        datapi.get(api(`/stream/api/stiker?collection=${ collection }&token=${ auth.token }`))
                 .then(data => {
                     Stiker = data.stiker
                     

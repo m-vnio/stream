@@ -7,7 +7,6 @@ import serverWorker from "./pwa/serverWorker.js"
 
 export default ()=>{
  
-
     //serverWorker() 
     const contextmenuIncludeTarget = ['INPUT', 'TEXTAREA']
     

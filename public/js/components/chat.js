@@ -253,7 +253,7 @@ export default ()=>{
         items.forEach(item => item.remove() )
         if(item) item.remove()
 
-        datapi.patch(api(`/stream/app/trigger/stream_chat.php?id=${ data.id }&token=${ auth.token }`), { status : 3 })
+        datapi.patch(api(`/stream/api/stream_chat?id=${ data.id }&token=${ auth.token }`), { status : 3 })
         .then(status => {
             if(status) {
                 socket.emit('chat', JSON.stringify({
@@ -272,7 +272,7 @@ export default ()=>{
         const item = elementItemChat.querySelector(`#div-${ data.id }`)
         if(item) item.style.opacity = '.5'
 
-        datapi.patch(api(`/stream/app/trigger/stream_chat.php?id=${ data.id }&token=${ auth.token }`), {
+        datapi.patch(api(`/stream/api/stream_chat?id=${ data.id }&token=${ auth.token }`), {
             datetime_update : Date.now().toString(),
             status : data.status == 4 ? 5 : 4
         })
@@ -319,7 +319,7 @@ export default ()=>{
 
             setData.append('data', JSON.stringify(data))
             
-            fetch(api(`/stream/app/trigger/stream_chat.php?token=${ auth.token }`), {
+            fetch(api(`/stream/api/stream_chat?token=${ auth.token }`), {
                 method : 'POST',
                 body : setData
             })
@@ -363,12 +363,12 @@ export default ()=>{
         }
         else if(action == 'update'){
             data.status = 2
-            data.id = formChat.dataset.idMessage
+            //data.id = formChat.dataset.idMessage
             delete data.datetime_add 
             const items = elementItemChat.querySelectorAll(`div[data-id-reply = div-${ data.id }]`)
             items.forEach(item => item.children[0].textContent = data.message )
 
-            datapi.patch(api(`/stream/app/trigger/stream_chat.php?id=${ data.id }&token=${ auth.token }`), data)
+            datapi.patch(api(`/stream/api/stream_chat?id=${ formChat.dataset.idMessage }&token=${ auth.token }`), data)
             .then(data => {
                 if(data) {
                     dataRender([data])
@@ -385,7 +385,6 @@ export default ()=>{
     })
 
     const dataRender =(Chat = [])=>{
-
         let elementPrevious = null
         elementItemLoader.remove()
         if(!Chat.length){
@@ -453,9 +452,9 @@ export default ()=>{
 
     const dataLoad =(id = '')=>{  
         if(id == '') {
-            datapi.get(api(`/stream/app/trigger/stream_chat.php?id_stream=${ params.id }`)).then(dataRender) 
+            datapi.get(api(`/stream/api/stream_chat?id_stream=${ params.id }&token=${ auth.token }`)).then(dataRender) 
         } else {
-            datapi.get(api(`/stream/app/trigger/stream_chat.php?id=${ id }&id_stream=${ params.id }`)).then(dataRender) 
+            datapi.get(api(`/stream/api/stream_chat?id=${ id }&id_stream=${ params.id }&token=${ auth.token }`)).then(dataRender) 
         }
         
     }

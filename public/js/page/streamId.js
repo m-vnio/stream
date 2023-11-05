@@ -3,7 +3,7 @@ import video from "../components/video.js"
 import chat from "../components/chat.js"
 
 export default (params)=>{
-    const api = (uri = '') => ls('api').get() + '/stream/app/trigger/stream.php' + uri
+    const api = (uri = '') => ls('api').get() + uri
 
     const auth = ls('auth').data({}).push(true, true)  
 
@@ -48,7 +48,7 @@ export default (params)=>{
         ElementComponent.append(elementLoad)
         elementItem.remove()
 
-        datapi.get(api(`?id=${ params.id }&token=${ auth.token }`)).then(dataRender)
+        datapi.get(api(`/stream/api/stream?id=${ params.id }&token=${ auth.token }`)).then(dataRender)
     }
     
     dataLoad()

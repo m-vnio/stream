@@ -80,7 +80,7 @@ export default ()=>{
                                 <span>Apariencia</span>
                             </div>
                         </a>
-                        <a href="#/notification" class="a_K6KH1Ba">
+                        <a href="#/notification" class="a_K6KH1Ba" style="display:none">
                             ${ Icon.get('fi fi-rr-bell') }
                             <div>
                                 <span>Notificaciones</span>
@@ -150,12 +150,12 @@ export default ()=>{
         const Birthday = new Date(birthday)
         return `${ Birthday.getDate() } ${ Month[Birthday.getMonth()] } ${ Birthday.getFullYear() }`
     }
- 
-    datapi.get(api(`/stream/app/trigger/user.php?uid=${ auth.uid }`))
-    .then( data => {
-        ls('user_data').data(data).put(true)
-        renderData()
-    } ) 
+    
+    datapi.get(api(`/stream/api/user?token=${ auth.token }`))
+        .then( data => {
+            ls('user_data').data(data).put(true)
+            renderData()
+        }) 
 
     addEventListener('custom-event-user-data', renderData)
 

@@ -24,28 +24,27 @@ export default ()=>{
                             <div class="div_WGwF07F">
                                 <label class="label_XzVf530">
                                     <input type="file" name="wallpaper" accept="image/*">
-                                    <img src="${ api(`/stream/storage/wallpaper/${ user_data.wallpaper }`) }" style="opacity:${ user_data.wallpaper ? 1 : 0 }">
+                                    <img src="">
                                 </label>
                                 <label class="label_96QeWL5">
                                     <input type="file" name="avatar" accept="image/*">
                                     <img src="${ api(`/stream/storage/avatar/${ user_data.avatar || 'avatar.png' }`) }">
                                 </label>
                             </div>
-                            
                             <label class="label_eE2nEE4">
-                                <input type="text" value="${ user_data.fullname ?? '' }" name="fullname" placeholder="nombre">
+                                <input type="text" value="${ user_data.fullname ?? '' }" name="fullname" placeholder="nombre" autocomplete="off">
                             </label>
                             <label class="label_eE2nEE4">
-                                <input type="text" value="${ user_data.lastname ?? '' }" name="lastname" placeholder="nombre">
+                                <input type="text" value="${ user_data.lastname ?? '' }" name="lastname" placeholder="nombre" autocomplete="off">
                             </label>
                             <label class="label_eE2nEE4">
-                                <input type="text" value="${ user_data.username ?? '' }" name="username" placeholder="username">
+                                <input type="text" value="${ user_data.username ?? '' }" name="username" placeholder="username" autocomplete="off">
                             </label>
                             <label class="label_eE2nEE4">
-                                <input type="text" value="${ user_data.biography ?? '' }" name="biography" placeholder="biography">
+                                <input type="text" value="${ user_data.biography ?? '' }" name="biography" placeholder="biography" autocomplete="off">
                             </label>
                             <label class="label_A6w2qK5">
-                                <input type="date" data-value="${ user_data.birthday ?? '' }" name="birthday">
+                                <input type="date" data-value="${ user_data.birthday ?? '' }" name="birthday" autocomplete="off">
                                 <span>cumpleaños</span>
                             </label>
                             <div class="div_A6w2qK5">
@@ -74,6 +73,9 @@ export default ()=>{
     const elementImgWallpaper  = query.get('.label_XzVf530 img')
     const elementImgAvatar  = query.get('.label_96QeWL5 img')
 
+    elementImgWallpaper.src = user_data.wallpaper ? api(`/stream/storage/wallpaper/${ user_data.wallpaper }`) : ''
+    elementImgWallpaper.style.display = user_data.wallpaper ? 'initial' : 'none'
+
     const setBirthday =(birthday)=>{
         const Month = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
         const Birthday = new Date(birthday)
@@ -89,7 +91,7 @@ export default ()=>{
         reader.addEventListener("load", () => {
             let url = URL.createObjectURL(file_file) 
             elementImgWallpaper.setAttribute("src", url)
-            elementImgWallpaper.style.opacity = '1'
+            elementImgWallpaper.style.display = 'initial'
         })
     })
     
@@ -138,27 +140,25 @@ export default ()=>{
                 data_file.append('wallpaper', elementFormPerfil.wallpaper.files[0])
             } 
 
-            fetch(api(`/stream/app/trigger/user.php?uid=${ auth.uid }&file=true`), {
+            fetch(api(`/stream/api/user?token=${ auth.token }&file=true`), {
                 method : 'POST',
                 body : data_file
-            }).then(loadData) 
+            }).then(loadData)
 
         } else {
-
-            // datapi.patch(api(`/stream/app/trigger/user.php?uid=${ auth.uid }`), data)
-            //     .then(loadData)
-
+            datapi.patch(api(`/stream/api/user?token=${ auth.token }`), data)
+                .then(loadData)
         }
     })
 
     const loadData = () => {
-        datapi.get(api(`/stream/app/trigger/user.php?uid=${ auth.uid }`))
+        datapi.get(api(`/stream/api/user?token=${ auth.token }`))
         .then( data => {
             ls('user_data').data(data).put(true)
         } )
  
     }
-    
+
     setBirthday(parseInt(user_data.birthday))
     document.getElementById('main').append(ElementComponent)
 }

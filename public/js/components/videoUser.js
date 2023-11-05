@@ -46,7 +46,7 @@ export default ()=>{
             id_stream : params.id
         }
 
-        datapi.post(api('/stream/app/trigger/stream_link.php'), data)
+        datapi.post(api(`/stream/api/stream_link?token=${ auth.token }`), data)
             .then(data => {
                 elementCopy.children[0].textContent = data.id
                 elementItem.append(elementCopy)
@@ -61,7 +61,6 @@ export default ()=>{
     addUser.addEventListener('click', generateLink)
 
     const dataRender =(Data)=>{
-        
         elementList.innerHTML = ArrayToString(Data, (data, i) => { 
             return `
                 ${ i == 0 ? '' : '<span class="span_line"></span>' }
@@ -94,13 +93,14 @@ export default ()=>{
 
 
     const dataLoad =()=>{
-        datapi.get(api(`/stream/app/trigger/stream_user.php?id_stream=${ params.id }`)).then(dataRender) 
+        datapi.get(api(`/stream/api/stream_user?token=${ auth.token }&id_stream=${ params.id }&type=users`)).then(dataRender) 
     }
 
     dataLoad()
  
     const statusUserRender = (User = []) =>{
         User.forEach(data => {
+            if(data.id_stream != params.id) return
             const element = elementList.querySelector(`div[data-id-user="${ data.id_user }"] .div_3N6X658 span`)
             if(element) element.style.display = data.status ? 'block' : 'none';
         })

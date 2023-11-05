@@ -31,6 +31,8 @@ export default ()=>{
         localStorage.setItem('fontFamily', JSON.stringify({ name : "predeterminado", font : "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'" }))
     }
 
+    //
+    //https://api-nivi.victor01sp.com
     localStorage.setItem('api', 'https://api-nivi.victor01sp.com')
 
     const theme = localStorage.getItem('theme')

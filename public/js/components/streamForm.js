@@ -1,4 +1,4 @@
-export default ()=>{
+export default ( type = 'add', data = {} ) =>{
 
     const api = (uri = '') => ls('api').get() + uri
     const auth  = ls('auth').data({}).push(true, true)
@@ -7,10 +7,10 @@ export default ()=>{
         <div class="div_KEVYWu2">
             <div class="div_hS7SImh"></div>
             <form class="form_xwfHpEY" autocomplete="off">
-                <input type="text" name="name" placeholder="nombre" autocomplete="off">
+                <input type="text" name="name" value="${ data.name ?? '' }" placeholder="nombre" autocomplete="off">
                 <div class="div_M5yXKLX">
                     <button type="button" class="pointer" data-action="cancel">cancelar</button>
-                    <button type="submit" class="pointer submit">crear</button>
+                    <button type="submit" class="pointer submit">${ data.id ? 'actualizar' : 'crear' }</button>
                 </div>
             </form>
         </div>
@@ -28,16 +28,23 @@ export default ()=>{
     form.addEventListener('submit', e => {
         e.preventDefault()
 
-        const data = {
+        const _data = {
             id_user : auth.uid,
             name    : form.name.value.trim()
+        }   
+        if( type == 'add' ) {
+            datapi.post(api(`/stream/api/stream?token=${ auth.token }`), _data)
+            .then(() => {
+                dispatchEvent(new CustomEvent('dispatchEventLoadStream'))
+                ElementComponent.remove()
+            })
+        } else {
+            datapi.patch(api(`/stream/api/stream?token=${ auth.token }&id=${ data.id }`), _data)
+            .then(() => {
+                dispatchEvent(new CustomEvent('dispatchEventLoadStream'))
+                ElementComponent.remove()
+            })
         }
-
-        datapi.post(api('/stream/app/trigger/stream.php'), data)
-        .then(() => {
-            dispatchEvent(new CustomEvent('dispatchEventLoadStrem'))
-            ElementComponent.remove()
-        })
 
     })
 

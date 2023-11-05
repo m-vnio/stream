@@ -413,17 +413,16 @@ const diffDateBirthday =(Date1, Date2 = Date.now())=>{
 }
 
 const datapi = (()=> {
-    const method = async (uri = '', data = {}, method = 'POST')=>{
-        
+    const method = async (uri = '', method = 'POST', data = {})=>{
         const option = {
             method,
             //headers : { 'Content-Type': 'application/json' },
             body : JSON.stringify(data)
         }
-
-        if(['PATCH', 'DELETE'].includes(method)){
-            //option.headers = { 'Content-Type': 'application/json' }
-        }
+        
+        // if(['PATCH', 'DELETE'].includes(method)){
+        //     //option.headers = { 'Content-Type': 'application/json' }
+        // }
 
         const res = await fetch(uri, option)
         return await res.json()
@@ -437,19 +436,19 @@ const datapi = (()=> {
     }
 
     const post = async (...params)=>{
-        return await method(...params, 'POST')
+        return await method(params[0], 'POST', params[1])
     }
 
     const put = async (...params)=>{
-        return await method(...params, 'PUT')
+        return await method(params[0], 'PUT', params[1])
     }
 
     const _delete = async (...params)=>{
-        return await method(...params, 'DELETE')
+        return await method(params[0], 'DELETE', params[1])
     }
 
     const patch = async (...params)=>{
-        return await method(...params, 'PATCH')
+        return await method(params[0], 'PATCH', params[1])
     }
 
     return { get, post, put, patch, delete : _delete }

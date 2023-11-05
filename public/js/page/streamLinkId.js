@@ -11,7 +11,7 @@ export default (params)=>{
         </div>
     `)
 
-    datapi.get(api(`/stream/app/trigger/stream_link.php?id=${ params.id }&token=${ auth.token }`))
+    datapi.get(api(`/stream/api/stream_link?id=${ params.id }&token=${ auth.token }`))
         .then(status => {
             location.hash = status ? '#/stream' : '#/stream/link'
         })

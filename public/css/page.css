@@ -100,6 +100,8 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
+  border-radius: 50%;
+  
   background: var(--color-background);
 
   overflow: hidden;
@@ -1055,7 +1057,7 @@
   }
 }
 
-/* label_A6w2qK5  LOGIN*/
+/* label_A6w2qK5  div_ckiK8W2 LOGIN*/
 
 @media (min-width: 600px) {
   .div_jr45I15 { 

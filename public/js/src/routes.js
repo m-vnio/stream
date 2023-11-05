@@ -63,7 +63,7 @@ export default ()=>{
         main.innerHTML = ''
         defAuth(auth)
 
-        datapi.get(api(`/stream/app/trigger/token.php?token=${ auth ? auth.token : 'null' }`)).then(data => {
+        datapi.get(api(`/stream/api/token?token=${ auth ? auth.token : 'null' }`)).then(data => {
             if(JSON.stringify(data) == JSON.stringify(auth)) return
             defAuth(data)
         })

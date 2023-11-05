@@ -105,7 +105,7 @@ export default (data = {})=>{
                     button.innerHTML = Icon.get('fi fi-rr-star')
                 }    
 
-                datapi.patch(api(`/stream/app/trigger/stiker.php?id=${ stikerFavorite.id }`), { stiker : JSON.stringify(stikerFavorite.stiker) })
+                datapi.patch(api(`/stream/api/stiker.php?id=${ stikerFavorite.id }&token=${ auth.token }`), { stiker : JSON.stringify(stikerFavorite.stiker) })
                     .then(res => {
                         if(res) {
                             ls('stiker-favorite').data(stikerFavorite).put(true)

@@ -208,7 +208,7 @@ export default (ElementComponentFullScreen)=>{
 
     const setSocketServer =(data, change = '')=>{
 
-        datapi.patch(api(`/stream/app/trigger/stream.php?id=${ params.id }&token=${ auth.token }`), data)
+        datapi.patch(api(`/stream/api/stream?id=${ params.id }&token=${ auth.token }`), data)
         
         data.change = change
         data.id_stream = params.id
@@ -428,7 +428,7 @@ export default (ElementComponentFullScreen)=>{
     const validate_click = JSON.parse(localStorage.getItem('click')) 
 
     const dataLoad =()=>{
-        datapi.get(api(`/stream/app/trigger/stream.php?id=${ params.id }&token=${ auth.token }`)).then(dataRender) 
+        datapi.get(api(`/stream/api/stream?id=${ params.id }&token=${ auth.token }`)).then(dataRender) 
     }
 
     if(validate_click) dataLoad()

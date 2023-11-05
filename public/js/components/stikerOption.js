@@ -3,6 +3,8 @@ export default (data)=>{
     const api = (uri = '') => ls('api').get() + uri
 
     const Icon  = new iconSVG()
+    const auth      = ls('auth').data({}).push(true, true)
+
     const stikerFavorite = ls('stiker-favorite').data({}).push(true, true)
     const isStikerFavorite = stikerFavorite.stiker.find(stiker => stiker == data)
 
@@ -38,7 +40,7 @@ export default (data)=>{
         
         btnFavorite.innerHTML = Icon.get(`fi fi-${ index == -1 ? 'sr' : 'rr' }-star`)
 
-        datapi.patch(api(`/stream/app/trigger/stiker.php?id=${ stikerFavorite.id }`), { stiker : JSON.stringify(stikerFavorite.stiker) })
+        datapi.patch(api(`/stream/api/stiker?id=${ stikerFavorite.id }&token=${ auth.token }`), { stiker : JSON.stringify(stikerFavorite.stiker) })
             .then(res => {
                 if(res) {
                     ls('stiker-favorite').data(stikerFavorite).put(true)
