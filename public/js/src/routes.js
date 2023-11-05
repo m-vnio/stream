@@ -32,7 +32,7 @@ export default ()=>{
         if(auth) {
             if(['login', 'register'].includes(namePage)) location.hash = '#/' 
         } else {
-            if(['', 'stream', 'config', 'user', 'apariencia', 'count'].includes(namePage)) location.hash = '#/register' 
+            if(['', 'stream', 'config', 'user', 'apariencia', 'count', 'stiker'].includes(namePage)) location.hash = '#/register' 
         }
 
     } 

@@ -27,7 +27,7 @@ export default (ElementComponentFullScreen)=>{
         <div class="div_v05FO active">
             <div class="div_al065">
                 <div class="div_Gj3xZ">
-                    <video class="video_01Mr1" name="media"></video>
+                    <video class="video_01Mr1 mode-1" name="media"></video>
                 </div>
                 <div class="div_Mbdqf">
                     <div class="div_6u0fO">
