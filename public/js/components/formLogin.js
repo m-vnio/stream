@@ -46,7 +46,6 @@ export default (login = true)=>{
 
         datapi.post(api(`/stream/api/auth?action=${ login ? 'login' : 'register' }`), data)
         .then(data => {
-            console.log(data);
             if(data.status){
                 ls('auth').data(data.data).put(true)
                 location.hash = '#/'

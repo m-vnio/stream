@@ -8,7 +8,8 @@ export default (data, user)=>{
         message         : data.message,
         status          : data.status,
         type            : data.type ?? 'text',
-        id_user         : data.id_user
+        id_user         : data.id_user,
+        reactions       : JSON.parse(data.reactions ?? '[]')
     }
 
     const chatReply = data.message_reply ?? {}
@@ -45,24 +46,26 @@ export default (data, user)=>{
                     </div>
                     <div class="div_qsJ0y"> 
                         <span>${ setTime }</span>
-                        <span class="emoji" style="display:none">❤️</span>
+                        <div class="div_Cm6sikX"></div>
                     </div>
                 </div>
             </div>
         </div>
     `)
 
+    const query = new findElement(ElementComponent)
+    
     const urlRegex = /(https?|ftp):\/\/[^\s/$.?#].[^\s]*/g;
     ElementComponent.setAttribute('data-data', JSON.stringify(data_data))
 
-    const elementMessageReply = ElementComponent.querySelector('.div_fR7XE')
-    const elementFiles = ElementComponent.querySelector('.div_dJwcjIT')
+    const elementMessageReply = query.get('.div_fR7XE')
+    const elementFiles = query.get('.div_dJwcjIT')
 
-    const pMessageReplyText = ElementComponent.querySelector('.div_fR7XE p')
-    const imgMessageReplyStiker = ElementComponent.querySelector('.div_fR7XE img')
+    const pMessageReplyText = query.get('.div_fR7XE p')
+    const imgMessageReplyStiker = query.get('.div_fR7XE img')
 
-    const pMessageText  = ElementComponent.querySelector('.div_oeFkT p')
-    const imgMessageStiker = ElementComponent.querySelector('.div_oeFkT img')
+    const pMessageText  = query.get('.div_oeFkT p')
+    const imgMessageStiker = query.get('.div_oeFkT img')
 
     if(!chatReply.id) elementMessageReply.remove()
     if(Files.length) {
@@ -91,6 +94,10 @@ export default (data, user)=>{
     if(messageType == 'text'){
         pMessageText.textContent = data.message ?? ''
 
+        if((data.message ?? '') == '') {
+            query.get('.div_oeFkT').remove()
+        }
+
         if (urlRegex.test(data.message)) {
             pMessageText.innerHTML = pMessageText.innerHTML.replace(urlRegex, url => `<a href="${url}" target="_blank" rel="noopener">${url}</a>`); 
         }
@@ -101,5 +108,31 @@ export default (data, user)=>{
         pMessageText.remove()
     }
 
+
+    //reacciones 
+
+    const elementReaction = query.get('.div_Cm6sikX')
+
+    if(data_data.reactions.length) {
+        let reactionHTML = ''
+        const Reactions = data_data.reactions.reduce((cantidad, emoji)=> {
+            console.log(emoji);
+            cantidad[emoji.reaction] = (cantidad[emoji.reaction] || 0) + 1;
+            return cantidad;
+        }, {})
+
+        console.log(Reactions);
+
+        for (const key in Reactions) {
+            reactionHTML += `<span class="emoji ${ messageUser }">${ key }<h5>${ Reactions[key] }</h5></span>`
+        }
+
+        reactionHTML += `<span class="emoji ${ messageUser }">${ Icon.get('fi fi-rr-bars-sort') }</span>`
+
+        elementReaction.innerHTML = reactionHTML
+    } else elementReaction.remove()
+
+
     return ElementComponent 
 }
+

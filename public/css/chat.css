@@ -146,8 +146,8 @@
 
 .div_qsJ0y {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: end;
+  justify-content: space-between; 
   flex-direction: row-reverse;
   gap: 5px;
 
@@ -155,9 +155,41 @@
     justify-self: end;
     font-size: 12px;
 
+    display: flex;
     &.emoji {
       font-size: 13px;
+      background: var(--color-chat);
+      color: #ffffff;
+      padding: 5px 15px;
+      border-radius: 15px;
+      gap: 10px;
+
+      &.user {
+        background: var(--color-item);
+        color: var(--color-letter);
+        
+        & svg {
+          fill: var(--color-letter);
+        }
+      }
     }
+
+    & svg {
+      width: 13px;
+      height: 13px;
+      fill: #ffffff;
+    }
+  }
+}
+
+.div_Cm6sikX{
+  flex-wrap: wrap;
+  display: flex; 
+  flex: 1;
+  gap: 5px;
+
+  & h5 {
+    margin: auto; 
   }
 }
 
@@ -531,4 +563,4 @@
   }
 }
  
-/* div_dJwcjIT */
+/* div_SsaBtj6 emoji*/

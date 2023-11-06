@@ -1,12 +1,16 @@
+import socket from "../pwa/socket.js";
+
 export default (data = {})=>{
+
+    const api = (uri = '') => ls('api').get() + uri
 
     const Icon  = new iconSVG()
 
     const auth   = ls('auth').get(true)
+    const params = JSON.parse(sessionStorage.getItem('params'))
+
     const userid = auth.uid == data.id_user
     const isHide = data.status == 4 
-
-    const api = (uri = '') => ls('api').get() + uri
     
     const Button = [
         { id : 1, icon : 'fi fi-rr-copy', action : 'copy', name : 'copiar', type : ['text'], status : true },
@@ -16,19 +20,24 @@ export default (data = {})=>{
         { id : 5, icon : 'fi fi-rr-eye-crossed', action : 'hide_show', name : 'ocultar', type : ['text', 'stiker'], status : (userid && !isHide) },
         { id : 6, icon : 'fi fi-rr-trash', action : 'delete', name : 'eliminar', type : ['text', 'stiker'], status : userid }
     ]
-
+ 
     const ElementComponent = createHTML(`
         <div class="div_KEVYWu2 absolute">
             <div class="div_hS7SImh"></div>
             <div class="div_1Z6ZCkT">
-                <div class="div_gZ94AC8">
+                <div class="div_gZ94AC8 scroll-x">
                     <div class="div_SsaBtj6">
+                        <span>👍</span>
                         <span>❤️</span>
                         <span>💔</span>
+                        <span>😂</span>
                         <span>🫣</span>
                         <span>🥺</span>
                         <span>🫢</span>
                         <span>😩</span>
+                        <span>🥲</span>
+                        <span>😡</span>
+                        <span>😮</span>
                     </div>
                 </div>
                 <div class="div_M1q0hm2">
@@ -86,6 +95,27 @@ export default (data = {})=>{
 
     elementTap.addEventListener('click', ()=> ElementComponent.remove())
 
+    query.get('.div_SsaBtj6').addEventListener('click', e => {
+        const span = e.target.closest('span')
+        if(span) {
+ 
+            datapi.patch(api(`/stream/api/stream_chat?id=${ data.id }&token=${ auth.token }&reactions=true`), { reaction: span.textContent, datetime_update : Date.now() })
+                    .then(data => {
+
+                        ElementComponent.remove() 
+
+                        socket.emit('chat', JSON.stringify({
+                            action : 'put',
+                            id_message : data.id,
+                            id_stream : params.id
+                        }))
+
+                        dispatchEvent(new CustomEvent('chat_update_message', { detail : data }))
+
+                    })
+        }
+    })
+
     elementMessageButton.addEventListener('click', e => {
         const button = e.target.closest('button')
 
@@ -105,7 +135,7 @@ export default (data = {})=>{
                     button.innerHTML = Icon.get('fi fi-rr-star')
                 }    
 
-                datapi.patch(api(`/stream/api/stiker.php?id=${ stikerFavorite.id }&token=${ auth.token }`), { stiker : JSON.stringify(stikerFavorite.stiker) })
+                datapi.patch(api(`/stream/api/stiker?id=${ stikerFavorite.id }&token=${ auth.token }`), { stiker : JSON.stringify(stikerFavorite.stiker) })
                     .then(res => {
                         if(res) {
                             ls('stiker-favorite').data(stikerFavorite).put(true)

@@ -115,7 +115,7 @@
 }
 
 .div_gZ94AC8 {
-  display: none;
+  display: flex;
 }
 
 .div_SsaBtj6 {
@@ -124,7 +124,7 @@
   padding: 15px;
   gap: 15px;
 
-  font-size: 25px;
+  font-size: 30px; 
 }
 
 .div_M1q0hm2 {
@@ -551,3 +551,6 @@
     border-radius: 8px;
   }
 }
+
+
+/* div_SsaBtj6 */

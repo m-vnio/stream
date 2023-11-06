@@ -263,6 +263,11 @@ export default ()=>{
         inputEventListener(formChat.txt_message)
     })
 
+    addRemoveEventListenerHashchange(window, 'chat_update_message', e => {
+        const data = e.detail
+        dataRender([data])
+    })
+
     addRemoveEventListenerHashchange(window, 'open_reply_message', e => {
 
         const data = e.detail
@@ -453,6 +458,7 @@ export default ()=>{
                             return element.replaceWith(chatBox(data, auth)) 
                         }
                     }
+
                     if(parseInt(data.datetime_update) > parseInt(data_data.datetime_update)){
                         return element.replaceWith(chatBox(data, auth));
                     }
