@@ -3,6 +3,7 @@ import socket from "../pwa/socket.js";
 import chatStiker from "./chatStiker.js"
 import chatOption from "./chatOption.js"
 import chatBox from "./chatBox.js"
+import chatReaction from "./chatReaction.js";
 
 export default ()=>{
 
@@ -128,7 +129,7 @@ export default ()=>{
     elementItemChat.addEventListener('click', e => {
         const item  = e.target.closest('.div_fR7XE')
         const file  = e.target.closest('img, video')
-        // console.log(file);
+        const infoEmoji = e.target.closest('.emoji.info')
         if(item){
             const elementMessageReply = elementItemChat.querySelector(`#${ item.dataset.idReply }`)
             if(elementMessageReply) {
@@ -147,6 +148,11 @@ export default ()=>{
             elementFile.append(element)
 
             history.pushState(null, null, location.href)
+        }
+
+        if(infoEmoji) {
+            const data = JSON.parse(e.target.closest('.div_T5m0f').dataset.data)
+            ElementComponent.append(chatReaction(data))
         }
     })
 
@@ -435,7 +441,6 @@ export default ()=>{
         if(elementItemChat.children.length) {
             
             Chat.forEach((data, index) => {
-                console.log(data);
                 const element = elementItemChat.querySelector(`#div-${ data.id }`)
                 
                 if(index++ == 0){

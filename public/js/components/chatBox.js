@@ -116,18 +116,15 @@ export default (data, user)=>{
     if(data_data.reactions.length) {
         let reactionHTML = ''
         const Reactions = data_data.reactions.reduce((cantidad, emoji)=> {
-            console.log(emoji);
             cantidad[emoji.reaction] = (cantidad[emoji.reaction] || 0) + 1;
             return cantidad;
         }, {})
-
-        console.log(Reactions);
 
         for (const key in Reactions) {
             reactionHTML += `<span class="emoji ${ messageUser }">${ key }<h5>${ Reactions[key] }</h5></span>`
         }
 
-        reactionHTML += `<span class="emoji ${ messageUser }">${ Icon.get('fi fi-rr-bars-sort') }</span>`
+        reactionHTML += `<span class="emoji info ${ messageUser }">${ Icon.get('fi fi-rr-bars-sort') }</span>`
 
         elementReaction.innerHTML = reactionHTML
     } else elementReaction.remove()

@@ -61,6 +61,8 @@ export default ()=>{
     addUser.addEventListener('click', generateLink)
 
     const dataRender =(Data)=>{
+        sessionStorage.setItem('stream_user', JSON.stringify(Data))
+
         elementList.innerHTML = ArrayToString(Data, (data, i) => { 
             return `
                 ${ i == 0 ? '' : '<span class="span_line"></span>' }
