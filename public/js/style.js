@@ -33,7 +33,8 @@ export default ()=>{
 
     //
     //https://api-nivi.victor01sp.com
-    localStorage.setItem('api', 'http://192.168.1.9/servidor-4')
+    //http://192.168.1.9/servidor-4
+    localStorage.setItem('api', 'https://api-nivi.victor01sp.com')
 
     const theme = localStorage.getItem('theme')
 
