@@ -554,7 +554,7 @@ export default ()=>{
                     const currentX = e.touches[0].clientX;
                     const deltaX = currentX - startX; 
 
-                    if(++move == 1) return 
+                    if(++move <= 2) return 
                     if(deltaX < 0) return
                     if(deltaX > 100) return
 
