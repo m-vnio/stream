@@ -59,8 +59,8 @@ export default ()=>{
                 <div data-css="elemento_chat"></div>  
             </div>
             <div class="div_87Csgt3">
-                <button class="pointer">${ Icon.get('fi fi-rr-cross') }</button>
                 <div class="div_Pc23caa"></div>
+                <button class="pointer">${ Icon.get('fi fi-rr-cross') }</button>
             </div>
         </div>
     `)
@@ -155,6 +155,8 @@ export default ()=>{
         if(button) {
             history.back()
         }
+
+        if(e.target == e.currentTarget) history.back()
     })
 
     addEventListener('popstate', () => {
