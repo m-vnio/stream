@@ -58,6 +58,10 @@ export default ()=>{
             <div data-css="contenedor_chat_fullscreen">
                 <div data-css="elemento_chat"></div>  
             </div>
+            <div class="div_87Csgt3">
+                <button class="pointer">${ Icon.get('fi fi-rr-cross') }</button>
+                <div class="div_Pc23caa"></div>
+            </div>
         </div>
     `)
 
@@ -78,6 +82,8 @@ export default ()=>{
     const elementButtonsOpen = query.get('.div_oYQs61G') 
 
     const elementFile = query.get('.div_ZitSRVP')
+    const elementFileShow = query.get('.div_87Csgt3')
+    elementFileShow.remove()
 
     const elementItemFile = query.get('.div_jy8E19Y')
 
@@ -121,12 +127,38 @@ export default ()=>{
 
     elementItemChat.addEventListener('click', e => {
         const item  = e.target.closest('.div_fR7XE')
+        const file  = e.target.closest('img, video')
+        // console.log(file);
         if(item){
             const elementMessageReply = elementItemChat.querySelector(`#${ item.dataset.idReply }`)
             if(elementMessageReply) {
                 elementMessageReply.scrollIntoView({ behavior: "smooth" });
             }
         }
+
+        if(file) {
+            ElementComponent.append(elementFileShow)
+            const element = file.cloneNode(true)
+            console.log(element.tagName);
+
+            if(element.tagName == 'VIDEO') element.setAttribute('controls', 'true')
+            const elementFile = elementFileShow.querySelector('div')
+            elementFile.innerHTML = ''
+            elementFile.append(element)
+
+            history.pushState(null, null, location.href)
+        }
+    })
+
+    elementFileShow.addEventListener('click', e => {
+        const button = e.target.closest('button')
+        if(button) {
+            history.back()
+        }
+    })
+
+    addEventListener('popstate', () => {
+        elementFileShow.remove()
     })
 
     //eventos de formulario
@@ -487,21 +519,19 @@ export default ()=>{
     elementItemChat.remove()
     dataLoad()
 
-
-    /* */
     let activeScroll = false
-    elementItem.addEventListener('scroll', () => activeScroll = true )
+    elementItem.addEventListener('scroll', () => {
+        activeScroll = true
+    })
 
     const handleSwipeRight = element =>{
         let startX = 0;
-        let startY = 0;
         let isSwiping = false;
         let limit = 0
         let move = 0
 
         let elementChat = false
         
-         
         function handleSwipeStart(e) {
             activeScroll = false 
             elementChat = e.target.closest('.div_T5m0f')
@@ -509,31 +539,27 @@ export default ()=>{
             if(elementChat) {
                 isSwiping = true;
                 startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
                 elementChat.style.transition = "none";
                 limit = 0
                 move = 0
             }
           
         }
-         
+        
         function handleSwipeMove(e) {
             if(elementChat) {
                 if(activeScroll) return
                 if (isSwiping) {
 
-                    if( ++move == 1 ) {
-                        if((e.touches[0].clientY - startY) != 0) return
-                    }
-
                     const currentX = e.touches[0].clientX;
                     const deltaX = currentX - startX; 
 
+                    if(++move == 1) return 
                     if(deltaX < 0) return
                     if(deltaX > 100) return
 
                     limit = deltaX
-                    elementChat.style.transform = `translateX(${deltaX}px)`;
+                    elementChat.style.transform = `translateX(${deltaX}px)`
                   }
             }
         }
@@ -550,6 +576,8 @@ export default ()=>{
                     }
                     limit = 0
                     move = 0
+
+                    elementItem.removeAttribute('style')
                 }
             }
 

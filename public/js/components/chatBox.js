@@ -36,11 +36,7 @@ export default (data, user)=>{
                     <img alt="stiker-not-found">
                 </div>
                 
-                <div class="div_dJwcjIT">
-                    ${ ArrayToString(Files, file => {
-                        return `<img src="${ api(`/stream/storage/chat/${ file.name }`) }">`
-                    })}
-                </div>
+                <div class="div_dJwcjIT"></div>
 
                 <div class="div_7Rn9q">
                     <div class="div_oeFkT ${ messageType }">
@@ -69,7 +65,15 @@ export default (data, user)=>{
     const imgMessageStiker = ElementComponent.querySelector('.div_oeFkT img')
 
     if(!chatReply.id) elementMessageReply.remove()
-    if(!Files.length) elementFiles.remove()
+    if(Files.length) {
+        elementFiles.innerHTML = ArrayToString(Files, file => {
+            if(file.type.includes('image')) return `<img src="${ api(`/stream/storage/chat/${ file.name }`) }">`
+            if(file.type.includes('video')) return `<video src="${ api(`/stream/storage/chat/${ file.name }`) }"></video>`
+        })
+    } 
+    else {
+        elementFiles.remove()
+    }
 
     if(data.status == 4) ElementComponent.style.opacity = '.5'
 

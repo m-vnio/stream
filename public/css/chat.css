@@ -441,7 +441,7 @@
   }
 }
 
-.div_ZitSRVP{
+.div_ZitSRVP{ 
   display: none; 
   grid-template-rows: 60px auto;
 
@@ -483,11 +483,45 @@
   overflow: hidden;
   border-radius: 8px;
 
-  & img {
+  & img, & video {
     aspect-ratio: 1 / 1;
     width: 100%;
     object-fit: cover;
   }
 }
+
+.div_87Csgt3{
+  background: #000000;
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+
+  & button {
+    width: 60px;
+    height: 60px;
+    position: absolute; top: 0; right: 0;
+
+    & svg {
+      width: 20px;
+      height: 20px;
+      fill: #ffffff;
+    }
+  }
+}
+
+.div_Pc23caa{
+  margin: auto;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & img, & video {
+    width: 100%;
+    max-height: 100%;
+  }
+}
  
-/* div_ZitSRVP */
+/* div_dJwcjIT */
